@@ -1,0 +1,39 @@
+.site-page-header {
+    border: 1px solid rgba(75, 76, 77, 0.568);
+    background-color:  rgba(75, 76, 77, 0.568) !important;
+    height: 110px;
+}
+
+.div-top-header {
+    width: 100%;
+    display: flexbox;
+    justify-content: space-between;
+}
+
+.bt-logout {
+    display: inline-block;
+    margin: 2vh 3vh 3vh 1vh;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.377);
+    border-radius: 0.8vh;
+    float:right;
+    font-size: 18px;
+    color: blanchedalmond;
+}
+
+.bt-logout:hover {
+    font-weight: bold;
+    background-color: darkslategrey;
+}
+
+.row-header .linkHome {
+    display: inline-block;
+    color: whitesmoke;
+    margin: 1vh 0 3vh 1vh;
+    font-size: 26px;
+}
+
+.botao-header {
+    margin-top: -10px;
+}

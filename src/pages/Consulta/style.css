@@ -1,0 +1,9 @@
+.div-cards {
+  height: 100vh;
+  max-height: 100%;
+}
+
+.titulo-consulta {
+  padding-top: 2px;
+  text-align: center;
+}
