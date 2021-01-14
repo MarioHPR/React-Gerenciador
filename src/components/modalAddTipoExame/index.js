@@ -39,12 +39,12 @@ export default function ModalAddTipoExame(props) {
     console.log(values)
     const auth = localStorage.getItem("token-gerenciador-security");
     const tipoExameApi = new TipoExameApi();
-    /*values.dataExame = formataData(values.dataExame);
+    values.dataExame = formataData(values.dataExame);
     tipoExameApi.criarTipoExame( values, auth).then( resp => { 
         if(resp.status === 200){
           var urlAtual = window.location.href;
           window.location.href=urlAtual;
-        } } )*/
+        } } )
   }
 
   return (

@@ -5,25 +5,49 @@ const URI = `http://localhost:8080/api/`;
 export default class TipoExameApi {
 
   async criarTipoExame( dadosParametro, auth ) {
-    let campo = [];
-    let valor = [];
+    const { tipoExame, dataExame, select, nomeinstituicao } = dadosParametro;
+    const { contatoDois, contatoUm } = dadosParametro;
+    const { bairro, cep, cidade, id, numero, rua } = dadosParametro;
+
+    let campo = [''];
+    let valor = [''];
+
+    const dadosInstituicao = {
+      "contatoDTO" : {
+        "contatoDois" : contatoDois || '',
+        "contatoUm" : contatoUm || '',
+        "id" : 0
+      }, "enderecoDTO" : {
+        "bairro": bairro || '',
+        "cep": cep || '',
+        "cidade": cidade || '',
+        "email": "",
+        "emeail": "",
+        "id": 0,
+        "numero": numero || '',
+        "rua": rua || ''
+      },
+      "id": select.toString() !== '() => setFlg(!flg)' ? select : 0,
+      "nome" : nomeinstituicao
+    }
     
-    dadosParametro.parametros.map( e => {
-      campo.push(e.campo);
-      valor.push(e.valor);
-    });
+    if( dadosParametro.parametro !== undefined ) {
+      dadosParametro.parametros.map( e => {
+        campo.push(e.campo);
+        valor.push(e.valor);
+      });
+    }
     
-    const { nomeExame, dataExame, select } = dadosParametro;
     const parametro = {
-                        "nomeExame" : nomeExame,
-                        "dataExame": dataExame,
-                        "idInstituicao": select,
+                        "dadosInstituicao": dadosInstituicao,
+                        "nomeExame" : tipoExame || '',
+                        "dataExame": dataExame || '',
                         "linkImage": "",
                         "campo": campo,
                         "valor": valor
                       }
     Axios.defaults.headers.Authorization = auth;
-    const response = await Axios.post( `${URI}tipoExame/salvar/`, parametro );
+    const response = await Axios.post( `${URI}tipoExame/salvar-resumo/`, parametro );
     return response;
   }
 
