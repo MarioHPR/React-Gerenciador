@@ -1,4 +1,5 @@
 .botao-cancelar-adicao {
+  display: inline-block;
   width: 100%;
   text-align: center;
   font-weight: bold;

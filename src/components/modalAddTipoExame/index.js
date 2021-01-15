@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Modal, Row, Form, Button, Col } from 'antd';
 import { InputBasicoModal, SelectInstituicao, SelectTipoExameEspecial, CampoUpload } from '../';
 import CamposExame from '../camposExame';
 import TipoExameApi from '../../models/tipoExameApi';
-
-
-import {  useHistory } from 'react-router-dom';
 import FormularioDadosBasicos from '../formDadosBasicos';
 
 export default function ModalAddTipoExame(props) {

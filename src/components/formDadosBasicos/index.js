@@ -1,38 +1,12 @@
 import React from 'react';
 import '../../pages/login/login.css'
-import { Col, Form, Row } from 'antd';
+import { Col, Row } from 'antd';
 import { InputFormItem } from '../../components';
-import ConsultaApi from '../../models/consultaApi';
 import './style.css';
+import { Link } from 'react-router-dom';
 
 export default function FormularioDadosBasicos( props ) {
-  const [form] = Form.useForm();
   const { flg, setFlg } = props;
-
-  const onReset = () => {
-    form.resetFields();
-  };
-
-  const onFinish = values => {
-
-    const auth = localStorage.getItem("token-gerenciador-security");
-    const consultaApi = new ConsultaApi();
-    /*consultaApi.criarConsulta({
-                                dataConsulta: data,
-                                diagnostico: values.diagnostic,
-                                nomeMedico: values.nomeMed,
-                                prescricao: values.prescricaoMedica,
-                                idInstituicao: values.select,
-                                linkImage: "" }, auth).then( resp => resp.status === 200 ? history.push('/consultas') : '' );
-    */ };
-
-  const normFile = e => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
 
   return (
     <div className="form-dados-basicos" >
@@ -76,7 +50,7 @@ export default function FormularioDadosBasicos( props ) {
             classContainer={''} tipo={ 'text' } dica={ 'ex: 9999-9999 ou fulano@gmail.com' } value={ '' } flgRequired={flg} />
         </Col>
         <Col span={24}>
-          <button className={'botao-cancelar-adicao'} onClick={ () => setFlg(!flg) } >- cancelar adição</button>
+          <Link to='#' className={'botao-cancelar-adicao'} onClick={ () => setFlg(!flg) } >- cancelar adição</Link>
         </Col>
       </Row>
     </div>

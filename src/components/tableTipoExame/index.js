@@ -21,8 +21,8 @@ export default function TableTipoExame( props ) {
       dataIndex: "tipoExame"
     },
     {
-      title: "Quantidade",
-      dataIndex: "quantidade"
+      title: "Data do exame",
+      dataIndex: "dataExame"
     },
     {
       title: 'Operações',
@@ -31,10 +31,10 @@ export default function TableTipoExame( props ) {
         true ? (
           <div className="container-operacoes">
             <Popconfirm title="Tem certeza que deseja deletar?" onConfirm={() => handleDelete(record.key)}>
-              <a className="bt-operacao">Delete</a>
+              <a href='/#' className="bt-operacao">Delete</a>
             </Popconfirm>
             <Popconfirm title="Tem certeza que deseja Editar?" onConfirm={() => {setVisibleEdit(true); setIdConsulta(record.key);}}>
-              <a className="bt-operacao">editar</a>
+              <a href='/#' className="bt-operacao">editar</a>
             </Popconfirm>
             <Link to={`/Exames/${record.key}`} className="bt-operacao">Visualizar</Link>
           </div>
@@ -60,7 +60,7 @@ export default function TableTipoExame( props ) {
       a.push({
         "key": tipo.id,
         "tipoExame": `${tipo.nomeExame}`,
-        "quantidade": tipo.quantidade ?`${tipo.quantidade}` : '--'
+        "dataExame": tipo.quantidade ?`${tipo.quantidade}` : '--'
       })
     );
     setAux(a);
@@ -69,7 +69,7 @@ export default function TableTipoExame( props ) {
   return (
       <div className='container-lista-consulta'>
         <span className='message'>{message}</span>
-        <a onClick={() => {setVisible(true)}} className='bt-geral bt-cadastro-consulta' >
+        <a href='/#' onClick={() => {setVisible(true)}} className='bt-geral bt-cadastro-consulta' >
           Adicionar novo Tipo
         </a>
         {aux !== [] && <Table columns={columns} dataSource={aux} pagination={{ pageSize: 10 }}/>}

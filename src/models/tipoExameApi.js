@@ -8,7 +8,7 @@ export default class TipoExameApi {
     console.log(dadosParametro)
     const { tipoExame, dataExame, select, nomeinstituicao } = dadosParametro;
     const { contatoDois, contatoUm } = dadosParametro;
-    const { bairro, cep, cidade, id, numero, rua } = dadosParametro;
+    const { bairro, cep, cidade, numero, rua } = dadosParametro;
 
     let campo = [''];
     let valor = [''];
@@ -33,8 +33,10 @@ export default class TipoExameApi {
     }
     
     dadosParametro.parametros !== undefined && dadosParametro.parametros.map( e => {
-      campo.push(e.campo);
-      valor.push(e.valor);
+      return (
+        campo.push(e.campo),
+        valor.push(e.valor)
+      );
     });
     
     const parametro = {
