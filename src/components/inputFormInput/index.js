@@ -7,6 +7,11 @@ function InputFormItem( props ) {
     const [form] = Form.useForm();
     const required = !flgRequired ? false : true;
     form.setFieldsValue({name :value});
+    console.log("///////////////")
+    console.log("///////////////")
+    console.log(value)
+    console.log("///////////////")
+    console.log("///////////////")
     return (
       <div className='centralizador-div' disabled>
         <label>{titulo}</label>
@@ -18,7 +23,8 @@ function InputFormItem( props ) {
             className={ classe }
             type={ tipo }
             placeholder={ dica }
-            defaultValue={value}
+            defaultValue={tipo === 'date' ? "2020-12-12" : value}
+            
           />
         </Form.Item>
       </div>

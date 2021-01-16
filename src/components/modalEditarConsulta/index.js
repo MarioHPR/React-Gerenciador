@@ -7,11 +7,7 @@ import LocalidadeApi from '../../models/localidadeApi';
 import ContatoApi from '../../models/contatoApi';
 import './style.css';
 
-
-import {  useHistory } from 'react-router-dom';
-
 export default function ModalEditarConsulta(props) {
-  const history = useHistory();
   const [form] = Form.useForm();
   const {visibleEdit, setVisibleEdit} = props;
   const { idConsulta } = props;
@@ -56,24 +52,11 @@ export default function ModalEditarConsulta(props) {
   
   },[idConsulta]);
 
-  const formataData = data => {
-    let formatData;
-    console.log(data)
-    let dataAux = new Date(data.replaceAll('-','/'));
-    formatData = "" + dataAux.toISOString();
-    formatData = formatData.slice(0,-1);
-    console.log(formatData)
-    return formatData;
-  };
-
   const onFinish = values => {
-    console.log(values)
-    console.log(instituicao.id)
-    let data = formataData(values.dataConsulta);
     const auth = localStorage.getItem("token-gerenciador-security");
     const consultaApi = new ConsultaApi();
     consultaApi.editarConsulta(idConsulta, {
-      dataConsulta: data,
+      dataConsulta: values.dataConsulta,
       diagnostico: values.diagnostico,
       nomeMedico: values.nomeMedico,
       prescricao: values.prescricao,

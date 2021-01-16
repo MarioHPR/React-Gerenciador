@@ -4,7 +4,6 @@ import { Button, Form } from 'antd';
 import { Lista, CampoUpload, SelectInstituicao, InputFormItem } from '../../components';
 import TextArea from 'antd/lib/input/TextArea';
 import './style.css';
-import { useState } from 'react';
 import ConsultaApi from '../../models/consultaApi';
 
 import {  useHistory } from 'react-router-dom';
@@ -12,7 +11,6 @@ import {  useHistory } from 'react-router-dom';
 export default function FormularioConsulta( props ) {
   const history = useHistory();
   const [form] = Form.useForm();
-  const [ link, setLink  ] = useState('');
 
   const onReset = () => {
     form.resetFields();
@@ -27,22 +25,11 @@ export default function FormularioConsulta( props ) {
     )
   }
 
-  const formataData = data => {
-    let formatData;
-    console.log(data)
-    let dataAux = new Date(data.replaceAll('-','/'));
-    formatData = "" + dataAux.toISOString();
-    formatData = formatData.slice(0,-1);
-    console.log(formatData)
-    return formatData;
-  };
-
   const onFinish = values => {
-    let data = formataData(values.dataCons);
     const auth = localStorage.getItem("token-gerenciador-security");
     const consultaApi = new ConsultaApi();
     consultaApi.criarConsulta({
-                                dataConsulta: data,
+                                dataConsulta: values.dataCons,
                                 diagnostico: values.diagnostic,
                                 nomeMedico: values.nomeMed,
                                 prescricao: values.prescricaoMedica,

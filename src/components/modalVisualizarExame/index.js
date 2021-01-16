@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Row, Form, Button, Col } from 'antd';
-import { InputBasicoModal, SelectInstituicao, SelectTipoExameEspecial, CampoUpload } from '..';
+import { InputBasicoModal, SelectInstituicao, CampoUpload } from '..';
 import CamposExame from '../camposExame';
 import TipoExameApi from '../../models/tipoExameApi';
 import FormularioDadosBasicos from '../formDadosBasicos';
@@ -17,7 +17,8 @@ export default function ModalExame(props) {
     const exameApi = new ExameApi();
     exameApi.buscarExamePorId( idExame, auth).then( resp => {
       if(resp.status === 200){
-        setExame(resp);
+        setExame(resp.data);
+        
       }
     } );
   },[idExame] );
@@ -34,21 +35,10 @@ export default function ModalExame(props) {
     return e && e.fileList;
   };
 
-  const formataData = data => {
-    let formatData;
-    console.log(data)
-    let dataAux = new Date(data.replaceAll('-','/'));
-    formatData = "" + dataAux.toISOString();
-    formatData = formatData.slice(0,-1);
-    console.log(formatData)
-    return formatData;
-  };
-
   const onFinish = values => {
     console.log(values)
     const auth = localStorage.getItem("token-gerenciador-security");
     const tipoExameApi = new TipoExameApi();
-    values.dataExame = formataData(values.dataExame);
     tipoExameApi.criarTipoExame( values, auth).then( resp => { 
         if(resp.status === 200){
           var urlAtual = window.location.href;
@@ -58,18 +48,16 @@ export default function ModalExame(props) {
 
   return (
     <> 
-      
       <Modal title="Visualização dos dados do exame" visible={visibleModal} onOk={() => setVisibleModal(false)}
         onCancel={() => setVisibleModal(false)} className='container-modal-editar' >
           <>{ exame &&
             <Form form={ form } name="validate_other" onFinish={onFinish} initialValues='' >
               <Row className='espacamento-top diminuir-botton' >
                 <Col span={12}>
-                  <h6>{exame.id}</h6>
-                  <SelectTipoExameEspecial span={24} />
+                  <InputBasicoModal tipo='text' label='Exame' name='tipoExame' conteudo={exame.nomeExame} span={24} />
                 </Col>
                 <Col span={12}>
-                  <InputBasicoModal tipo='date' span={24} label='Data do exame' name={'dataExame'} />
+                  <InputBasicoModal tipo='date' span={24} label='Data do exame' conteudo={exame.dataExame} name={'dataExame'} />
                 </Col>
               </Row>
               <SelectInstituicao flg={flg} setFlg={setFlg} />

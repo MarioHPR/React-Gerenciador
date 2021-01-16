@@ -23,25 +23,15 @@ export default function Cadastro() {
   const [ contatoUm, setContatoUm ] = useState('');
   const [ contatoDois, setContatoDois ] = useState('');
 
-  const formataData = data => {
-    let formatData;
-    let dataAux = new Date(data.replaceAll('-','/'));
-    formatData = "" + dataAux.toISOString();
-    formatData = formatData.slice(0,-1);
-    return formatData;
-  };
-
   async function handleSubmit(event) {
     event.preventDefault();
-    let formatacaoData;
     const usuarioApi = new UsuarioApi();
 
     if(cep !== '' && bairro !== '' && rua !== '' && numero !== '' &&
        cidade !== '' && contatoUm !== '' && contatoDois !== '' ){
          if( nome !== '' && cpf !== '' && dataNascimento !== '' && email !== '' && senha !== '' ){
-          formatacaoData = formataData( dataNascimento );
 
-          usuarioApi.criarUsuario({ nome : nome, cpf : cpf, email : email, dataNasc : formatacaoData, senha : senha })
+          usuarioApi.criarUsuario({ nome : nome, cpf : cpf, email : email, dataNasc : dataNascimento, senha : senha })
             .then( resposta => {
               if( resposta.status === 200 ){
                 const requisicoes = [

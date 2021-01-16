@@ -14,6 +14,8 @@ export default function ModalAddTipoExame(props) {
     form.resetFields();
   };
 
+  useEffect(() => onReset, [atualizaTela] );
+
   const normFile = e => {
     console.log('Upload event:', e);
     if (Array.isArray(e)) {
@@ -22,20 +24,10 @@ export default function ModalAddTipoExame(props) {
     return e && e.fileList;
   };
 
-  const formataData = data => {
-    let formatData;
-    console.log(data)
-    let dataAux = new Date(data.replaceAll('-','/'));
-    formatData = "" + dataAux.toISOString();
-    formatData = formatData.slice(0,-1);
-    console.log(formatData)
-    return formatData;
-  };
-
   const onFinish = values => {
     const auth = localStorage.getItem("token-gerenciador-security");
     const tipoExameApi = new TipoExameApi();
-    values.dataExame = formataData(values.dataExame);
+    //values.dataExame = formataData(values.dataExame);
     tipoExameApi.criarTipoExame( values, auth).then( resp => { 
         if(resp.status === 200){
           let aux = atualizaTela + 1;
@@ -43,10 +35,6 @@ export default function ModalAddTipoExame(props) {
           setVisibleAdd(false);
         } } )
   }
-
-  useEffect(() => {
-    form.resetFields();
-  },[atualizaTela]);
 
   return (
     <> 

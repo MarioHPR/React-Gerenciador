@@ -25,3 +25,6 @@
 .esconder-form {
   display: none;
 }
+input {
+  text-align: center;
+}
