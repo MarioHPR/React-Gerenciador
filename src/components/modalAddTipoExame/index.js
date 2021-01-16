@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Row, Form, Button, Col } from 'antd';
 import { InputBasicoModal, SelectInstituicao, SelectTipoExameEspecial, CampoUpload } from '../';
 import CamposExame from '../camposExame';
@@ -43,6 +43,10 @@ export default function ModalAddTipoExame(props) {
           setVisibleAdd(false);
         } } )
   }
+
+  useEffect(() => {
+    form.resetFields();
+  },[atualizaTela]);
 
   return (
     <> 
