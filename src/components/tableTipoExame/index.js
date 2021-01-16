@@ -1,28 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
-import TipoExameApi from '../../models/tipoExameApi';
-import { ModalAddTipoExame, ModalEditarConsulta } from '../../components'; //arrumar modais para tipo exame
+import ExameApi from '../../models/exameApi';
+import { ModalAddTipoExame, ModalExame } from '../../components';
 
 export default function TableTipoExame( props ) {
-  const tipoExameApi = new TipoExameApi();
-  const { tipoExame } = props;
+  const exameApi = new ExameApi();
+  const { exames, setAtualizaTela, atualizaTela } = props;
   const [ aux, setAux ] = useState([]);
   const [ message, setMessage ] = useState('');
+  const [ idExame, setIdExame ] = useState(0);
   const [ visible, setVisible ] = useState(false);
   const [ visibleEdit, setVisibleEdit ] = useState(false);
-  const [ idConsulta, setIdConsulta ] = useState();
+
   const auth = localStorage.getItem("token-gerenciador-security");
 
   const columns = [
     { title: "Id", dataIndex: "key" }, 
     {
-      title: "Tipo Exame",
+      title: "Exame",
       dataIndex: "tipoExame"
     },
     {
       title: "Data do exame",
       dataIndex: "dataExame"
+    },
+    {
+      title: "Instituição",
+      dataIndex: "instituicao"
     },
     {
       title: 'Operações',
@@ -31,19 +36,17 @@ export default function TableTipoExame( props ) {
         true ? (
           <div className="container-operacoes">
             <Popconfirm title="Tem certeza que deseja deletar?" onConfirm={() => handleDelete(record.key)}>
-              <a href='/#' className="bt-operacao">Delete</a>
+              <a href='#/' className="bt-operacao">Delete</a>
             </Popconfirm>
-            <Popconfirm title="Tem certeza que deseja Editar?" onConfirm={() => {setVisibleEdit(true); setIdConsulta(record.key);}}>
-              <a href='/#' className="bt-operacao">editar</a>
-            </Popconfirm>
-            <Link to={`/Exames/${record.key}`} className="bt-operacao">Visualizar</Link>
+            <a href='#/' onClick={() => handleEditar(record.key, true)} className="bt-operacao">editar</a>
+            <Link to={`#/`} onClick={() => handleEditar(record.key, false)} className="bt-operacao">Visualizar</Link>
           </div>
         ) : null,
     },
   ];
 
   const handleDelete = evt => {
-    tipoExameApi.removerTipoExame(evt, auth).then( resp => {
+    exameApi.removerExame(evt, auth).then( resp => {
       if( resp.status === 200 ){
         setMessage(resp.data);
         setAux(aux.filter( (item) => item.key !== evt ) );
@@ -54,27 +57,42 @@ export default function TableTipoExame( props ) {
     } );
   };
 
+  const handleEditar = (evt, flg) => {
+    setIdExame(evt);
+    setVisibleEdit(true);
+    /*exameApi.removerExame(evt, auth).then( resp => {
+      if( resp.status === 200 ){
+        setMessage(resp.data);
+        setAux(aux.filter( (item) => item.key !== evt ) );
+        setTimeout(() => {
+          setMessage('');
+        }, 2 * 1000 );
+      }
+    } );*/
+  };
+
   useEffect(() => {
-    let a = [];
-    tipoExame.map( tipo => 
-      a.push({
+    let arrayAux = [];
+    exames.map( tipo => 
+      arrayAux.push({
         "key": tipo.id,
-        "tipoExame": `${tipo.nomeExame}`,
-        "dataExame": tipo.quantidade ?`${tipo.quantidade}` : '--'
+        "tipoExame": `${tipo.nomeExame}` || '--',
+        "dataExame": new Date(tipo.dataExame).toLocaleDateString() || '--',
+        "instituicao": `${tipo.dadosInstituicao.nome}` || '--'
       })
     );
-    setAux(a);
-  },[tipoExame]);
+    setAux(arrayAux);
+  },[exames]);
   
   return (
       <div className='container-lista-consulta'>
         <span className='message'>{message}</span>
-        <a href='/#' onClick={() => {setVisible(true)}} className='bt-geral bt-cadastro-consulta' >
+        <a href='#/' onClick={() => {setVisible(true)}} className='bt-geral bt-cadastro-consulta' >
           Adicionar novo Tipo
         </a>
         {aux !== [] && <Table columns={columns} dataSource={aux} pagination={{ pageSize: 10 }}/>}
-        <ModalAddTipoExame visibleAdd={visible} setVisibleAdd={setVisible}/>
-        <ModalEditarConsulta idConsulta={idConsulta} visibleEdit={visibleEdit} setVisibleEdit={setVisibleEdit} />
+        <ModalAddTipoExame atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} visibleAdd={visible} setVisibleAdd={setVisible}/>
+        <ModalExame idExame={idExame} visibleModal={visibleEdit} setVisibleModal={setVisibleEdit} />
       </div>
   )
 }

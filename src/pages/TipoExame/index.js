@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Header, Footer, TableTipoExame } from '../../components';
 import { Row, Col } from 'antd';
 
-import TipoExameApi from '../../models/tipoExameApi';
+import ExameApi from '../../models/exameApi';
 
 export default function TipoExame() {
-  const [ tipoExames, setTipoExames ] = useState([]);
+  const [ exames, setExames ] = useState([]);
+  const [ atualizaTela, setAtualizaTela ] = useState(0);
   useEffect(()=>{
-    const tipoExameApi = new TipoExameApi();
-    tipoExameApi.buscarTipoExame(localStorage.getItem("token-gerenciador-security")).then( resp => {setTipoExames(resp); console.log(resp) });
-  },[setTipoExames]);
+    const exameApi = new ExameApi();
+    exameApi.buscarTodosExames(localStorage.getItem("token-gerenciador-security")).then( resp => { setExames(resp) });
+  },[atualizaTela]);
 
   return (
     <div className="pagina-padrao">
@@ -17,10 +18,10 @@ export default function TipoExame() {
       <div className="div-cards" >
         <Row>
           <Col xs={{span:24}}>
-            <h2 className='titulo-consulta'>Tipos de exames cadastrados:</h2>
+            <h2 className='titulo-consulta'>Exames cadastrados:</h2>
           </Col>
           <Col xs={{span:24}}>
-              {tipoExames !== [] && <TableTipoExame tipoExame={tipoExames}/>}
+              {exames !== [] && <TableTipoExame atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} exames={exames}/>}
           </Col>
         </Row>
       </div>

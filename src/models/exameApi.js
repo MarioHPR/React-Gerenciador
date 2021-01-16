@@ -4,38 +4,16 @@ const URI = `http://localhost:8080/api/`;
 
 export default class ExameApi {
 
-  async criarExame( dadosParametro, auth ) {
-    let campo = [];
-    let valor = [];
-    
-    dadosParametro.parametros.map( e => {
-      campo.push(e.campo);
-      valor.push(e.valor);
-    });
-    
-    const { nomeExame, dataExame, select } = dadosParametro;
-    const parametro = {
-                        "nomeExame" : nomeExame,
-                        "dataExame": dataExame,
-                        "idInstituicao": select,
-                        "linkImage": "",
-                        "campo": campo,
-                        "valor": valor
-                      }
-    Axios.defaults.headers.Authorization = auth;
-    const response = await Axios.post( `${URI}tipoExame/salvar/`, parametro );
-    return response;
-  }
 
-  async buscarExame( auth ) {
+  async buscarTodosExames( auth ) {
     Axios.defaults.headers.Authorization = auth;
-    const response = await Axios.get( `${URI}tipoExame/buscar/` );
+    const response = await Axios.get( `${URI}exame/buscar-todos/` );
     return response.data;
   }
 
   async buscarExamePorId( id, auth ) {
     Axios.defaults.headers.Authorization = auth;
-    const response = await Axios.get( `${URI}tipoExame/buscar/${id}` );
+    const response = await Axios.get( `${URI}exame/buscar-dados/${id}` );
     return response;
   }
 
@@ -50,7 +28,7 @@ export default class ExameApi {
 
   async removerExame( id, auth ) {
     Axios.defaults.headers.Authorization = auth;
-    const response = await Axios.delete(`${URI}tipoExame/deletar/${id}`);
+    const response = await Axios.delete(`${URI}exame/deletar/${id}`);
     return response;
   }
 }

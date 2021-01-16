@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Row, Form, Button, Col } from 'antd';
-import { InputBasicoModal, SelectInstituicao, SelectTipoExameEspecial, CampoUpload } from '../';
+import { InputBasicoModal, SelectInstituicao, SelectTipoExameEspecial, CampoUpload } from '..';
 import CamposExame from '../camposExame';
 import TipoExameApi from '../../models/tipoExameApi';
 import FormularioDadosBasicos from '../formDadosBasicos';
+import ExameApi from '../../models/exameApi';
 
-export default function ModalAddTipoExame(props) {
+export default function ModalExame(props) {
   const [form] = Form.useForm();
-  const {visibleAdd, setVisibleAdd, setAtualizaTela, atualizaTela } = props;
+  const {visibleModal, setVisibleModal, idExame} = props;
   const [ flg, setFlg ] = useState(false);
+  const [ exame, setExame ] = useState();
+
+  useEffect(()=>{
+    const auth = localStorage.getItem("token-gerenciador-security");
+    const exameApi = new ExameApi();
+    exameApi.buscarExamePorId( idExame, auth).then( resp => {
+      if(resp.status === 200){
+        setExame(resp);
+      }
+    } );
+  },[idExame] );
 
   const onReset = () => {
     form.resetFields();
@@ -33,26 +45,27 @@ export default function ModalAddTipoExame(props) {
   };
 
   const onFinish = values => {
+    console.log(values)
     const auth = localStorage.getItem("token-gerenciador-security");
     const tipoExameApi = new TipoExameApi();
     values.dataExame = formataData(values.dataExame);
     tipoExameApi.criarTipoExame( values, auth).then( resp => { 
         if(resp.status === 200){
-          let aux = atualizaTela + 1;
-          setAtualizaTela(aux);
-          setVisibleAdd(false);
+          var urlAtual = window.location.href;
+          window.location.href=urlAtual;
         } } )
   }
 
   return (
     <> 
       
-      <Modal title="Dados Tipo Exame" visible={visibleAdd} onOk={() => setVisibleAdd(false)}
-        onCancel={() => setVisibleAdd(false)} className='container-modal-editar' >
-          <>
+      <Modal title="Visualização dos dados do exame" visible={visibleModal} onOk={() => setVisibleModal(false)}
+        onCancel={() => setVisibleModal(false)} className='container-modal-editar' >
+          <>{ exame &&
             <Form form={ form } name="validate_other" onFinish={onFinish} initialValues='' >
               <Row className='espacamento-top diminuir-botton' >
                 <Col span={12}>
+                  <h6>{exame.id}</h6>
                   <SelectTipoExameEspecial span={24} />
                 </Col>
                 <Col span={12}>
@@ -76,7 +89,7 @@ export default function ModalAddTipoExame(props) {
                 </Button>
               </Form.Item>
             </Form>
-          </>
+          }</>
       </Modal>
     </>
   );
