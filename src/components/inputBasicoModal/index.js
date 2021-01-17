@@ -4,7 +4,7 @@ import { InputFormItem } from '../';
 import './style.css';
 
 export default function InputBasicoModal( props ) {
-    const { name, tipo, label, conteudo, span, placeholder } = props;
+    const { name, tipo, label, conteudo, span, placeholder, editarVisualizar } = props;
     const { md, lg } = props;
     
     return (
@@ -21,6 +21,7 @@ export default function InputBasicoModal( props ) {
             dica={ placeholder }
             value= { conteudo }
             flgRequired={true}
+            editarVisualizar={editarVisualizar}
           />
         </Col>
         
