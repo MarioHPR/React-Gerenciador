@@ -5,7 +5,6 @@ const URI = `http://localhost:8080/api/`;
 export default class TipoExameApi {
 
   async criarTipoExame( dadosParametro, auth ) {
-    console.log(dadosParametro)
     const { tipoExame, dataExame, select, nomeinstituicao } = dadosParametro;
     const { contatoDois, contatoUm } = dadosParametro;
     const { bairro, cep, cidade, numero, rua } = dadosParametro;

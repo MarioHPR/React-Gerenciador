@@ -8,7 +8,7 @@ import ExameApi from '../../models/exameApi';
 
 export default function ModalExame(props) {
   const [form] = Form.useForm();
-  const {visibleModal, setVisibleModal, idExame} = props;
+  const {visibleModal, setVisibleModal, idExame, editarVisualizar} = props;
   const [ flg, setFlg ] = useState(false);
   const [ exame, setExame ] = useState();
 
@@ -17,8 +17,9 @@ export default function ModalExame(props) {
     const exameApi = new ExameApi();
     exameApi.buscarExamePorId( idExame, auth).then( resp => {
       if(resp.status === 200){
+        console.log(resp.data)
         setExame(resp.data);
-        
+        onReset();
       }
     } );
   },[idExame] );
@@ -36,31 +37,30 @@ export default function ModalExame(props) {
   };
 
   const onFinish = values => {
-    console.log(values)
-    const auth = localStorage.getItem("token-gerenciador-security");
+   /* const auth = localStorage.getItem("token-gerenciador-security");
     const tipoExameApi = new TipoExameApi();
     tipoExameApi.criarTipoExame( values, auth).then( resp => { 
         if(resp.status === 200){
           var urlAtual = window.location.href;
           window.location.href=urlAtual;
-        } } )
+        } } )*/
   }
 
   return (
     <> 
       <Modal title="Visualização dos dados do exame" visible={visibleModal} onOk={() => setVisibleModal(false)}
         onCancel={() => setVisibleModal(false)} className='container-modal-editar' >
-          <>{ exame &&
+          <>{ exame && 
             <Form form={ form } name="validate_other" onFinish={onFinish} initialValues='' >
               <Row className='espacamento-top diminuir-botton' >
                 <Col span={12}>
-                  <InputBasicoModal tipo='text' label='Exame' name='tipoExame' conteudo={exame.nomeExame} span={24} />
+                  <InputBasicoModal tipo='text' label='Exame' name='tipoExame' conteudo={exame.nomeExame} span={24} editarVisualizar={editarVisualizar} />
                 </Col>
                 <Col span={12}>
                   <InputBasicoModal tipo='date' span={24} label='Data do exame' conteudo={exame.dataExame} name={'dataExame'} />
                 </Col>
               </Row>
-              <SelectInstituicao flg={flg} setFlg={setFlg} />
+              {/*<SelectInstituicao flg={flg} setFlg={setFlg} />
               <div id="form-basic" className={flg ? 'mostrar-form' : 'esconder-form'}>
                 <FormularioDadosBasicos flg={flg} setFlg={setFlg} />
               </div>
@@ -70,7 +70,7 @@ export default function ModalExame(props) {
                 <Button className="btn-cadastrar" type="primary" htmlType="submit">
                   Inserir Tipo Exame
                 </Button>
-              </Form.Item>
+              </Form.Item>*/}
               <Form.Item>
                 <Button htmlType="button" onClick={ onReset } className='botao-form-itens'>
                   Limpar

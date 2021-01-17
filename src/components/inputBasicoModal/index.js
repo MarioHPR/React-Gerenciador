@@ -3,12 +3,10 @@ import { Col } from 'antd';
 import { InputFormItem } from '../';
 import './style.css';
 
-function InputBasicoModal( props ) {
+export default function InputBasicoModal( props ) {
     const { name, tipo, label, conteudo, span, placeholder } = props;
     const { md, lg } = props;
-    console.log("//////////////////////")
-        console.log(conteudo)
-        console.log("//////////////////////")
+    
     return (
       <>
         <Col xs={{span:span}} md={{span:md || span}} lg={{span:lg || md || span}} className='campoModal'>
@@ -29,5 +27,3 @@ function InputBasicoModal( props ) {
       </>
     )
   }
-
-  export default InputBasicoModal;

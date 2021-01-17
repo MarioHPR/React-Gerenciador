@@ -27,7 +27,6 @@ export default function ModalAddTipoExame(props) {
   const onFinish = values => {
     const auth = localStorage.getItem("token-gerenciador-security");
     const tipoExameApi = new TipoExameApi();
-    //values.dataExame = formataData(values.dataExame);
     tipoExameApi.criarTipoExame( values, auth).then( resp => { 
         if(resp.status === 200){
           let aux = atualizaTela + 1;
@@ -51,7 +50,7 @@ export default function ModalAddTipoExame(props) {
                   <InputBasicoModal tipo='date' span={24} label='Data do exame' name={'dataExame'} />
                 </Col>
               </Row>
-              <SelectInstituicao flg={flg} setFlg={setFlg} />
+              <SelectInstituicao atualizaTela={atualizaTela} flg={flg} setFlg={setFlg} />
               <div id="form-basic" className={flg ? 'mostrar-form' : 'esconder-form'}>
                 <FormularioDadosBasicos flg={flg} setFlg={setFlg} />
               </div>

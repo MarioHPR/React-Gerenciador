@@ -8,7 +8,7 @@ export default function Exame() {
   const [ exames, setExames ] = useState([]);
   useEffect(()=>{
     const exameApi = new ExameApi();
-    exameApi.buscarExame(localStorage.getItem("token-gerenciador-security")).then( resp => {setExames(resp); console.log(resp) });
+    exameApi.buscarExame(localStorage.getItem("token-gerenciador-security")).then( resp => {setExames(resp); });
   },[setExames]);
 
   return (

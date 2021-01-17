@@ -5,7 +5,6 @@ const URI = `http://localhost:8080/api/`;
 export default class ConsultaApi {
 
   async criarConsulta( consulta, auth ) {
-    console.log(consulta);
     const { dataConsulta, diagnostico, nomeMedico, prescricao, idInstituicao, linkImage } = consulta;
     const parametro = {
                         dataConsulta : dataConsulta, diagnostico : diagnostico,
@@ -36,9 +35,6 @@ export default class ConsultaApi {
       nomeMedico : nomeMedico, prescricao : prescricao,
       idInstituicao : idInstituicao, linkImage : linkImage
     };
-    console.log("////////////")
-    console.log(parametro)
-    console.log("////////////")
     Axios.defaults.headers.Authorization = auth;
     const response = await Axios.put(`${URI}consulta/editar/${id}`,parametro);
     

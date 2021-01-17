@@ -5,7 +5,7 @@ import './style.css';
 
 function SelectInstituicao ( props ) {
   const { Option } = Select;
-  const { flg, setFlg } = props;
+  const { flg, setFlg, atualizaTela } = props;
   const [ instituicoes, setInstituicoes ] = useState([]);
 
   const mostrarDados = () => {
@@ -15,7 +15,7 @@ function SelectInstituicao ( props ) {
   useEffect( () => {
     const instituicaoApi = new InstituicaoApi();
     instituicaoApi.buscarInstituicoes(localStorage.getItem("token-gerenciador-security")).then( resp => setInstituicoes(resp) );
-  },[] );
+  },[atualizaTela] );
 
   return (
     <>

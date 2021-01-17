@@ -9,9 +9,10 @@ export default function TableTipoExame( props ) {
   const { exames, setAtualizaTela, atualizaTela } = props;
   const [ aux, setAux ] = useState([]);
   const [ message, setMessage ] = useState('');
-  const [ idExame, setIdExame ] = useState(0);
+  const [ idExame, setIdExame ] = useState();
   const [ visible, setVisible ] = useState(false);
-  const [ visibleEdit, setVisibleEdit ] = useState(false);
+  const [ visibleModalGeral, setVisibleModalGeral ] = useState(false);
+  const [flgEditarVisualizar, setFlgEditarVisualizar ] = useState(0);
 
   const auth = localStorage.getItem("token-gerenciador-security");
 
@@ -38,8 +39,8 @@ export default function TableTipoExame( props ) {
             <Popconfirm title="Tem certeza que deseja deletar?" onConfirm={() => handleDelete(record.key)}>
               <a href='#/' className="bt-operacao">Delete</a>
             </Popconfirm>
-            <a href='#/' onClick={() => handleEditar(record.key, true)} className="bt-operacao">editar</a>
-            <Link to={`#/`} onClick={() => handleEditar(record.key, false)} className="bt-operacao">Visualizar</Link>
+            <a href='#/' onClick={() => handleEditar(record.key, 1)} className="bt-operacao">editar</a>
+            <Link to={`#/`} onClick={() => handleEditar(record.key, 0)} className="bt-operacao">Visualizar</Link>
           </div>
         ) : null,
     },
@@ -58,17 +59,17 @@ export default function TableTipoExame( props ) {
   };
 
   const handleEditar = (evt, flg) => {
-    setIdExame(evt);
-    setVisibleEdit(true);
-    /*exameApi.removerExame(evt, auth).then( resp => {
-      if( resp.status === 200 ){
-        setMessage(resp.data);
-        setAux(aux.filter( (item) => item.key !== evt ) );
-        setTimeout(() => {
-          setMessage('');
-        }, 2 * 1000 );
+    //setIdExame(evt);
+    const exameApi = new ExameApi();
+    exameApi.buscarExamePorId( evt, auth).then( resp => {
+      if(resp.status === 200){
+        if(resp.data !== idExame)
+          setIdExame(resp.data.id);
+        setVisibleModalGeral(true);
+        setFlgEditarVisualizar(flg);
       }
-    } );*/
+    } );
+    
   };
 
   useEffect(() => {
@@ -77,7 +78,7 @@ export default function TableTipoExame( props ) {
       arrayAux.push({
         "key": tipo.id,
         "tipoExame": `${tipo.nomeExame}` || '--',
-        "dataExame": new Date(tipo.dataExame).toLocaleDateString() || '--',
+        "dataExame": new Date(tipo.dataExame).toLocaleDateString('pt-BR', {timeZone: 'UTC'}) || '--',
         "instituicao": `${tipo.dadosInstituicao.nome}` || '--'
       })
     );
@@ -92,7 +93,7 @@ export default function TableTipoExame( props ) {
         </a>
         {aux !== [] && <Table columns={columns} dataSource={aux} pagination={{ pageSize: 10 }}/>}
         <ModalAddTipoExame atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} visibleAdd={visible} setVisibleAdd={setVisible}/>
-        <ModalExame idExame={idExame} visibleModal={visibleEdit} setVisibleModal={setVisibleEdit} />
+        <ModalExame idExame={idExame} visibleModal={visibleModalGeral} setVisibleModal={setVisibleModalGeral} editarVisualizar={flgEditarVisualizar} />
       </div>
   )
 }

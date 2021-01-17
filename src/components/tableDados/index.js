@@ -7,8 +7,6 @@ import { ModalVisualizacaoConsulta, ModalEditarConsulta } from '../../components
 
 export default function TableDados( props ) {
   const { consultas } = props;
-  console.log(consultas)
-  let [ data, setData ] = useState([]);
   const [ aux, setAux ] = useState([]);
   const [ message, setMessage ] = useState('');
   const consultaApi = new ConsultaApi();
@@ -38,12 +36,12 @@ export default function TableDados( props ) {
         true ? (
           <div className="container-operacoes">
             <Popconfirm title="Tem certeza que deseja deletar?" onConfirm={() => handleDelete(record.key)}>
-              <a className="bt-operacao">Delete</a>
+              <a href='#/' className="bt-operacao">Delete</a>
             </Popconfirm>
             <Popconfirm title="Tem certeza que deseja Editar?" onConfirm={() => {setVisibleEdit(true); setIdConsulta(record.key);}}>
-              <a className="bt-operacao">editar</a>
+              <a href='#/' className="bt-operacao">editar</a>
             </Popconfirm>
-            <a onClick={() => {setVisible(true); setIdConsulta(record.key);}} className="bt-operacao">Visualizar</a>
+            <a href='#/' onClick={() => {setVisible(true); setIdConsulta(record.key);}} className="bt-operacao">Visualizar</a>
           </div>
         ) : null,
     },
@@ -72,7 +70,6 @@ export default function TableDados( props ) {
       })
     );
     setAux(a);
-    console.log("entrou")
   },[consultas]);
   
   return (
