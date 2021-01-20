@@ -27,3 +27,24 @@
 .dados-parte-dois p {
   border-bottom: 1px dashed rgba(0, 0, 0, 0.329);
 }
+
+.select-instituicoes {
+  width: 100%;
+  font-size: 16px;
+  font-family: 'Times New Roman', Times, serif;
+  text-transform: uppercase;
+  min-height: 35px;
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.103);
+  border-radius: 4px;
+  text-shadow: black;
+}
+
+.select-instituicoes {
+  text-align: center;
+  text-align-last: center;
+}
+
+.dados-instituicao p { 
+  text-transform: uppercase;
+}

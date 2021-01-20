@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Row, Form, Button, Col } from 'antd';
-import { InputBasicoModal, SelectInstituicao, CampoUpload } from '..';
+import { CampoUpload } from '..';
 import CamposExame from '../camposExame';
-import TipoExameApi from '../../models/tipoExameApi';
 import FormularioDadosBasicos from '../formDadosBasicos';
 import ExameApi from '../../models/exameApi';
+import InstituicaoApi from '../../models/instituicaoApi';
 import './style.css';
 import { WarningOutlined } from '@material-ui/icons';
 
@@ -13,22 +13,31 @@ export default function ModalExame(props) {
   const {visibleModal, setVisibleModal, idExame, editarVisualizar} = props;
   const [ flg, setFlg ] = useState(false);
   const [ exame, setExame ] = useState();
+  const [ tipoExame, setTipoExame ] = useState('');
+  const [ dataExame, setDataExame ] = useState('');
+  const [ instituicao, setInstituicao ] = useState();
+  const [ parametros, setParametros ] = useState([]);
+  const [ instituicoes, setInstituicoes ] = useState([]);
 
   useEffect(()=>{
     const auth = localStorage.getItem("token-gerenciador-security");
     const exameApi = new ExameApi();
+    const instituicaoApi = new InstituicaoApi();
+    instituicaoApi.buscarInstituicoes(localStorage.getItem("token-gerenciador-security")).then( resp => setInstituicoes(resp) );
     exameApi.buscarExamePorId( idExame, auth).then( resp => {
       if(resp.status === 200){
-        console.log(resp.data)
         setExame(resp.data);
+        setTipoExame(resp.data.nomeExame);
+        setDataExame(resp.data.dataExame);
+        setInstituicao(resp.data.dadosInstituicao);
+        setParametros(resp.data.parametros);
+        console.log(instituicao)
         onReset();
       }
     } );
   },[idExame] );
 
-  const onReset = () => {
-    form.resetFields();
-  };
+  const onReset = () => form.resetFields();
 
   const normFile = e => {
     console.log('Upload event:', e);
@@ -39,6 +48,19 @@ export default function ModalExame(props) {
   };
 
   const onFinish = values => {
+    console.log(values)
+    let aux = parametros;
+    values.parametros.map( teste => {
+      if(teste.campo !== undefined && teste.valor !== undefined)
+        aux.push(teste);
+      return null;
+    });
+    setParametros(aux);
+
+    if( values.cidade !== undefined ) {// deu certo
+      const { bairro, cep, cidade, contatosDois, contatoUm, nomeinstituicao, numero } = values;
+      console.log(cidade)
+    }
    /* const auth = localStorage.getItem("token-gerenciador-security");
     const tipoExameApi = new TipoExameApi();
     tipoExameApi.criarTipoExame( values, auth).then( resp => { 
@@ -48,26 +70,98 @@ export default function ModalExame(props) {
         } } )*/
   }
 
+  const executaAcao = ( aux ) => {
+    console.log(parseInt(aux))
+    if( parseInt(aux) === 0 ){
+      setFlg(!flg);
+    } else {
+      let auxInstituicao = instituicoes.find( inst => inst.id === parseInt(aux) );
+      if( auxInstituicao.nome !== instituicao.nome )
+        setInstituicao(auxInstituicao);
+    } 
+  }
+
   return (
     <> 
       <Modal title="Visualização dos dados do exame" visible={visibleModal} onOk={() => setVisibleModal(false)}
         onCancel={() => setVisibleModal(false)} className='container-modal-editar' >
           <>{ exame && 
             <Form form={ form } name="validate_other" onFinish={onFinish} initialValues='' >
-              <Row className='espacamento-top diminuir-botton' >
+              <Row className='espacamento-top ' >
                 <Col span={12}>
-                  <InputBasicoModal tipo='text' label='Exame' name='tipoExame' conteudo={exame.nomeExame} span={24} editarVisualizar={0} />
+                  <label>Exame: </label>
+                  <input className='input-modal margin-bottom' type='text' value={tipoExame} readOnly />
                 </Col>
                 <Col span={12}>
-                  <InputBasicoModal tipo='date' span={24} label='Data do exame' conteudo={exame.dataExame} name={'dataExame'}  editarVisualizar={editarVisualizar} />
+                  <label>Data: </label>
+                  <input className='input-modal margin-bottom' type='date' value={dataExame} onChange={ evt => setDataExame(evt.target.value)}/>
                 </Col>
               </Row>
               {
-                editarVisualizar === 1 ?
+                instituicao && editarVisualizar === 1 ?
                   <>
-                    <SelectInstituicao flg={flg} setFlg={setFlg} />
-                    <div id="form-basic" className={flg ? 'mostrar-form' : 'esconder-form'}>
-                      <FormularioDadosBasicos flg={flg} setFlg={setFlg} />
+                    <div className="dados-instituicao">
+                      <select className='select-instituicoes' placeholder="Selecione uma instituição!" disabled={flg} onClick={evt => executaAcao(evt.target.value)}>
+                        <option key={`odefault${1}`} value={0}>+ adicionar nova instituição</option>
+                        {
+                          instituicoes.length > 0 && instituicoes.map( inst => {
+                            return inst.nome === instituicao.nome ? <option key={`op${inst.id}`} selected value={inst.id}>{inst.nome}</option> : <option key={`op${inst.id}`} value={inst.id}>{inst.nome}</option>
+                          })
+                        }
+                      </select>
+                      <div id="" className={!flg ? 'mostrar-form' : 'esconder-form'}>
+                        <h3>Dados da Instituição</h3>
+                        <Row>
+                          <Col span={12} className='dados-parte-um'>
+                            <p>Instituição: {instituicao.nome}</p>
+                            <p>Cidade: {instituicao.enderecoDTO.cidade}</p>
+                            <p>Rua: {instituicao.enderecoDTO.rua}</p>
+                            <p>Contato 1: {instituicao.contatoDTO.contatoUm}</p>
+                          </Col>
+                          <Col span={12} className='dados-parte-dois'>
+                            <p>Cep: {instituicao.enderecoDTO.cep}</p>
+                            <p>Bairro: {instituicao.enderecoDTO.bairro}</p>
+                            <p>N°: {instituicao.enderecoDTO.numero}</p>
+                            <p>Contato 2: {instituicao.contatoDTO.contatoDois}</p>
+                          </Col>
+                        </Row>
+                      </div>
+                    
+                      <div id="" className={flg ? 'mostrar-form' : 'esconder-form'}>
+                        <FormularioDadosBasicos flg={flg} setFlg={setFlg} />
+                        <h3>Dados do exame</h3>
+                      </div>
+                      
+                      { parametros.length > 1 ?
+                        <Row>
+                          <Col span={12} className='dados-parte-um'>
+                          {
+                            exame.parametros.map( exame => exame.campo !== '' ? (
+                              <Form.Item
+                              label='Campo'
+                              rules={ [ { required: true, message: `Valor é Obrigatório!` } ] }
+                              >
+                                <input className='input-modal margin-bottom' placeholder="Campo atributo" value={exame.campo} readOnly/>
+                              </Form.Item>
+                            ) : '')
+                          }
+                          </Col>
+                          <Col span={12} className='dados-parte-dois'>
+                          {
+                            exame.parametros.map( exame => exame.valor !== '' ? (
+                              <Form.Item
+                              label='Valor'
+                              rules={ [ { required: true, message: `Valor é Obrigatório!` } ] }
+                              >
+                                <input className='input-modal margin-bottom' placeholder="Campo atributo" value={exame.valor} />
+                              </Form.Item>
+                            ) : '')
+                          }
+                          </Col>
+                        </Row>
+                        : <span><WarningOutlined />Não há dados registrados neste exame!</span>
+                        
+                      }
                     </div>
                     <CamposExame />
                     <CampoUpload destino='do exame' normFile={normFile} classe="div-arq" />
@@ -92,24 +186,26 @@ export default function ModalExame(props) {
                         <p>Instituição: {exame.dadosInstituicao.nome}</p>
                         <p>Cidade: {exame.dadosInstituicao.enderecoDTO.cidade}</p>
                         <p>Rua: {exame.dadosInstituicao.enderecoDTO.rua}</p>
+                        <p>Contato 1: {exame.dadosInstituicao.contatoDTO.contatoUm}</p>
                       </Col>
                       <Col span={12} className='dados-parte-dois'>
                         <p>Cep: {exame.dadosInstituicao.enderecoDTO.cep}</p>
                         <p>Bairro: {exame.dadosInstituicao.enderecoDTO.bairro}</p>
                         <p>N°: {exame.dadosInstituicao.enderecoDTO.numero}</p>
+                        <p>Contato 2: {exame.dadosInstituicao.contatoDTO.contatoDois}</p>
                       </Col>
                     </Row>
                     <h3>Dados do exame</h3>
-                    { exame.parametros.length > 1 ?
+                    { parametros.length > 1 ?
                       <Row>
                         <Col span={12} className='dados-parte-um'>
                         {
-                          exame.parametros.map( exame => exame.campo !== '' ? <p>Campo: {exame.campo}</p> : '')
+                          parametros.map( exame => exame.campo !== '' ? <p>Campo: {exame.campo}</p> : '')
                         }
                         </Col>
                         <Col span={12} className='dados-parte-dois'>
                         {
-                          exame.parametros.map( exame => exame.valor !== '' ? <p>Valor: {exame.valor}</p> : '')
+                          parametros.map( exame => exame.valor !== '' ? <p>Valor: {exame.valor}</p> : '')
                         }
                         </Col>
                       </Row>

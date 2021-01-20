@@ -9,7 +9,9 @@
   border-radius: 0.4vh;
   padding: 0.4vh;
 }
-
+.text-center {
+  text-align: center;
+}
 .bt-add-inst:hover {
   background: rgba(0, 0, 0, 0.199);
   color: rgb(31, 184, 245);
