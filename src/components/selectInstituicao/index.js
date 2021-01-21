@@ -3,7 +3,7 @@ import { Form, Select } from 'antd';
 import InstituicaoApi from '../../models/instituicaoApi';
 import './style.css';
 
-function SelectInstituicao ( props ) {
+export default function SelectInstituicao ( props ) {
   const { Option } = Select;
   const { flg, setFlg, atualizaTela } = props;
   const [ instituicoes, setInstituicoes ] = useState([]);
@@ -36,5 +36,3 @@ function SelectInstituicao ( props ) {
     </>
   )
 }
-
-export default SelectInstituicao;

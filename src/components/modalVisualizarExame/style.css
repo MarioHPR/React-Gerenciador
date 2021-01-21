@@ -48,3 +48,29 @@
 .dados-instituicao p { 
   text-transform: uppercase;
 }
+
+.icon {
+  display: inline-block;
+  width: 25px!important;
+}
+
+.div-cedula-campo {
+  display: flex;
+  justify-items: center;
+  justify-content: stretch;
+  align-items: center;
+}
+.div-cedula-campo input {
+  width: 80%;
+  margin-bottom: 10px;
+}
+
+.icon-remover {
+  margin-left: 20px;
+  color: red!important;
+}
+
+.tooltip {
+  margin-bottom: 10px;
+  font-size: 15px;
+}

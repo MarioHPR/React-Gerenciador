@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Row, Form, Button, Col } from 'antd';
 import { CampoUpload } from '..';
-import CamposExame from '../camposExame';
 import FormularioDadosBasicos from '../formDadosBasicos';
 import ExameApi from '../../models/exameApi';
 import InstituicaoApi from '../../models/instituicaoApi';
 import './style.css';
 import { WarningOutlined } from '@material-ui/icons';
+import { MinusCircleOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { Tooltip } from '@material-ui/core';
 
 export default function ModalExame(props) {
   const [form] = Form.useForm();
@@ -18,6 +19,7 @@ export default function ModalExame(props) {
   const [ instituicao, setInstituicao ] = useState();
   const [ parametros, setParametros ] = useState([]);
   const [ instituicoes, setInstituicoes ] = useState([]);
+  const [ interacao, setInteracao ] = useState(0);
 
   useEffect(()=>{
     const auth = localStorage.getItem("token-gerenciador-security");
@@ -30,12 +32,13 @@ export default function ModalExame(props) {
         setTipoExame(resp.data.nomeExame);
         setDataExame(resp.data.dataExame);
         setInstituicao(resp.data.dadosInstituicao);
-        setParametros(resp.data.parametros);
-        console.log(instituicao)
+        let filtrado = resp.data.parametros.filter( exame => exame.campo !== '');
+        setParametros(filtrado);
         onReset();
       }
     } );
-  },[idExame] );
+// eslint-disable-next-line react-hooks/exhaustive-deps
+  },[idExame, visibleModal] );
 
   const onReset = () => form.resetFields();
 
@@ -47,17 +50,44 @@ export default function ModalExame(props) {
     return e && e.fileList;
   };
 
+  const adicionar = () => {
+    let arrayAux =  parametros;
+    let campoNovo = { id: `campoNovo${interacao}`, campo: '', valor: '', idItemCampoExame: ''};
+    setInteracao(interacao + 1);
+    arrayAux.push(campoNovo);
+    setParametros(arrayAux);
+    removeOuAtualiza(null);
+    console.log(parametros)
+  };
+
+  const removeOuAtualiza = value => {
+    let arrayAux = parametros.filter( exame => exame.id !== value);
+    console.log(arrayAux)
+    setParametros(arrayAux)
+  };
+
   const onFinish = values => {
-    console.log(values)
     let aux = parametros;
-    values.parametros.map( teste => {
-      if(teste.campo !== undefined && teste.valor !== undefined)
-        aux.push(teste);
+    values.parametros !== undefined && values.parametros.map( valor => {
+      if(valor.campo !== undefined && valor.valor !== undefined)
+        aux.push(valor);
       return null;
     });
     setParametros(aux);
-
-    if( values.cidade !== undefined ) {// deu certo
+    /*
+    exame
+    tipoExame
+    dataExame
+    instituicao
+    parametros
+    instituicoes
+    */
+    console.log(idExame)
+    console.log(dataExame)
+    console.log(tipoExame)
+    console.log(instituicao)
+    console.log(parametros)
+    /*if( values.nomeCidade !== undefined ) {// deu certo
       const { bairro, cep, cidade, contatosDois, contatoUm, nomeinstituicao, numero } = values;
       console.log(cidade)
     }
@@ -80,7 +110,8 @@ export default function ModalExame(props) {
         setInstituicao(auxInstituicao);
     } 
   }
-
+  
+  
   return (
     <> 
       <Modal title="Visualização dos dados do exame" visible={visibleModal} onOk={() => setVisibleModal(false)}
@@ -94,7 +125,10 @@ export default function ModalExame(props) {
                 </Col>
                 <Col span={12}>
                   <label>Data: </label>
-                  <input className='input-modal margin-bottom' type='date' value={dataExame} onChange={ evt => setDataExame(evt.target.value)}/>
+                  {
+                    editarVisualizar === 1 ? <input className='input-modal margin-bottom' type='date' value={dataExame} onChange={ evt => setDataExame(evt.target.value)}/> 
+                    : <input className='input-modal margin-bottom' type='date' value={dataExame} onChange={ evt => setDataExame(evt.target.value)} readOnly/>
+                  }
                 </Col>
               </Row>
               {
@@ -129,54 +163,62 @@ export default function ModalExame(props) {
                     
                       <div id="" className={flg ? 'mostrar-form' : 'esconder-form'}>
                         <FormularioDadosBasicos flg={flg} setFlg={setFlg} />
-                        <h3>Dados do exame</h3>
                       </div>
-                      
-                      { parametros.length > 1 ?
+                      <h3>Dados do exame</h3>
+                      { parametros ?
                         <Row>
                           <Col span={12} className='dados-parte-um'>
                           {
-                            exame.parametros.map( exame => exame.campo !== '' ? (
-                              <Form.Item
-                              label='Campo'
-                              rules={ [ { required: true, message: `Valor é Obrigatório!` } ] }
-                              >
-                                <input className='input-modal margin-bottom' placeholder="Campo atributo" value={exame.campo} readOnly/>
-                              </Form.Item>
-                            ) : '')
+                            parametros.map( exame => (
+                              <div className='div-cedula-campo'>
+                                <Tooltip className='tooltip' title={`Atributo ${exame.campo}`}>
+                                  <InfoCircleOutlined className='icon' />
+                                </Tooltip>
+                                { exame.id >= 0 ?
+                                  <input className='input-modal' placeholder="Campo atributo" value={exame.campo} readOnly/> :
+                                  <input className='input-modal' placeholder="Campo atributo" onChange={evt => {exame.campo = evt.target.value;removeOuAtualiza(null)}} value={exame.campo} />
+                                }
+                                </div>
+                            ) )
                           }
                           </Col>
                           <Col span={12} className='dados-parte-dois'>
                           {
-                            exame.parametros.map( exame => exame.valor !== '' ? (
-                              <Form.Item
-                              label='Valor'
-                              rules={ [ { required: true, message: `Valor é Obrigatório!` } ] }
-                              >
-                                <input className='input-modal margin-bottom' placeholder="Campo atributo" value={exame.valor} />
-                              </Form.Item>
-                            ) : '')
+                            parametros.map( exame => (
+                              <div className='div-cedula-campo' itemID={`linha${exame.campo}`}>
+                                <Tooltip className='tooltip' title={`Digite o Valor referente ao atributo ${exame.campo}!`}>
+                                  <InfoCircleOutlined className='icon'/>
+                                </Tooltip>
+                                <input className='input-modal' placeholder="Valor atributo" onChange={evt => {exame.valor = evt.target.value;removeOuAtualiza(null)}} value={exame.valor} />
+                                <Tooltip className='tooltip' title={`Remover valor e atributo ${exame.campo}!`}>                               
+                                  <MinusCircleOutlined  className='icon icon-remover' onClick={()=>removeOuAtualiza(exame.id)}/>
+                                </Tooltip>
+                              </div>
+                            ) )
                           }
                           </Col>
                         </Row>
                         : <span><WarningOutlined />Não há dados registrados neste exame!</span>
                         
                       }
+                      <Button type="dashed" onClick={() => adicionar()} block >
+                       + Adicionar mais campos
+                      </Button>
+
+                      <CampoUpload destino='do exame' normFile={normFile} classe="div-arq" />
+                      <>
+                        <Form.Item wrapperCol={{ span: 24 }}>
+                          <Button className="btn-cadastrar" type="primary" htmlType="submit">
+                            Inserir Tipo Exame
+                          </Button>
+                        </Form.Item>
+                        <Form.Item>
+                          <Button htmlType="button" onClick={ onReset } className='botao-form-itens'>
+                            Limpar
+                          </Button>
+                        </Form.Item>
+                      </>
                     </div>
-                    <CamposExame />
-                    <CampoUpload destino='do exame' normFile={normFile} classe="div-arq" />
-                    <>
-                    <Form.Item wrapperCol={{ span: 24 }}>
-                      <Button className="btn-cadastrar" type="primary" htmlType="submit">
-                        Inserir Tipo Exame
-                      </Button>
-                    </Form.Item>
-                    <Form.Item>
-                      <Button htmlType="button" onClick={ onReset } className='botao-form-itens'>
-                        Limpar
-                      </Button>
-                    </Form.Item>
-                  </>
                   </>
                 :
                   <div className="dados-instituicao">
@@ -196,7 +238,7 @@ export default function ModalExame(props) {
                       </Col>
                     </Row>
                     <h3>Dados do exame</h3>
-                    { parametros.length > 1 ?
+                    { parametros.length > 0 ?
                       <Row>
                         <Col span={12} className='dados-parte-um'>
                         {
