@@ -17,11 +17,9 @@ export default class ExameApi {
     return response;
   }
 
-  async editarExame( id, tipoExame, auth ) {
-    const { nomeExame } = tipoExame;
-    const parametro = { nomeExame : nomeExame };
+  async editarExame( id, parametro, auth ) {
     Axios.defaults.headers.Authorization = auth;
-    const response = await Axios.put(`${URI}tipoExame/editar/${id}`,parametro);
+    const response = await Axios.put(`${URI}exame/editar/${id}`,parametro);
     
     return response;
   }

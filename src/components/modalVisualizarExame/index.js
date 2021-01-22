@@ -11,7 +11,7 @@ import { Tooltip } from '@material-ui/core';
 
 export default function ModalExame(props) {
   const [form] = Form.useForm();
-  const {visibleModal, setVisibleModal, idExame, editarVisualizar} = props;
+  const {visibleModal, setVisibleModal, idExame, editarVisualizar, setAtualizaTela, atualizaTela} = props;
   const [ flg, setFlg ] = useState(false);
   const [ exame, setExame ] = useState();
   const [ tipoExame, setTipoExame ] = useState('');
@@ -32,11 +32,7 @@ export default function ModalExame(props) {
         setTipoExame(resp.data.nomeExame);
         setDataExame(resp.data.dataExame);
         setInstituicao(resp.data.dadosInstituicao);
-        
         let filtrado = resp.data.parametros.filter( exame => exame.campo !== '' && exame.campo !== null);
-        console.log("//////////////////")
-        console.log(filtrado)
-        console.log("//////////////////")
         setParametros(filtrado);    
         onReset();
       }
@@ -56,7 +52,7 @@ export default function ModalExame(props) {
 
   const adicionar = () => {
     let arrayAux =  parametros;
-    let campoNovo = { id: `campoNovo${interacao}`, campo: '', valor: '', idItemCampoExame: ''};
+    let campoNovo = { id: 0, campo: '', valor: '', idItemCampoExame: 0, idItemValorExame: 0};
     setInteracao(interacao + 1);
     arrayAux.push(campoNovo);
     setParametros(arrayAux);
@@ -65,45 +61,48 @@ export default function ModalExame(props) {
   };
 
   const removeOuAtualiza = value => {
-    let arrayAux = parametros.filter( exame => exame.id !== value);
-    console.log(arrayAux)
+    let arrayAux = parametros.filter( exame => exame.campo !== value);
     setParametros(arrayAux)
   };
 
   const onFinish = values => {
-    let aux = parametros;
-    values.parametros !== undefined && values.parametros.map( valor => {
-      if(valor.campo !== undefined && valor.valor !== undefined){
-        if(valor.campo !== null && valor.valor !== null)
-          aux.push(valor);
-      }
-      return null;
-    });
-    setParametros(aux);
-    /*
-    exame
-    tipoExame
-    dataExame
-    instituicao
-    parametros
-    instituicoes
-    */
-    console.log(idExame)
-    console.log(dataExame)
-    console.log(tipoExame)
-    console.log(instituicao)
-    console.log(parametros)
-    /*if( values.nomeCidade !== undefined ) {// deu certo
-      const { bairro, cep, cidade, contatosDois, contatoUm, nomeinstituicao, numero } = values;
-      console.log(cidade)
-    }
-   /* const auth = localStorage.getItem("token-gerenciador-security");
-    const tipoExameApi = new TipoExameApi();
-    tipoExameApi.criarTipoExame( values, auth).then( resp => { 
+   const { bairro, cep, cidade, rua, contatosDois, contatoUm, nomeinstituicao, numero } = values;
+   const request = {
+    "dadosInstituicao": {
+      "contatoDTO": {
+        "contatoDois": contatosDois || '',
+        "contatoUm": contatoUm || '',
+        "id": 0
+      },
+      "enderecoDTO": {
+        "bairro": bairro || '',
+        "cep": cep || '',
+        "cidade": cidade || '',
+        "email": '',
+        "emeail": '',
+        "id": 0,
+        "numero": numero || 0,
+        "rua": rua || ''
+      },
+      "id": instituicao.id || 0,
+      "nome": nomeinstituicao || ''
+    },
+    "dataExame": dataExame || '',
+    "linkImage": '',
+    "parametros": parametros,
+    "tipoExame": tipoExame || ''
+  };
+    
+    const auth = localStorage.getItem("token-gerenciador-security");
+    const exameApi = new ExameApi();
+    exameApi.editarExame( idExame, request, auth).then( resp => { 
         if(resp.status === 200){
-          var urlAtual = window.location.href;
-          window.location.href=urlAtual;
-        } } )*/
+          let aux = atualizaTela + 1;
+          setAtualizaTela(aux);
+          setVisibleModal(false)
+          flg && setFlg(!flg);
+          onReset();
+        } } );
   }
 
   const executaAcao = ( aux ) => {
@@ -176,7 +175,7 @@ export default function ModalExame(props) {
                                 <Tooltip className='tooltip' title={`Atributo ${exame.campo}`}>
                                   <InfoCircleOutlined className='icon' />
                                 </Tooltip>
-                                { exame.id >= 0 ?
+                                { exame.id !== 0 ?
                                   <input className='input-modal' placeholder="Campo atributo" value={exame.campo} readOnly/> :
                                   <input className='input-modal' placeholder="Campo atributo" onChange={evt => {exame.campo = evt.target.value;removeOuAtualiza(null)}} value={exame.campo} />
                                 }
@@ -193,7 +192,7 @@ export default function ModalExame(props) {
                                 </Tooltip>
                                 <input className='input-modal' placeholder="Valor atributo" onChange={evt => {exame.valor = evt.target.value;removeOuAtualiza(null)}} value={exame.valor} />
                                 <Tooltip className='tooltip' title={`Remover valor e atributo ${exame.campo}!`}>                               
-                                  <MinusCircleOutlined  className='icon icon-remover' onClick={()=>removeOuAtualiza(exame.id)}/>
+                                  <MinusCircleOutlined  className='icon icon-remover' onClick={()=>removeOuAtualiza(exame.campo)}/>
                                 </Tooltip>
                               </div>
                             ) )

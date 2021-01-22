@@ -35,6 +35,7 @@ export default function ModalAddTipoExame(props) {
           let aux = atualizaTela + 1;
           setAtualizaTela(aux);
           setVisibleAdd(false);
+          flg && setFlg(!flg);
           onReset();
         } } )
   }
