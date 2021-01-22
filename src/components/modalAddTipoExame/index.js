@@ -10,11 +10,14 @@ export default function ModalAddTipoExame(props) {
   const {visibleAdd, setVisibleAdd, setAtualizaTela, atualizaTela } = props;
   const [ flg, setFlg ] = useState(false);
 
+  useEffect(()=>{
+    onReset();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[atualizaTela]);
+
   const onReset = () => {
     form.resetFields();
   };
-
-  useEffect(() => onReset, [atualizaTela] );
 
   const normFile = e => {
     console.log('Upload event:', e);
@@ -32,14 +35,15 @@ export default function ModalAddTipoExame(props) {
           let aux = atualizaTela + 1;
           setAtualizaTela(aux);
           setVisibleAdd(false);
+          onReset();
         } } )
   }
 
   return (
     <> 
       
-      <Modal title="Dados Tipo Exame" visible={visibleAdd} onOk={() => setVisibleAdd(false)}
-        onCancel={() => setVisibleAdd(false)} className='container-modal-editar' >
+      <Modal title="Dados Tipo Exame" visible={visibleAdd} onOk={() => {setVisibleAdd(false); onReset(); flg && setFlg(!flg)}}
+        onCancel={() => {setVisibleAdd(false); onReset(); flg && setFlg(!flg)}} className='container-modal-editar' >
           <>
             <Form form={ form } name="validate_other" onFinish={onFinish} initialValues='' >
               <Row className='espacamento-top diminuir-botton' >

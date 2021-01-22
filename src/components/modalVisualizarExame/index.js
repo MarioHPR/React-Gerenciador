@@ -32,13 +32,17 @@ export default function ModalExame(props) {
         setTipoExame(resp.data.nomeExame);
         setDataExame(resp.data.dataExame);
         setInstituicao(resp.data.dadosInstituicao);
-        let filtrado = resp.data.parametros.filter( exame => exame.campo !== '');
-        setParametros(filtrado);
+        
+        let filtrado = resp.data.parametros.filter( exame => exame.campo !== '' && exame.campo !== null);
+        console.log("//////////////////")
+        console.log(filtrado)
+        console.log("//////////////////")
+        setParametros(filtrado);    
         onReset();
       }
     } );
 // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[idExame, visibleModal] );
+  },[ idExame ] );
 
   const onReset = () => form.resetFields();
 
@@ -69,8 +73,10 @@ export default function ModalExame(props) {
   const onFinish = values => {
     let aux = parametros;
     values.parametros !== undefined && values.parametros.map( valor => {
-      if(valor.campo !== undefined && valor.valor !== undefined)
-        aux.push(valor);
+      if(valor.campo !== undefined && valor.valor !== undefined){
+        if(valor.campo !== null && valor.valor !== null)
+          aux.push(valor);
+      }
       return null;
     });
     setParametros(aux);
@@ -114,8 +120,8 @@ export default function ModalExame(props) {
   
   return (
     <> 
-      <Modal title="Visualização dos dados do exame" visible={visibleModal} onOk={() => setVisibleModal(false)}
-        onCancel={() => setVisibleModal(false)} className='container-modal-editar' >
+      <Modal title="Visualização dos dados do exame" visible={visibleModal} onOk={() => {setVisibleModal(false); onReset(); flg && setFlg(!flg)}}
+        onCancel={() => {setVisibleModal(false);onReset(); flg && setFlg(!flg)}} className='container-modal-editar' >
           <>{ exame && 
             <Form form={ form } name="validate_other" onFinish={onFinish} initialValues='' >
               <Row className='espacamento-top ' >
@@ -148,14 +154,10 @@ export default function ModalExame(props) {
                         <Row>
                           <Col span={12} className='dados-parte-um'>
                             <p>Instituição: {instituicao.nome}</p>
-                            <p>Cidade: {instituicao.enderecoDTO.cidade}</p>
-                            <p>Rua: {instituicao.enderecoDTO.rua}</p>
                             <p>Contato 1: {instituicao.contatoDTO.contatoUm}</p>
                           </Col>
                           <Col span={12} className='dados-parte-dois'>
-                            <p>Cep: {instituicao.enderecoDTO.cep}</p>
-                            <p>Bairro: {instituicao.enderecoDTO.bairro}</p>
-                            <p>N°: {instituicao.enderecoDTO.numero}</p>
+                            <p>Cidade: {instituicao.enderecoDTO.cidade}</p>
                             <p>Contato 2: {instituicao.contatoDTO.contatoDois}</p>
                           </Col>
                         </Row>
@@ -165,7 +167,7 @@ export default function ModalExame(props) {
                         <FormularioDadosBasicos flg={flg} setFlg={setFlg} />
                       </div>
                       <h3>Dados do exame</h3>
-                      { parametros ?
+                      { parametros.length > 0 ?
                         <Row>
                           <Col span={12} className='dados-parte-um'>
                           {
@@ -226,14 +228,10 @@ export default function ModalExame(props) {
                     <Row>
                       <Col span={12} className='dados-parte-um'>
                         <p>Instituição: {exame.dadosInstituicao.nome}</p>
-                        <p>Cidade: {exame.dadosInstituicao.enderecoDTO.cidade}</p>
-                        <p>Rua: {exame.dadosInstituicao.enderecoDTO.rua}</p>
                         <p>Contato 1: {exame.dadosInstituicao.contatoDTO.contatoUm}</p>
                       </Col>
                       <Col span={12} className='dados-parte-dois'>
-                        <p>Cep: {exame.dadosInstituicao.enderecoDTO.cep}</p>
-                        <p>Bairro: {exame.dadosInstituicao.enderecoDTO.bairro}</p>
-                        <p>N°: {exame.dadosInstituicao.enderecoDTO.numero}</p>
+                        <p>Cidade: {exame.dadosInstituicao.enderecoDTO.cidade}</p>
                         <p>Contato 2: {exame.dadosInstituicao.contatoDTO.contatoDois}</p>
                       </Col>
                     </Row>
