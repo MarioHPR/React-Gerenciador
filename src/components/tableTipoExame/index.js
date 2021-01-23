@@ -39,8 +39,8 @@ export default function TableTipoExame( props ) {
             <Popconfirm title="Tem certeza que deseja deletar?" onConfirm={() => handleDelete(record.key)}>
               <a href='#/' className="bt-operacao">Delete</a>
             </Popconfirm>
-            <a href='#/' onClick={() => handleEditar(record.key, 1)} className="bt-operacao">editar</a>
-            <Link to={`#/`} onClick={() => handleEditar(record.key, 0)} className="bt-operacao">Visualizar</Link>
+            <a href='#/' onClick={() => handleEditarVisualizar(record.key, 1)} className="bt-operacao">editar</a>
+            <Link to={`#/`} onClick={() => handleEditarVisualizar(record.key, 0)} className="bt-operacao">Visualizar</Link>
           </div>
         ) : null,
     },
@@ -58,7 +58,7 @@ export default function TableTipoExame( props ) {
     } );
   };
 
-  const handleEditar = (evt, flg) => {
+  const handleEditarVisualizar = (evt, flg) => {
     //setIdExame(evt);
     const exameApi = new ExameApi();
     exameApi.buscarExamePorId( evt, auth).then( resp => {
@@ -89,7 +89,7 @@ export default function TableTipoExame( props ) {
       <div className='container-lista-consulta'>
         <span className='message'>{message}</span>
         <a href='#/' onClick={() => {setVisible(true)}} className='bt-geral bt-cadastro-consulta' >
-          Adicionar novo Tipo
+          Adicionar novo exame
         </a>
         {aux !== [] && <Table columns={columns} dataSource={aux} pagination={{ pageSize: 10 }}/>}
         <ModalAddTipoExame atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} visibleAdd={visible} setVisibleAdd={setVisible}/>

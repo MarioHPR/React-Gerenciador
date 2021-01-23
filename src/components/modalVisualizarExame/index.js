@@ -38,7 +38,7 @@ export default function ModalExame(props) {
       }
     } );
 // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[ idExame ] );
+  },[ idExame, atualizaTela ] );
 
   const onReset = () => form.resetFields();
 
@@ -66,11 +66,14 @@ export default function ModalExame(props) {
   };
 
   const onFinish = values => {
-   const { bairro, cep, cidade, rua, contatosDois, contatoUm, nomeinstituicao, numero } = values;
+   const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao, numero } = values;
+   console.log(values)
+   console.log(flg)
+   console.log(contatoUm)
    const request = {
     "dadosInstituicao": {
       "contatoDTO": {
-        "contatoDois": contatosDois || '',
+        "contatoDois": contatoDois || '',
         "contatoUm": contatoUm || '',
         "id": 0
       },
@@ -84,7 +87,7 @@ export default function ModalExame(props) {
         "numero": numero || 0,
         "rua": rua || ''
       },
-      "id": instituicao.id || 0,
+      "id": (bairro && flg) ? 0 : instituicao.id || 0,
       "nome": nomeinstituicao || ''
     },
     "dataExame": dataExame || '',
