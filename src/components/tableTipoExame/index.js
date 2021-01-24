@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
 import ExameApi from '../../models/exameApi';
-import { ModalAddTipoExame, ModalExame } from '../../components';
+import { ModalAddExame, ModalExame } from '../../components';
 
 export default function TableTipoExame( props ) {
   const exameApi = new ExameApi();
@@ -92,7 +92,7 @@ export default function TableTipoExame( props ) {
           Adicionar novo exame
         </a>
         {aux !== [] && <Table columns={columns} dataSource={aux} pagination={{ pageSize: 10 }}/>}
-        <ModalAddTipoExame atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} visibleAdd={visible} setVisibleAdd={setVisible}/>
+        <ModalAddExame atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} visibleAdd={visible} setVisibleAdd={setVisible}/>
         <ModalExame atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela}  idExame={idExame} visibleModal={visibleModalGeral} setVisibleModal={setVisibleModalGeral} editarVisualizar={flgEditarVisualizar} />
       </div>
   )

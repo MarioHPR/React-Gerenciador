@@ -7,6 +7,7 @@ import { Link } from '@material-ui/core';
 import {Form} from 'antd';
 export default function SelectTipoExameEspecial ( props ) {
 
+  const { atualizaTela, setItensExame, itensExame, setItensDoExame, setNomeExame } = props;
   const { Option } = Select;
   const [ tipoExame, setTipoExame ] = useState([]);
   const [name, setName] = useState('');
@@ -17,8 +18,10 @@ export default function SelectTipoExameEspecial ( props ) {
     tipoExameApi.buscarTipoExame(localStorage.getItem("token-gerenciador-security")).then( resp => {
       resp.map( tipo => aux.push(tipo.nomeExame) );
       setTipoExame(aux);
+      setItensExame(resp);
     } );
-  },[] );
+// eslint-disable-next-line react-hooks/exhaustive-deps
+  },[atualizaTela] );
 
   const onNameChange = event => {
     setName(event.target.value);
@@ -58,6 +61,19 @@ export default function SelectTipoExameEspecial ( props ) {
               </div>
             </div>
           )}
+          onSelect={(evt)=>{
+            let auxItens = [];
+            itensExame.find(item => {
+              if(item.nomeExame === evt){
+                auxItens = item.itensCampo.filter( i => i.campo !== '');
+              }
+              return 0;
+            });
+            console.log(auxItens)
+            setItensDoExame(auxItens || undefined);
+            setNomeExame(evt || '');
+          }
+        }
         >
           { tipoExame && tipoExame.map( item => ( <Option key={item}>{item}</Option> ) ) }
         </Select>

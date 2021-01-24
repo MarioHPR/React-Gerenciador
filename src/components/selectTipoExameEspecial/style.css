@@ -33,4 +33,7 @@
 .select-tipo-exame {
   min-width: 250px;
   max-width: 100%;
+  font-size: 16px;
+  font-family: 'Times New Roman', Times, serif;
+  text-transform: uppercase;
 }
