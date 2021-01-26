@@ -134,7 +134,7 @@ export default function ModalExame(props) {
                 <Col span={12}>
                   <label>Data: </label>
                   {
-                    editarVisualizar === 1 ? <input className='input-modal margin-bottom' type='date' value={dataExame} onChange={ evt => setDataExame(evt.target.value)}/> 
+                    editarVisualizar === 1 ? <input onClick={evt => executaAcao(evt.target.value)}className='input-modal margin-bottom' type='date' value={dataExame} onChange={ evt => setDataExame(evt.target.value)}/> 
                     : <input className='input-modal margin-bottom' type='date' value={dataExame} onChange={ evt => setDataExame(evt.target.value)} readOnly/>
                   }
                 </Col>
@@ -143,7 +143,7 @@ export default function ModalExame(props) {
                 instituicao && editarVisualizar === 1 ?
                   <>
                     <div className="dados-instituicao">
-                      <select className='select-instituicoes' placeholder="Selecione uma instituição!" disabled={flg} onClick={evt => executaAcao(evt.target.value)}>
+                      <select className='select-instituicoes' placeholder="Selecione uma instituição!" disabled={flg} >
                         <option key={`odefault${1}`} value={0}>+ adicionar nova instituição</option>
                         {
                           instituicoes.length > 0 && instituicoes.map( inst => {

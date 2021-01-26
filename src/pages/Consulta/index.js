@@ -7,10 +7,11 @@ import ConsultaApi from '../../models/consultaApi';
 
 export default function Consulta() {
   const [ consultas, setConsultas ] = useState([]);
+  const [ atualizaTela, setAtualizaTela ] = useState(0);
   useEffect(()=>{
     const consultaApi = new ConsultaApi();
     consultaApi.buscarConsultas(localStorage.getItem("token-gerenciador-security")).then( resp => setConsultas(resp) );
-  },[setConsultas]);
+  },[setConsultas, atualizaTela]);
 
   return (
     <div className="pagina-padrao">
@@ -21,7 +22,7 @@ export default function Consulta() {
             <h2 className='titulo-consulta'>Consultas:</h2>
           </Col>
           <Col xs={{span:24}}>
-              {consultas !== [] && <TableDados consultas={consultas}/>}
+              {consultas !== [] && <TableDados  atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} consultas={consultas}/>}
           </Col>
         </Row>
       </div>

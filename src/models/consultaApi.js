@@ -5,14 +5,8 @@ const URI = `http://localhost:8080/api/`;
 export default class ConsultaApi {
 
   async criarConsulta( consulta, auth ) {
-    const { dataConsulta, diagnostico, nomeMedico, prescricao, idInstituicao, linkImage } = consulta;
-    const parametro = {
-                        dataConsulta : dataConsulta, diagnostico : diagnostico,
-                        nomeMedico : nomeMedico, prescricao : prescricao,
-                        idInstituicao : idInstituicao, linkImage : linkImage
-                      };
     Axios.defaults.headers.Authorization = auth;
-    const response = await Axios.post( `${URI}consulta/salvar/`, parametro );
+    const response = await Axios.post( `${URI}consulta/salvar/`, consulta );
     return response;
   }
 

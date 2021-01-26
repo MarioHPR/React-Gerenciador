@@ -3,15 +3,16 @@ import { Table, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
 import './style.css';
 import ConsultaApi from '../../models/consultaApi';
-import { ModalVisualizacaoConsulta, ModalEditarConsulta } from '../../components';
+import { ModalVisualizacaoConsulta, ModalEditarConsulta, ModalAddConsulta } from '../../components';
 
 export default function TableDados( props ) {
-  const { consultas } = props;
+  const { consultas, atualizaTela, setAtualizaTela } = props;
   const [ aux, setAux ] = useState([]);
   const [ message, setMessage ] = useState('');
   const consultaApi = new ConsultaApi();
   const [ visible, setVisible ] = useState(false);
   const [ visibleEdit, setVisibleEdit ] = useState(false);
+  const [ visibleAdd, setVisibleAdd ] = useState(false);
   const [ idConsulta, setIdConsulta ] = useState();
   const auth = localStorage.getItem("token-gerenciador-security");
 
@@ -38,9 +39,7 @@ export default function TableDados( props ) {
             <Popconfirm title="Tem certeza que deseja deletar?" onConfirm={() => handleDelete(record.key)}>
               <a href='#/' className="bt-operacao">Delete</a>
             </Popconfirm>
-            <Popconfirm title="Tem certeza que deseja Editar?" onConfirm={() => {setVisibleEdit(true); setIdConsulta(record.key);}}>
-              <a href='#/' className="bt-operacao">editar</a>
-            </Popconfirm>
+            <a href='#/' onClick={() => {setVisibleEdit(true); setIdConsulta(record.key);}} className="bt-operacao">editar</a>
             <a href='#/' onClick={() => {setVisible(true); setIdConsulta(record.key);}} className="bt-operacao">Visualizar</a>
           </div>
         ) : null,
@@ -70,17 +69,18 @@ export default function TableDados( props ) {
       })
     );
     setAux(a);
-  },[consultas]);
+  },[consultas, atualizaTela]);
   
   return (
       <div className='container-lista-consulta'>
         <span className='message'>{message}</span>
-        <Link to={'/cadastroConsulta'} className='bt-geral bt-cadastro-consulta' >
+        <a  href='#/' onClick={() => {setVisibleAdd(true)}} className='bt-geral bt-cadastro-consulta' >
           Adicionar Consulta
-        </Link>
+        </a>
         {aux !== [] && <Table columns={columns} dataSource={aux} pagination={{ pageSize: 10 }}/>}
         <ModalVisualizacaoConsulta idConsulta={idConsulta} visible={visible} setVisible={setVisible}/>
         <ModalEditarConsulta idConsulta={idConsulta} visibleEdit={visibleEdit} setVisibleEdit={setVisibleEdit} />
+        <ModalAddConsulta atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} visibleAdd={visibleAdd} setVisibleAdd={setVisibleAdd} />
       </div>
   )
 }
