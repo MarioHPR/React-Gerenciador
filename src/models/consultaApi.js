@@ -23,14 +23,9 @@ export default class ConsultaApi {
   }
 
   async editarConsulta( id, consulta, auth ) {
-    const { dataConsulta, diagnostico, nomeMedico, prescricao, idInstituicao, linkImage } = consulta;
-    const parametro = {
-      dataConsulta : dataConsulta, diagnostico : diagnostico,
-      nomeMedico : nomeMedico, prescricao : prescricao,
-      idInstituicao : idInstituicao, linkImage : linkImage
-    };
+
     Axios.defaults.headers.Authorization = auth;
-    const response = await Axios.put(`${URI}consulta/editar/${id}`,parametro);
+    const response = await Axios.put(`${URI}consulta/editar/${id}`,consulta);
     
     return response;
   }

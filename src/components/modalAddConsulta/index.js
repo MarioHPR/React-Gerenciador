@@ -19,7 +19,6 @@ export default function ModalAddConsulta(props) {
     const auth = localStorage.getItem("token-gerenciador-security");
     const instituicaoApi = new InstituicaoApi();
     instituicaoApi.buscarInstituicoes(auth).then( resp => setInstituicoes(resp) );
-    console.log(atualizaTela)
 // eslint-disable-next-line react-hooks/exhaustive-deps
   },[atualizaTela] );
 
@@ -34,8 +33,9 @@ export default function ModalAddConsulta(props) {
   };
 
   const onFinish = values => {
+    console.log(values)
    const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao, numero } = values;
-    const { diagnostico, prescricao, nomeMedico } = values;
+    const { diagnostico, prescricaoMedica, nomeMedico } = values;
    const request = {
     "dadosInstituicao": {
       "contatoDTO": {
@@ -59,7 +59,7 @@ export default function ModalAddConsulta(props) {
     "dataConsulta": dataConsulta || '',
     "linkImage": '',
     "diagnostico": diagnostico || '',
-    "prescricao": prescricao || '',
+    "prescricao": prescricaoMedica || '',
     "nomeMedico": nomeMedico || ''
   };
     

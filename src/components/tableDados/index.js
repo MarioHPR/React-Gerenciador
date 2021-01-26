@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Popconfirm } from 'antd';
-import { Link } from 'react-router-dom';
 import './style.css';
 import ConsultaApi from '../../models/consultaApi';
-import { ModalVisualizacaoConsulta, ModalEditarConsulta, ModalAddConsulta } from '../../components';
+import { ModalAddConsulta, ModalVisualizarEditarConsulta } from '../../components';
 
 export default function TableDados( props ) {
   const { consultas, atualizaTela, setAtualizaTela } = props;
   const [ aux, setAux ] = useState([]);
   const [ message, setMessage ] = useState('');
   const consultaApi = new ConsultaApi();
-  const [ visible, setVisible ] = useState(false);
   const [ visibleEdit, setVisibleEdit ] = useState(false);
   const [ visibleAdd, setVisibleAdd ] = useState(false);
   const [ idConsulta, setIdConsulta ] = useState();
+  const [ flgEdit, setFlgEdit ] = useState(0);
   const auth = localStorage.getItem("token-gerenciador-security");
 
   const columns = [
@@ -39,8 +38,8 @@ export default function TableDados( props ) {
             <Popconfirm title="Tem certeza que deseja deletar?" onConfirm={() => handleDelete(record.key)}>
               <a href='#/' className="bt-operacao">Delete</a>
             </Popconfirm>
-            <a href='#/' onClick={() => {setVisibleEdit(true); setIdConsulta(record.key);}} className="bt-operacao">editar</a>
-            <a href='#/' onClick={() => {setVisible(true); setIdConsulta(record.key);}} className="bt-operacao">Visualizar</a>
+            <a href='#/' onClick={() => {setVisibleEdit(true); setIdConsulta(record.key); setFlgEdit(1);}} className="bt-operacao">editar</a>
+            <a href='#/' onClick={() => {setVisibleEdit(true); setIdConsulta(record.key); setFlgEdit(0);}} className="bt-operacao">Visualizar</a>
           </div>
         ) : null,
     },
@@ -65,7 +64,7 @@ export default function TableDados( props ) {
         "key": consulta.id,
         "diagnostico": `${consulta.diagnostico}`,
         "nomeMedico": `${consulta.nomeMedico}`,
-        "dataConsulta": `${new Date(consulta.dataConsulta).toLocaleDateString()}`
+        "dataConsulta": `${new Date(consulta.dataConsulta).toLocaleDateString('pt-BR', {timeZone: 'UTC'})}`|| '--'
       })
     );
     setAux(a);
@@ -78,9 +77,8 @@ export default function TableDados( props ) {
           Adicionar Consulta
         </a>
         {aux !== [] && <Table columns={columns} dataSource={aux} pagination={{ pageSize: 10 }}/>}
-        <ModalVisualizacaoConsulta idConsulta={idConsulta} visible={visible} setVisible={setVisible}/>
-        <ModalEditarConsulta idConsulta={idConsulta} visibleEdit={visibleEdit} setVisibleEdit={setVisibleEdit} />
         <ModalAddConsulta atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} visibleAdd={visibleAdd} setVisibleAdd={setVisibleAdd} />
+        <ModalVisualizarEditarConsulta atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} idConsulta={idConsulta} visibleEdit={visibleEdit} setVisibleEdit={setVisibleEdit} flgEdit={flgEdit} />
       </div>
   )
 }

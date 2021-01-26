@@ -15,6 +15,7 @@ import TableTipoExame from './tableTipoExame';
 import ModalVisualizacaoConsulta from './modelConsulta';
 import ModalEditarConsulta from './modalEditarConsulta';
 import ModalAddConsulta from './modalAddConsulta';
+import ModalVisualizarEditarConsulta from './modalVisualizarEditarConsulta';
 import ModalAddTipoExame from './modalAddTipoExame';
 import ModalAddExame from './modalAddExame';
 import ModalExame from './modalVisualizarExame';
@@ -41,6 +42,7 @@ export {  Footer,
           ModalVisualizacaoConsulta,
           ModalEditarConsulta,
           ModalAddConsulta,
+          ModalVisualizarEditarConsulta,
           ModalAddTipoExame,
           ModalAddExame,
           ModalExame,
