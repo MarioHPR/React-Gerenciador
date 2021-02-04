@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Row, Form, Button, Col } from 'antd';
-import { CampoUpload } from '..';
 import FormularioDadosBasicos from '../formDadosBasicos';
 import ConsultaApi from '../../models/consultaApi';
 import InstituicaoApi from '../../models/instituicaoApi';
+import ArquivoApi from '../../models/arquivoApi';
 import './style.css';
 import TextArea from 'antd/lib/input/TextArea';
 
@@ -14,7 +14,7 @@ export default function ModalAddConsulta(props) {
   const [ dataConsulta, setDataConsulta ] = useState('');
   const [ instituicao, setInstituicao ] = useState();
   const [ instituicoes, setInstituicoes ] = useState([]);
-
+  const [ doc, setDoc ] = useState(0);
   useEffect(()=>{
     const auth = localStorage.getItem("token-gerenciador-security");
     const instituicaoApi = new InstituicaoApi();
@@ -24,55 +24,51 @@ export default function ModalAddConsulta(props) {
 
   const onReset = () => form.resetFields();
 
-  const normFile = e => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
   const onFinish = values => {
-    console.log(values)
-   const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao, numero } = values;
+
+    const auth = localStorage.getItem("token-gerenciador-security");
+    const arquivoApi = new ArquivoApi();
+    arquivoApi.uploadArquivo(doc, auth).then( resp =>{
+      if(resp.status === 200){
+        setDoc(resp.data);
+      }
+    });
+    const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao, numero } = values;
     const { diagnostico, prescricaoMedica, nomeMedico } = values;
-   const request = {
-    "dadosInstituicao": {
-      "contatoDTO": {
-        "contatoDois": contatoDois || '',
-        "contatoUm": contatoUm || '',
-        "id": 0
+    const request = {
+      "dadosInstituicao": {
+        "contatoDTO": {
+          "contatoDois": contatoDois || '',
+          "contatoUm": contatoUm || '',
+          "id": 0
+        },
+        "enderecoDTO": {
+          "bairro": bairro || '',
+          "cep": cep || '',
+          "cidade": cidade || '',
+          "id": 0,
+          "numero": numero || 0,
+          "rua": rua || ''
+        },
+        "id": (bairro && flg) ? 0 : instituicao.id || 0,
+        "nome": nomeinstituicao || ''
       },
-      "enderecoDTO": {
-        "bairro": bairro || '',
-        "cep": cep || '',
-        "cidade": cidade || '',
-        "email": '',
-        "emeail": '',
-        "id": 0,
-        "numero": numero || 0,
-        "rua": rua || ''
-      },
-      "id": (bairro && flg) ? 0 : instituicao.id || 0,
-      "nome": nomeinstituicao || ''
-    },
-    "dataConsulta": dataConsulta || '',
-    "linkImage": '',
-    "diagnostico": diagnostico || '',
-    "prescricao": prescricaoMedica || '',
-    "nomeMedico": nomeMedico || ''
-  };
+      "dataConsulta": dataConsulta || '',
+      "diagnostico": diagnostico || '',
+      "prescricao": prescricaoMedica || '',
+      "nomeMedico": nomeMedico || '',
+      "idArquivo": doc || 0
+    };
     
-  const auth = localStorage.getItem("token-gerenciador-security");
-  const consultaApi = new ConsultaApi();
-  consultaApi.criarConsulta( request, auth ).then( resp => { 
+    const consultaApi = new ConsultaApi();
+    consultaApi.criarConsulta( request, auth ).then( resp => { 
       if(resp.status === 200){
         let aux = atualizaTela + 1;
         setAtualizaTela(aux);
         setVisibleAdd(false)
         flg && setFlg(!flg);
         onReset();
-      } } );
+    } } );
   }
 
   const executaAcao = ( aux ) => {
@@ -148,7 +144,7 @@ export default function ModalAddConsulta(props) {
                     <TextArea rows={5} />
                   </Form.Item>
 
-                  <CampoUpload destino='da consulta' normFile={normFile} classe="div-arq" />
+                  <input type='file' onChange={evt => setDoc(evt.target.files[0])} />
                   <>
                     <Row>
                       <Col xs={{span:24}} md={{span:12}}>
@@ -167,10 +163,10 @@ export default function ModalAddConsulta(props) {
                       </Col>
                     </Row>
                   </>
-                </div>
+                 </div>
               </>
             </Form>
-          }</>
+          }</> 
       </Modal>
     </>
   );

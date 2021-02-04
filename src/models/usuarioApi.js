@@ -1,6 +1,7 @@
 import Axios from 'axios';
 
 const URI = `http://localhost:8080/api/`;
+const URI_HEROKU = 'https:/back-geranciador-exames.herokuapp.com/';
 
 export default class UsuarioApi {
 
@@ -9,7 +10,8 @@ export default class UsuarioApi {
     const { nome, cpf, email, dataNasc, senha } = usuario;
     const parametro =  { cpf: cpf, dataNascimento: dataNasc, nome: nome, email: email, senha: `${senha}` };
 
-    const response = await Axios.post( `${URI}usuario/salvar`, parametro );
+    //const response = await Axios.post( `${URI}usuario/salvar`, parametro );
+    const response = await Axios.post( `${URI_HEROKU}usuario/salvar`, parametro );
     return response;
   }
 
@@ -21,7 +23,8 @@ export default class UsuarioApi {
   }
 
   async realizarLogin(email, senha) {
-    const response = await Axios.post(`http://localhost:8080/login`,
+    //const response = await Axios.post(`${URI}login`,
+    const response = await Axios.post(`${URI_HEROKU}login`,
       { email: email, senha: senha }
     );
     return response;

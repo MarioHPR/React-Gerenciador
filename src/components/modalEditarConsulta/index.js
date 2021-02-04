@@ -8,7 +8,7 @@ import ContatoApi from '../../models/contatoApi';
 import './style.css';
 
 export default function ModalEditarConsulta(props) {
-  const [form] = Form.useForm();
+ /* const [form] = Form.useForm();
   const {visibleEdit, setVisibleEdit} = props;
   const { idConsulta } = props;
   const [ consulta, setConsulta ] = useState();
@@ -119,5 +119,5 @@ export default function ModalEditarConsulta(props) {
         }
       </Modal>
     </>
-  );
+  );*/
 };

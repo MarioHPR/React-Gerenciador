@@ -8,7 +8,7 @@ import { CampoBasicoModal } from '../../components';
 import './style.css';
 
 export default function ModalVisualizacaoConsulta(props) {
-  const {visible, setVisible} = props;
+  /*const {visible, setVisible} = props;
   const { idConsulta } = props;
   const [ consulta, setConsulta ] = useState();
   const [ instituicao, setInstituicao ] = useState();
@@ -85,5 +85,5 @@ export default function ModalVisualizacaoConsulta(props) {
         }
       </Modal>
     </>
-  );
+  );*/
 };

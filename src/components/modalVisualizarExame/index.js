@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Row, Form, Button, Col } from 'antd';
-import { CampoUpload } from '..';
 import FormularioDadosBasicos from '../formDadosBasicos';
 import ExameApi from '../../models/exameApi';
 import InstituicaoApi from '../../models/instituicaoApi';
+import ArquivoApi from '../../models/arquivoApi';
 import './style.css';
 import { WarningOutlined } from '@material-ui/icons';
 import { MinusCircleOutlined, InfoCircleOutlined } from '@ant-design/icons';
@@ -20,6 +20,7 @@ export default function ModalExame(props) {
   const [ parametros, setParametros ] = useState([]);
   const [ instituicoes, setInstituicoes ] = useState([]);
   const [ interacao, setInteracao ] = useState(0);
+  const [ doc, setDoc ] = useState(0);
 
   useEffect(()=>{
     const auth = localStorage.getItem("token-gerenciador-security");
@@ -42,14 +43,6 @@ export default function ModalExame(props) {
 
   const onReset = () => form.resetFields();
 
-  const normFile = e => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
   const adicionar = () => {
     let arrayAux =  parametros;
     let campoNovo = { id: 0, campo: '', valor: '', idItemCampoExame: 0, idItemValorExame: 0};
@@ -66,37 +59,41 @@ export default function ModalExame(props) {
   };
 
   const onFinish = values => {
-   const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao, numero } = values;
-   console.log(values)
-   console.log(flg)
-   console.log(contatoUm)
-   const request = {
-    "dadosInstituicao": {
-      "contatoDTO": {
-        "contatoDois": contatoDois || '',
-        "contatoUm": contatoUm || '',
-        "id": 0
+      const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao, numero } = values;
+      const auth = localStorage.getItem("token-gerenciador-security");
+
+      const arquivoApi = new ArquivoApi();
+      arquivoApi.uploadArquivo(doc, auth).then( resp =>{
+        if(resp.status === 200){
+          setDoc(resp.data);
+        }
+      });
+      const request = {
+      "dadosInstituicao": {
+        "contatoDTO": {
+          "contatoDois": contatoDois || '',
+          "contatoUm": contatoUm || '',
+          "id": 0
+        },
+        "enderecoDTO": {
+          "bairro": bairro || '',
+          "cep": cep || '',
+          "cidade": cidade || '',
+          "email": '',
+          "emeail": '',
+          "id": 0,
+          "numero": numero || 0,
+          "rua": rua || ''
+        },
+        "id": (bairro && flg) ? 0 : instituicao.id || 0,
+        "nome": nomeinstituicao || ''
       },
-      "enderecoDTO": {
-        "bairro": bairro || '',
-        "cep": cep || '',
-        "cidade": cidade || '',
-        "email": '',
-        "emeail": '',
-        "id": 0,
-        "numero": numero || 0,
-        "rua": rua || ''
-      },
-      "id": (bairro && flg) ? 0 : instituicao.id || 0,
-      "nome": nomeinstituicao || ''
-    },
-    "dataExame": dataExame || '',
-    "linkImage": '',
-    "parametros": parametros,
-    "tipoExame": tipoExame || ''
-  };
-    
-    const auth = localStorage.getItem("token-gerenciador-security");
+      "dataExame": dataExame || '',
+      "idArquivo": doc || 0,
+      "parametros": parametros,
+      "tipoExame": tipoExame || ''
+    };
+
     const exameApi = new ExameApi();
     exameApi.editarExame( idExame, request, auth).then( resp => { 
         if(resp.status === 200){
@@ -208,8 +205,7 @@ export default function ModalExame(props) {
                       <Button type="dashed" onClick={() => adicionar()} block >
                        + Adicionar mais campos
                       </Button>
-
-                      <CampoUpload destino='do exame' normFile={normFile} classe="div-arq" />
+                      <input type='file' onChange={evt => setDoc(evt.target.files[0])} />
                       <>
                         <Form.Item wrapperCol={{ span: 24 }}>
                           <Button className="btn-cadastrar" type="primary" htmlType="submit">

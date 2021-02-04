@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Row, Form, Button, Col } from 'antd';
-import { CampoUpload } from '..';
 import FormularioDadosBasicos from '../formDadosBasicos';
 import ConsultaApi from '../../models/consultaApi';
+import ArquivoApi from '../../models/arquivoApi';
 import InstituicaoApi from '../../models/instituicaoApi';
 import './style.css';
 import TextArea from 'antd/lib/input/TextArea';
@@ -15,6 +15,7 @@ export default function ModalVisualizarEditarConsulta(props) {
   const [ instituicao, setInstituicao ] = useState();
   const [ instituicoes, setInstituicoes ] = useState([]);
   const [ atualizaInterna, setAtualizaInterna ] = useState(0);
+  const [ doc, setDoc ] = useState(0);
 
   useEffect(()=>{
     const auth = localStorage.getItem("token-gerenciador-security");
@@ -26,9 +27,20 @@ export default function ModalVisualizarEditarConsulta(props) {
   useEffect(()=>{
     const auth = localStorage.getItem("token-gerenciador-security");
     const consultaApi = new ConsultaApi();
+    const arquivoApi = new ArquivoApi();
     consultaApi.buscarConsultaPorId( idConsulta, auth).then( resp => {
       setConsulta(resp.data);
       setInstituicao(resp.data.dadosInstituicao);
+      if(resp.data.idArquivo > 0){
+        arquivoApi.downloadArquivo(resp.data.idArquivo, auth).then( resposta => {
+          console.log("%%%%%%%%%%%%%%%%%")
+          console.log("%%%%%%%%%%%%%%%%%")
+          console.log(resposta)
+          console.log("%%%%%%%%%%%%%%%%%")
+          console.log("%%%%%%%%%%%%%%%%%")
+          setDoc(resposta)
+        })
+      }
       onReset();
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -38,18 +50,17 @@ export default function ModalVisualizarEditarConsulta(props) {
     form.resetFields();
   };
 
-  const normFile = e => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
   const onFinish = values => {
     const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao, numero } = values;
     const { diagnostico, prescricao, nomeMedico, dataConsulta } = consulta;
     const idinstituicao = instituicao.id;
+    const auth = localStorage.getItem("token-gerenciador-security");
+    const arquivoApi = new ArquivoApi();
+    arquivoApi.uploadArquivo(doc, auth).then( resp =>{
+      if(resp.status === 200){
+        setDoc(resp.data);
+      }
+    });
     const request = {
       "dadosInstituicao": {
         "contatoDTO": {
@@ -61,8 +72,6 @@ export default function ModalVisualizarEditarConsulta(props) {
           "bairro": bairro || '',
           "cep": cep || '',
           "cidade": cidade || '',
-          "email": '',
-          "emeail": '',
           "id": 0,
           "numero": numero || 0,
           "rua": rua || ''
@@ -71,12 +80,12 @@ export default function ModalVisualizarEditarConsulta(props) {
         "nome": nomeinstituicao || ''
       },
       "dataConsulta": dataConsulta || '',
-      "linkImage": '',
+      "idArquivo": doc || 0,
       "diagnostico": diagnostico || '',
       "prescricao": prescricao || '',
       "nomeMedico": nomeMedico || ''
     };
-  const auth = localStorage.getItem("token-gerenciador-security");
+  
   const consultaApi = new ConsultaApi();
   consultaApi.editarConsulta( idConsulta, request, auth ).then( resp => { 
       if(resp.status === 200){
@@ -164,7 +173,8 @@ export default function ModalVisualizarEditarConsulta(props) {
                     <TextArea rows={5}  onChange={evt => consulta.prescricao = evt.target.value} defaultValue={consulta.prescricao} readOnly={flgEdit === 1 ? "" : "readonly"} />
                   </Form.Item>
 
-                  <CampoUpload destino='da consulta' normFile={normFile} classe="div-arq" />
+                  <input type='file' onChange={evt => setDoc(evt.target.files[0])} />
+                  <h4>{doc}</h4>
                   <>{ flgEdit === 1 &&
                     <Row>
                       <Col xs={{span:24}} md={{span:12}}>

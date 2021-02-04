@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Row, Form, Button, Col } from 'antd';
-import { InputBasicoModal, SelectInstituicao, SelectTipoExameEspecial, CampoUpload } from '../';
+import { InputBasicoModal, SelectInstituicao, SelectTipoExameEspecial } from '../';
 import TipoExameApi from '../../models/tipoExameApi';
+import ArquivoApi from '../../models/arquivoApi';
 import FormularioDadosBasicos from '../formDadosBasicos';
 import { WarningOutlined } from '@material-ui/icons';
 import { MinusCircleOutlined, InfoCircleOutlined } from '@ant-design/icons';
@@ -14,6 +15,7 @@ export default function ModalAddExame(props) {
   const [ itensExame, setItensExame ] = useState([]);
   const [ itensDoExame, setItensDoExame ] = useState(undefined);
   const [ nomeExame, setNomeExame ] = useState('');
+  const [ doc, setDoc ] = useState(0);
 
   useEffect(()=>{
     onReset();
@@ -24,29 +26,28 @@ export default function ModalAddExame(props) {
     form.resetFields();
   };
 
-  const normFile = e => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
   const onFinish = values => {
     values.tipoExame = nomeExame;
     values.parametros = itensDoExame ? itensDoExame : [];
     const auth = localStorage.getItem("token-gerenciador-security");
-    const tipoExameApi = new TipoExameApi();
 
+    const arquivoApi = new ArquivoApi();
+    arquivoApi.uploadArquivo(doc, auth).then( resp =>{
+      if(resp.status === 200){
+        setDoc(resp.data);
+      }
+    });
+    const tipoExameApi = new TipoExameApi();
+    values.idArquivo = doc || 0;
     tipoExameApi.criarTipoExame( values, auth).then( resp => { 
         if(resp.status === 200){
           let aux = atualizaTela + 1;
           setAtualizaTela(aux);
           setVisibleAdd(false);
           flg && setFlg(!flg);
+          onReset();
         } } )
     itensDoExame.map( i => i.valor = '');
-    onReset();
     removeOuAtualiza(null);
   }
   
@@ -127,9 +128,7 @@ export default function ModalAddExame(props) {
               <Button type="dashed" onClick={() => adicionar()} block >
                 + Adicionar mais campos
               </Button>
-
-
-              <CampoUpload destino='do exame' normFile={normFile} classe="div-arq" />
+              <input type='file' onChange={evt => setDoc(evt.target.files[0])} />
               <Form.Item wrapperCol={{ span: 24 }}>
                 <Button className="btn-cadastrar" type="primary" htmlType="submit">
                   Adicionar

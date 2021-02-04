@@ -6,7 +6,7 @@ import TipoExameApi from '../../models/tipoExameApi';
 import FormularioDadosBasicos from '../formDadosBasicos';
 
 export default function ModalAddTipoExame(props) {
-  const [form] = Form.useForm();
+  /*const [form] = Form.useForm();
   const {visibleAdd, setVisibleAdd, setAtualizaTela, atualizaTela } = props;
   const [ flg, setFlg ] = useState(false);
 
@@ -75,5 +75,5 @@ export default function ModalAddTipoExame(props) {
           </>
       </Modal>
     </>
-  );
+  );*/
 };
