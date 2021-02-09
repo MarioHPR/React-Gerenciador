@@ -71,6 +71,29 @@
   margin-bottom: 2vh;
 }
 
+.botao-proxima-etapa,
+.botao-etapa-anterior {
+  display: inline-block;
+  border: 1px solid #ffffff8a!important;
+  background: #0081ff!important;
+  color: white!important;
+  border-radius: 8px!important;
+  float: right;
+  margin-top: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.botao-etapa-anterior{
+  background: rgba(255, 14, 14, 0.829)!important;
+}
+
+.botao-ir-login {
+  background: white!important;
+  color: #0081ff!important;
+}
+
 .btn-voltar,
 .tag-tamanho-total {
   padding: 1vh 0;

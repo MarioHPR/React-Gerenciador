@@ -1,82 +1,74 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { FormularioUi, FormularioLocalidadeContato } from '../../components';
-import { Row, Col } from 'antd';
+import { FormularioUi, FormularioLocalidadeContato, StepsTest, FormularioContato } from '../../components';
+import { Row, Col, Form, Button } from 'antd';
 import './style.css';
 
 import UsuarioApi from '../../models/usuarioApi';
 
 export default function Cadastro() {
   const history = useHistory();
-  const [ nome, setNome ] = useState('');
-  const [ cpf, setCpf ] = useState('');
-  const [ dataNascimento, setDatanascimento ] = useState('');
-  const [ email, setEmail ] = useState('');
-  const [ senha, setSenha ] = useState('');
+  const [ step, setStep ] = useState(0);
+  const [form] = Form.useForm();
 
-  const [ cep, setCep ] = useState('');
-  const [ bairro, setBairro ] = useState('');
-  const [ rua, setRua ] = useState('');
-  const [ numero, setNumero ] = useState('');
-  const [ cidade, setCidade ] = useState('');
-
-  const [ contatoUm, setContatoUm ] = useState('');
-  const [ contatoDois, setContatoDois ] = useState('');
-
+  const onFinish = values => {
+    if(step < 2) {
+      setStep(step + 1);
+    }
+    if(step === 2){
+      handleSubmit(values)
+    }
+  }
   async function handleSubmit(event) {
     event.preventDefault();
     const usuarioApi = new UsuarioApi();
 
-    if(cep !== '' && bairro !== '' && rua !== '' && numero !== '' &&
-       cidade !== '' && contatoUm !== '' && contatoDois !== '' ){
-         if( nome !== '' && cpf !== '' && dataNascimento !== '' && email !== '' && senha !== '' ){
+    usuarioApi.criarUsuario(event).then( resposta => {// arrumar back-end para receber todos os dados
+        if( resposta.status === 200 )
+          history.push('/login');
+      } ); 
+  }
 
-          usuarioApi.criarUsuario({ nome : nome, cpf : cpf, email : email, dataNasc : dataNascimento, senha : senha })
-            .then( resposta => {
-              if( resposta.status === 200 ){
-                const requisicoes = [
-                  usuarioApi.cadastrarLocalidadeUsuario({ email: email, cidade : cidade, cep : cep, bairro : bairro, rua : rua, numero : numero }),
-                  usuarioApi.cadastrarContatoUsuario({ email: email, contatoUm : contatoUm, contatoDois : contatoDois })  
-                ]
-                Promise.all( requisicoes ).then( resp => {
-                  if( resp[0].status === 200 && resp[1].status === 200 ){
-                    history.push('/login');
-                  }
-                });
-              }
-            } );
-         }
+  const etapaAnterior = () => {
+    if(step > 0){
+      setStep(step - 1);
     }
   }
 
   return (
     <div className="pagina-padrao tamanho-total-container">
+      <StepsTest step={step} setStep={setStep}/>
       <h2 className='titulo-principal'>Cadastro Usuário:</h2>
-      <Row>
-        <Col xs={{span:24}} md={{span:12}}>
+      <Form useForm={ form } name="validate_other" onFinish={onFinish} initialValues='' >
+        <Row>
           <Col xs={{span:24}}>
+          { step === 0 &&
+            <Col xs={{span:24}}>
+              <FormularioUi />
+            </Col>
+          }
+          { step === 1 &&
+            <Col xs={{span:24}}>
             <div className="pagina-login">
               <div className="container-form margin-top container-form-infos">
-                 <FormularioLocalidadeContato setCep={ setCep } setBairro={ setBairro } setRua={ setRua }
-                                  setNumero={ setNumero } setCidade={ setCidade }
-                                  setCampoUm={ setContatoUm } setCampoDois={ setContatoDois } />
+                <FormularioLocalidadeContato etapaAnterior={etapaAnterior}/>
               </div>
             </div>
+            </Col>
+          }
+          { step === 2 &&
+            <Col xs={{span:24}}>
+              <div className="container-form margin-top container-form-infos">
+                <FormularioContato /> 
+                <Link to='/' className='botao-proxima-etapa botao-ir-login'>Ir para o Login</Link>
+                <Button type="primary" htmlType="submit" className="botao-proxima-etapa">CADASTRAR</Button>
+                <bottom onClick={etapaAnterior} className="botao-etapa-anterior">etapa anterior</bottom>
+              </div>
+            </Col>
+          }
           </Col>
-        </Col>
-        <Col xs={{span:24}} md={{span:12}}>
-          <Col xs={{span:24}}>
-            <FormularioUi setNome={ setNome } setCpf={ setCpf } setDatanascimento={ setDatanascimento }
-                          setEmail={ setEmail } setSenha={setSenha} />
-          </Col>
-          <Col xs={{span:24}}>
-            <div className="botoes">
-              <button className='cadastrar' onClick={ handleSubmit }>Cadastrar</button>
-              <Link to='/' className='voltar'>Voltar</Link>
-            </div>
-          </Col>
-        </Col>
-      </Row>
+        </Row>
+      </Form>
     </div>
   )
 }

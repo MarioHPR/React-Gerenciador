@@ -1,19 +1,23 @@
 import React from 'react';
 import '../formularioUi/stilo.css';
 import '../../pages/login/login.css';
-import { Divider } from 'antd';
+import { Form, Button } from 'antd';
 import './style.css';
-import { FormularioContato, Lista } from '..';
+import { Lista } from '..';
 
 export default function FormularioLocalidadeContato( props ) {
 
-  const { setCep, setBairro, setRua, setNumero, setCidade, setCampoUm, setCampoDois } = props;
-
+  const { etapaAnterior } = props;
   const linha = ( item, i ) => {
     return (
       <>
-        <label>{item.titulo}</label>
-        <input key={ i } className={ item.classe } type={ item.tipo } placeholder={ item.dica } onChange={ evt => item.metodo( evt.target.value ) } />
+        <label className="cor-branco">{item.titulo}<span className="cor-vermelho">*</span></label>
+        <Form.Item className={ "" } name={ item.name } label={ "" }
+          rules={ [ { required: true, message: `${ item.titulo } Obrigatório!` } ] }
+        >
+          <input key={ i } className={ item.classe } type={ item.tipo } placeholder={ item.dica } />
+        </Form.Item>
+        
       </>
     )
   }
@@ -24,16 +28,16 @@ export default function FormularioLocalidadeContato( props ) {
           <Lista
             className="container-inputs"
             dados={[
-              { titulo: 'Cidade:', classe: 'input-padrao', tipo:'text', dica: 'Digite sua cidade', metodo: setCidade  },
-              { titulo: 'Cep:', classe: 'input-padrao', tipo:'text', dica: 'Digite seu cep', metodo: setCep  },
-              { titulo: 'Bairro:', classe: 'input-padrao', tipo:'text', dica: 'Bairro', metodo: setBairro  },
-              { titulo: 'Rua:', classe: 'input-padrao', tipo:'text', dica: 'Sua rua', metodo: setRua  },
-              { titulo: 'Numero:', classe: 'input-padrao', tipo:'text', dica: 'Numero da sua casa', metodo: setNumero  }
+              { name: 'cidade', titulo: 'Cidade:', classe: 'input-padrao', tipo:'text', dica: 'Digite sua cidade' },
+              { name: 'cep', titulo: 'Cep:', classe: 'input-padrao', tipo:'text', dica: 'Digite seu cep' },
+              { name: 'bairro', titulo: 'Bairro:', classe: 'input-padrao', tipo:'text', dica: 'Bairro' },
+              { name: 'rua', titulo: 'Rua:', classe: 'input-padrao', tipo:'text', dica: 'Sua rua' },
+              { name: 'numero', titulo: 'Numero:', classe: 'input-padrao', tipo:'text', dica: 'Numero da sua casa' }
             ] }
             funcao={ ( item, i ) => linha( item, i ) }
           />
-          <Divider className="separador" />
-          <FormularioContato setCampoUm={ setCampoUm } setCampoDois={ setCampoDois } /> 
+          <Button type="primary" htmlType="submit" className="botao-proxima-etapa">próxima etapa</Button>
+          <Button onClick={etapaAnterior} className="botao-etapa-anterior">etapa anterior</Button>
     </React.Fragment>
   )
 }

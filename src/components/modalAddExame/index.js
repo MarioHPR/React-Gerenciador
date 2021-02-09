@@ -70,23 +70,25 @@ export default function ModalAddExame(props) {
   return (
     <> 
       <Modal title="Insira os dados referente ao exame" visible={visibleAdd} onOk={() => {setVisibleAdd(false); onReset(); flg && setFlg(!flg)}}
-        onCancel={() => {setVisibleAdd(false); onReset(); flg && setFlg(!flg)}} className='container-modal-editar' >
+        onCancel={() => {setVisibleAdd(false); onReset(); flg && setFlg(!flg)}}
+        className='container-modal-editar' okButtonProps={{ hidden: true }}
+        cancelButtonProps={{ hidden: true }}>
           <>
             <Form useForm={ form } name="validate_other" onFinish={onFinish} initialValues='' >
-              <Row className='espacamento-top diminuir-botton' >
-                <Col span={12}>
-                  <SelectTipoExameEspecial atualizaTela={atualizaTela} itensExame={itensExame} setItensDoExame={setItensDoExame} setItensExame={setItensExame} span={24}  setNomeExame={setNomeExame} />
-                </Col>
-                <Col span={12}>
-                  <InputBasicoModal tipo='date' span={24} label='Data do exame' name={'dataExame'} />
-                </Col>
-              </Row>
-              <SelectInstituicao atualizaTela={atualizaTela} flg={flg} setFlg={setFlg} />
-              <div id="form-basic" className={flg ? 'mostrar-form' : 'esconder-form'}>
-                <FormularioDadosBasicos flg={flg} setFlg={setFlg} />
-              </div>
-
-              <h3>Dados do exame</h3>
+              <div className="dados-instituicao">
+                <div className='espacamento-top separador-elemento' >
+                  <div className='div-comum-esquerda'>
+                    <SelectTipoExameEspecial atualizaTela={atualizaTela} itensExame={itensExame} setItensDoExame={setItensDoExame} setItensExame={setItensExame} span={24}  setNomeExame={setNomeExame} />
+                  </div>
+                  <div className='div-comum-direita'>
+                    <InputBasicoModal tipo='date' span={24} label='Data do exame' name={'dataExame'} />
+                  </div>
+                </div>
+                <SelectInstituicao atualizaTela={atualizaTela} flg={flg} setFlg={setFlg} />     
+                <div id="form-basic" className={flg ? 'mostrar-form' : 'esconder-form'}>
+                  <FormularioDadosBasicos flg={flg} setFlg={setFlg} />
+                </div>
+                <h3>Dados do exame</h3>
               { itensDoExame !== undefined ?
                 <Row>
                   <Col span={12} className='dados-parte-um'>
@@ -123,24 +125,30 @@ export default function ModalAddExame(props) {
                     </Col>
                 </Row>
                 : <span><WarningOutlined />Não há dados registrados neste exame!</span>
-                
               }
               <Button type="dashed" onClick={() => adicionar()} block >
                 + Adicionar mais campos
               </Button>
               <input type='file' onChange={evt => setDoc(evt.target.files[0])} />
-              <Form.Item wrapperCol={{ span: 24 }}>
-                <Button className="btn-cadastrar" type="primary" htmlType="submit">
-                  Adicionar
-                </Button>
-              </Form.Item>
-              <Form.Item>
-                <Button htmlType="button" onClick={ onReset } className='botao-form-itens'>
-                  Limpar
-                </Button>
-              </Form.Item>
-            </Form>
-          </>
+              <Row>
+                <Col xs={{span:24}} md={{span:12}}>
+                  <Form.Item wrapperCol={{ span: 24 }}>
+                    <Button className="btn-cadastrar tamanho-total" type="primary" htmlType="submit">
+                      <span className='color-white'>Adicionar</span>
+                    </Button>
+                  </Form.Item>
+                </Col>
+                <Col xs={{span:24}} md={{span:12}}>
+                  <Form.Item>
+                    <Button htmlType="button" onClick={ onReset } className='botao-form-itens tamanho-total'>
+                      Limpar
+                    </Button>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </div>
+          </Form>
+        </>
       </Modal>
     </>
   );

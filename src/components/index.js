@@ -12,17 +12,15 @@ import SelectInstituicao from './selectInstituicao';
 import SelectTipoExame from './selectTipoExame';
 import TableDados from './tableDados';
 import TableTipoExame from './tableTipoExame';
-import ModalVisualizacaoConsulta from './modelConsulta';
-import ModalEditarConsulta from './modalEditarConsulta';
 import ModalAddConsulta from './modalAddConsulta';
 import ModalVisualizarEditarConsulta from './modalVisualizarEditarConsulta';
-import ModalAddTipoExame from './modalAddTipoExame';
 import ModalAddExame from './modalAddExame';
 import ModalExame from './modalVisualizarExame';
 import CampoBasicoModal from './campoBasicoModal';
 import InputBasicoModal from './inputBasicoModal';
 import InputFormItem from './inputFormInput';
 import SelectTipoExameEspecial from './selectTipoExameEspecial';
+import StepsTest from './steps';
 
 export {  Footer,
           FormularioUi,
@@ -39,14 +37,12 @@ export {  Footer,
           SelectTipoExameEspecial,
           TableDados,
           TableTipoExame,
-          ModalVisualizacaoConsulta,
-          ModalEditarConsulta,
           ModalAddConsulta,
           ModalVisualizarEditarConsulta,
-          ModalAddTipoExame,
           ModalAddExame,
           ModalExame,
           CampoBasicoModal,
           InputBasicoModal,
-          InputFormItem
+          InputFormItem,
+          StepsTest
         }; 

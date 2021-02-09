@@ -16,6 +16,7 @@ export default function ModalVisualizarEditarConsulta(props) {
   const [ instituicoes, setInstituicoes ] = useState([]);
   const [ atualizaInterna, setAtualizaInterna ] = useState(0);
   const [ doc, setDoc ] = useState(0);
+  const [ urlDoc, setUrlDoc ] = useState();
 
   useEffect(()=>{
     const auth = localStorage.getItem("token-gerenciador-security");
@@ -27,20 +28,9 @@ export default function ModalVisualizarEditarConsulta(props) {
   useEffect(()=>{
     const auth = localStorage.getItem("token-gerenciador-security");
     const consultaApi = new ConsultaApi();
-    const arquivoApi = new ArquivoApi();
     consultaApi.buscarConsultaPorId( idConsulta, auth).then( resp => {
       setConsulta(resp.data);
       setInstituicao(resp.data.dadosInstituicao);
-      if(resp.data.idArquivo > 0){
-        arquivoApi.downloadArquivo(resp.data.idArquivo, auth).then( resposta => {
-          console.log("%%%%%%%%%%%%%%%%%")
-          console.log("%%%%%%%%%%%%%%%%%")
-          console.log(resposta)
-          console.log("%%%%%%%%%%%%%%%%%")
-          console.log("%%%%%%%%%%%%%%%%%")
-          setDoc(resposta)
-        })
-      }
       onReset();
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -49,6 +39,20 @@ export default function ModalVisualizarEditarConsulta(props) {
   const onReset = () => {
     form.resetFields();
   };
+
+  const downloadArquivo = () => {
+    const auth = localStorage.getItem("token-gerenciador-security");
+    const arquivoApi = new ArquivoApi();
+    return arquivoApi.downloadArquivo(consulta.id, auth).then( resposta => {
+      console.log("%%%%%%%%%%%%%%%%%")
+      console.log("%%%%%%%%%%%%%%%%%")
+      console.log(resposta)
+      console.log("%%%%%%%%%%%%%%%%%")
+      console.log("%%%%%%%%%%%%%%%%%")
+      setDoc(resposta.data)
+      setUrlDoc(resposta.config.url)
+    })
+  }
 
   const onFinish = values => {
     const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao, numero } = values;
@@ -174,7 +178,7 @@ export default function ModalVisualizarEditarConsulta(props) {
                   </Form.Item>
 
                   <input type='file' onChange={evt => setDoc(evt.target.files[0])} />
-                  <h4>{doc}</h4>
+                  <a onClick={()=>downloadArquivo} download={()=>downloadArquivo} >Download do arquivo</a>
                   <>{ flgEdit === 1 &&
                     <Row>
                       <Col xs={{span:24}} md={{span:12}}>

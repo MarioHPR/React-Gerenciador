@@ -1,19 +1,21 @@
 import React from 'react';
-import { Input } from 'antd';
+import { Input, Form, Button } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import './stilo.css';
 import '../../pages/login/login.css'
 import { Lista } from '../../components';
 
-export default function FormularioUi( props ) {
+export default function FormularioUi() {
   
-  const { setNome, setCpf, setDatanascimento, setEmail, setSenha, setPermissao } = props;
-
   const linha = ( item, i ) => {
     return (
       <>
-        <label>{item.titulo}</label>
-        <input key={ i } className={ item.classe } type={ item.tipo } placeholder={ item.dica } onChange={ evt => item.metodo( evt.target.value ) } />
+      <label className="cor-branco">{item.titulo}<span className="cor-vermelho">*</span></label>
+        <Form.Item name={ item.name }
+            rules={ [ { required: true, message: `${ item.titulo } Obrigatório!` } ] }
+        >
+          <input key={ i } className={ item.classe } type={ item.tipo } placeholder={ item.dica } />
+        </Form.Item>
       </>
     )
   }
@@ -24,21 +26,26 @@ export default function FormularioUi( props ) {
       <Lista
         className="container-inputs"
         dados={[
-          { titulo: 'Nome:', classe: 'input-padrao tag-tamanho-total', tipo:'text', dica: 'Digite seu nome', metodo: setNome  },
-          { titulo: 'cpf:', classe: 'input-padrao tag-tamanho-total', tipo:'text', dica: 'Digite seu Cpf', metodo: setCpf  },
-          { titulo: 'Data nascimento:', classe: 'input-padrao tag-tamanho-total', tipo:'date', dica: '01/01/2020', metodo: setDatanascimento  },
-          { titulo: 'E-mail:.', classe: 'input-padrao tag-tamanho-total', tipo:'text', dica: 'Digite seu email', metodo: setEmail  }
+          { name: 'nome', titulo: 'Nome:', classe: 'input-padrao', tipo:'text', dica: 'Digite seu nome' },
+          { name: 'cpf', titulo: 'cpf:', classe: 'input-padrao', tipo:'text', dica: 'Digite seu Cpf' },
+          { name: 'dataNascimento', titulo: 'Data nascimento:', classe: 'input-padrao', tipo:'date', dica: '01/01/2020' },
+          { name: 'email', titulo: 'E-mail:', classe: 'input-padrao', tipo:'text', dica: 'Digite seu email' }
         ] }
         funcao={ ( item, i ) => linha( item, i ) }
       />
-      <label>Senha:</label>
-      <Input.Password
-        className="input-padrao tag-tamanho-total senha-cadastro-input"
-        onBlur={ evt => setSenha( evt.target.value ) }
-        id="senha" name="senha"
-        placeholder="senha"
-        iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-      />  
+      <label className="cor-branco">Senha:<span className="cor-vermelho">*</span></label>
+      <Form.Item className="" name={ "Senha" } label={ "" }
+          rules={ [ { required: true, message: `Senha é Obrigatório!` } ] }
+      >
+        <Input.Password
+          className="input-padrao tag-tamanho-total senha-cadastro-input"     
+          id="senha" name="senha"
+          placeholder="senha"
+          iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+        />
+      </Form.Item>
+      
+      <Button type="primary" htmlType="submit" className="botao-proxima-etapa">próxima etapa</Button>
     </div>
   )
 }

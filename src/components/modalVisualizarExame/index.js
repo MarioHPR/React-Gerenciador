@@ -120,22 +120,26 @@ export default function ModalExame(props) {
   return (
     <> 
       <Modal title="Visualização dos dados do exame" visible={visibleModal} onOk={() => {setVisibleModal(false); onReset(); flg && setFlg(!flg)}}
-        onCancel={() => {setVisibleModal(false);onReset(); flg && setFlg(!flg)}} className='container-modal-editar' >
+        onCancel={() => {setVisibleModal(false);onReset(); flg && setFlg(!flg)}} className='container-modal-editar'
+        okButtonProps={{ hidden: true }}
+        cancelButtonProps={{ hidden: true }}>
           <>{ exame && 
             <Form form={ form } name="validate_other" onFinish={onFinish} initialValues='' >
-              <Row className='espacamento-top ' >
-                <Col span={12}>
-                  <label>Exame: </label>
-                  <input className='input-modal margin-bottom' type='text' value={tipoExame} readOnly />
-                </Col>
-                <Col span={12}>
-                  <label>Data: </label>
-                  {
-                    editarVisualizar === 1 ? <input onClick={evt => executaAcao(evt.target.value)}className='input-modal margin-bottom' type='date' value={dataExame} onChange={ evt => setDataExame(evt.target.value)}/> 
-                    : <input className='input-modal margin-bottom' type='date' value={dataExame} onChange={ evt => setDataExame(evt.target.value)} readOnly/>
-                  }
-                </Col>
-              </Row>
+              <div className="dados-instituicao">
+                <div className='espacamento-top separador-elemento' >
+                  <div className='div-comum-esquerda'>
+                    <label>Exame: </label>
+                    <input className='input-modal margin-bottom' type='text' value={tipoExame} readOnly />
+                  </div>
+                  <div className='div-comum-direita'>
+                    <label>Data: </label>
+                    {
+                      editarVisualizar === 1 ? <input onClick={evt => executaAcao(evt.target.value)}className='input-modal margin-bottom' type='date' value={dataExame} onChange={ evt => setDataExame(evt.target.value)}/> 
+                      : <input className='input-modal margin-bottom' type='date' value={dataExame} onChange={ evt => setDataExame(evt.target.value)} readOnly/>
+                    }
+                  </div>
+                </div>
+              </div>
               {
                 instituicao && editarVisualizar === 1 ?
                   <>
@@ -206,18 +210,22 @@ export default function ModalExame(props) {
                        + Adicionar mais campos
                       </Button>
                       <input type='file' onChange={evt => setDoc(evt.target.files[0])} />
-                      <>
-                        <Form.Item wrapperCol={{ span: 24 }}>
-                          <Button className="btn-cadastrar" type="primary" htmlType="submit">
-                            Inserir Tipo Exame
-                          </Button>
-                        </Form.Item>
-                        <Form.Item>
-                          <Button htmlType="button" onClick={ onReset } className='botao-form-itens'>
-                            Limpar
-                          </Button>
-                        </Form.Item>
-                      </>
+                      <Row>
+                        <Col xs={{span:24}} md={{span:12}}>
+                          <Form.Item wrapperCol={{ span: 24 }}>
+                            <Button className="btn-cadastrar tamanho-total" type="primary" htmlType="submit">
+                            <span className='color-white'>Inserir Tipo Exame</span>
+                            </Button>
+                          </Form.Item>
+                        </Col>
+                        <Col xs={{span:24}} md={{span:12}}>
+                          <Form.Item>
+                            <Button htmlType="button" onClick={ onReset } className='botao-form-itens tamanho-total'>
+                              Limpar
+                            </Button>
+                          </Form.Item>
+                        </Col>
+                      </Row>
                     </div>
                   </>
                 :

@@ -17,6 +17,6 @@ export default class ArquivoApi {
     Axios.defaults.headers.Authorization = auth;
     //const response = await Axios.get( `${URI}consulta/buscar/consultas` );
     const response = await Axios.get( `${URI_HEROKU}arquivo/${id}` );
-    return response.data;
+    return response;
   }
 }
