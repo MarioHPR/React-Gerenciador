@@ -2,17 +2,17 @@ import React from 'react';
 import '../../pages/login/login.css';
 import { Lista } from '../../components';
 import {  Form } from 'antd';
-
+import InputMask from 'react-input-mask';
 export default function FormularioContato() {
 
   const linha = ( item, i ) => {
     return (
       <>
         <label className="cor-branco">Contato {i+1}:<span className="cor-vermelho">*</span></label>
-        <Form.Item className="" name={ `contato${i+1}` } label={ "" }
+        <Form.Item className="" name={ item.name } label={ "" }
           rules={ [ { required: true, message: `Senha é Obrigatório!` } ] }
         >
-          <input key={ i } className={ item.classe } type={ item.tipo } placeholder="Insira seu email ou telefone" />
+          <InputMask mask="(99) 9 9999-9999" key={ i } className={ item.classe } type={ item.tipo } placeholder="Insira seu email ou telefone" />
         </Form.Item>
       </>
     )
@@ -24,8 +24,8 @@ export default function FormularioContato() {
         <Lista
           className="container-inputs"
           dados={[
-            { titulo: 'Tipo:', classe: 'input-padrao tag-tamanho-total', tipo:'text', dica: '' },
-            { titulo: 'Valor:', classe: 'input-padrao tag-tamanho-total', tipo:'text', dica: '' },
+            { titulo: 'Tipo:', name: 'contatoUm', classe: 'input-padrao tag-tamanho-total', tipo:'text', dica: '' },
+            { titulo: 'Valor:', name: 'contatoDois', classe: 'input-padrao tag-tamanho-total', tipo:'text', dica: '' },
           ] }
           funcao={ ( item, i ) => linha( item, i ) }
         />

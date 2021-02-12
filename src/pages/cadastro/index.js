@@ -20,7 +20,8 @@ export default function Cadastro() {
     }
   }
   async function handleSubmit(event) {
-    event.preventDefault();
+    //event.preventDefault();
+    console.log(event);
     const usuarioApi = new UsuarioApi();
 
     usuarioApi.criarUsuario(event).then( resposta => {// arrumar back-end para receber todos os dados

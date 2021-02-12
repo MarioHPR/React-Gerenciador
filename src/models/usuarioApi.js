@@ -7,11 +7,9 @@ export default class UsuarioApi {
 
   // ###### USUARIO #####
   async criarUsuario( usuario ) {
-    const { nome, cpf, email, dataNasc, senha } = usuario;
-    const parametro =  { cpf: cpf, dataNascimento: dataNasc, nome: nome, email: email, senha: `${senha}` };
-
+  
     //const response = await Axios.post( `${URI}usuario/salvar`, parametro );
-    const response = await Axios.post( `${URI_HEROKU}usuario/salvar`, parametro );
+    const response = await Axios.post( `${URI_HEROKU}api/usuario/salvar`, usuario );
     return response;
   }
 
