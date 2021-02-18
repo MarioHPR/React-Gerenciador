@@ -50,7 +50,6 @@ export default function ModalExame(props) {
     arrayAux.push(campoNovo);
     setParametros(arrayAux);
     removeOuAtualiza(null);
-    console.log(parametros)
   };
 
   const removeOuAtualiza = value => {
@@ -82,7 +81,7 @@ export default function ModalExame(props) {
           "email": '',
           "emeail": '',
           "id": 0,
-          "numero": numero || 0,
+          "numero": numero.replaceAll("_", "") || 0,
           "rua": rua || ''
         },
         "id": (bairro && flg) ? 0 : instituicao.id || 0,
@@ -106,13 +105,11 @@ export default function ModalExame(props) {
   }
 
   const executaAcao = ( aux ) => {
-    console.log(parseInt(aux))
     if( parseInt(aux) === 0 ){
       setFlg(!flg);
     } else {
       let auxInstituicao = instituicoes.find( inst => inst.id === parseInt(aux) );
-      if( auxInstituicao.nome !== instituicao.nome )
-        setInstituicao(auxInstituicao);
+      setInstituicao(auxInstituicao);
     } 
   }
   
@@ -144,7 +141,7 @@ export default function ModalExame(props) {
                 instituicao && editarVisualizar === 1 ?
                   <>
                     <div className="dados-instituicao">
-                      <select className='select-instituicoes' placeholder="Selecione uma instituição!" disabled={flg} >
+                      <select className='select-instituicoes' placeholder="Selecione uma instituição!" disabled={flg} onClick={evt => executaAcao(evt.target.value)}>
                         <option key={`odefault${1}`} value={0}>+ adicionar nova instituição</option>
                         {
                           instituicoes.length > 0 && instituicoes.map( inst => {

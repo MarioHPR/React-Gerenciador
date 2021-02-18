@@ -1,9 +1,10 @@
 import React from 'react';
 import { Form } from 'antd';
 import './style.css';
+import InputMask from 'react-input-mask';
 
 function InputFormItem( props ) {
-    const { name, nome, titulo, key, classe, classContainer, tipo, dica, value, flgRequired, editarVisualizar } = props;
+    const { mask, name, nome, titulo, key, classe, classContainer, tipo, dica, value, flgRequired, editarVisualizar } = props;
     const [form] = Form.useForm();
     const required = !flgRequired ? false : true;
     form.setFieldsValue({name :value});
@@ -23,7 +24,8 @@ function InputFormItem( props ) {
                 defaultValue={value}
                 readOnly
               /> :
-              <input
+              <InputMask 
+                mask={mask}
                 key={ `bt${ key }` }
                 className={ classe }
                 type={ tipo }

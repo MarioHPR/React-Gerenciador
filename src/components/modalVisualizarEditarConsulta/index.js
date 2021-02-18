@@ -44,11 +44,6 @@ export default function ModalVisualizarEditarConsulta(props) {
     const auth = localStorage.getItem("token-gerenciador-security");
     const arquivoApi = new ArquivoApi();
     return arquivoApi.downloadArquivo(consulta.id, auth).then( resposta => {
-      console.log("%%%%%%%%%%%%%%%%%")
-      console.log("%%%%%%%%%%%%%%%%%")
-      console.log(resposta)
-      console.log("%%%%%%%%%%%%%%%%%")
-      console.log("%%%%%%%%%%%%%%%%%")
       setDoc(resposta.data)
       setUrlDoc(resposta.config.url)
     })

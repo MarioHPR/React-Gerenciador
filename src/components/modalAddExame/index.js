@@ -39,6 +39,7 @@ export default function ModalAddExame(props) {
     });
     const tipoExameApi = new TipoExameApi();
     values.idArquivo = doc || 0;
+    values.numero = values.numero.replaceAll("_", "");
     tipoExameApi.criarTipoExame( values, auth).then( resp => { 
         if(resp.status === 200){
           let aux = atualizaTela + 1;
