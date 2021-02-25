@@ -9,6 +9,7 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined
 } from '@ant-design/icons'
+import PerfilUsuario from '../perfil';
 
 const Header = ({ collapsed, toggleCollapsed, gerarBotao=false, nomeBotao='', linkGerarBotao='', botaoVoltar=false, link='' }) => {
     const history = useHistory();
@@ -27,19 +28,21 @@ const Header = ({ collapsed, toggleCollapsed, gerarBotao=false, nomeBotao='', li
         <header className='site-page-header'>
           <Row className='row-header' >
             <Row className='div-top-header'>
-              <Col ms={{span:24}} md={{span:12}}>
+              <Col ms={{span:24}} md={{span:8}}>
                 <Link to='/' className='linkHome'>
                     Gerenciador   
                 </Link>
                 
               </Col>
-              <Col ms={{span:24}} md={{span:12}}>
+              <Col ms={{span:24}} md={{span:16}}>
                 <Link to='/#' onClick={deslogar} className='bt-logout'>
                   Logout
                 </Link>
+                <PerfilUsuario />
                 <Lista
                   className="container-inputs"
                   dados={[
+                    {classe:'bt-logout', rota:'/', nomeBotao: 'Dados do Usuário'},
                     { classe: 'bt-logout', rota:'/consultas', nomeBotao: 'Consulta'  },
                     { classe: 'bt-logout', rota:'/tipoExames', nomeBotao: 'Exame'  },
                     { classe: 'bt-logout', rota:'/', nomeBotao: 'Home'  }

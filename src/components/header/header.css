@@ -1,7 +1,7 @@
 .site-page-header {
     border: 1px solid rgba(75, 76, 77, 0.568);
     background-color:  rgba(75, 76, 77, 0.568) !important;
-    height: 110px;
+    height: auto;
 }
 
 .div-top-header {
