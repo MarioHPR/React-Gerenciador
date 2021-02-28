@@ -38,7 +38,7 @@ const Header = ({ collapsed, toggleCollapsed, gerarBotao=false, nomeBotao='', li
                 <Link to='/#' onClick={deslogar} className='bt-logout'>
                   Logout
                 </Link>
-                <PerfilUsuario />
+                <PerfilUsuario deslogar={deslogar}/>
                 <Lista
                   className="container-inputs"
                   dados={[

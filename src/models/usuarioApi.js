@@ -6,6 +6,13 @@ const URI_HEROKU = 'https:/back-geranciador-exames.herokuapp.com/';
 export default class UsuarioApi {
 
   // ###### USUARIO #####
+  async buscarDadosDoUsuario(auth) {
+    Axios.defaults.headers.Authorization = auth;
+    const response = await Axios.get( `${URI_HEROKU}api/usuario/buscar-dados` );
+    return response;
+  }
+
+
   async criarUsuario( usuario ) {
   
     //const response = await Axios.post( `${URI}usuario/salvar`, parametro );
