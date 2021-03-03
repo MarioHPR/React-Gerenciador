@@ -35,17 +35,17 @@ const Header = ({ collapsed, toggleCollapsed, gerarBotao=false, nomeBotao='', li
                 
               </Col>
               <Col ms={{span:24}} md={{span:16}}>
-                <Link to='/#' onClick={deslogar} className='bt-logout'>
-                  Logout
+                <Link to='/#' className='bt-basico bt-logout'>
+                  <PerfilUsuario deslogar={deslogar}/>
                 </Link>
-                <PerfilUsuario deslogar={deslogar}/>
+                
                 <Lista
                   className="container-inputs"
                   dados={[
-                    {classe:'bt-logout', rota:'/', nomeBotao: 'Dados do Usuário'},
-                    { classe: 'bt-logout', rota:'/consultas', nomeBotao: 'Consulta'  },
-                    { classe: 'bt-logout', rota:'/tipoExames', nomeBotao: 'Exame'  },
-                    { classe: 'bt-logout', rota:'/', nomeBotao: 'Home'  }
+                    {classe:'bt-basico', rota:'/', nomeBotao: 'Dados do Usuário'},
+                    { classe: 'bt-basico', rota:'/consultas', nomeBotao: 'Consulta'  },
+                    { classe: 'bt-basico', rota:'/tipoExames', nomeBotao: 'Exame'  },
+                    { classe: 'bt-basico', rota:'/', nomeBotao: 'Home'  }
                   ] }
                   funcao={ ( item, i ) => linha( item, i ) }
                 />

@@ -40,3 +40,15 @@
 .bt-logout-modal:hover {
   background: red;
 }
+
+.bt-perfil {
+  float: right;
+  display: inline-block;
+  border: 1px solid white;
+}
+
+.link-bt-perfil {
+  display: inline-block;
+  padding-right: 10px!important;
+  color: white!important;
+}

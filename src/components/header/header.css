@@ -11,6 +11,15 @@
 }
 
 .bt-logout {
+    border: none!important;
+    padding: 5px 15px;
+}
+
+.espaco-left {
+    margin-left: 5px;
+}
+
+.bt-basico {
     display: inline-block;
     margin: 2vh 3vh 3vh 1vh;
     padding-left: 15px;
@@ -22,7 +31,7 @@
     color: blanchedalmond;
 }
 
-.bt-logout:hover {
+.bt-basico:hover {
     font-weight: bold;
     background-color: darkslategrey;
 }

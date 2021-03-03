@@ -33,35 +33,16 @@ export default function PerfilUsuario(props) {
     
 
   return (
-    <>
-      <List
-        dataSource={[
-          {
-            name: 'Lily',
-          }
-        ]}
-        bordered
-        renderItem={item => (
-          <List.Item
-            key={item.id}
-            actions={[
-              <a onClick={showDrawer} key={`a-${item.id}`}>
-                View Profile
-              </a>,
-            ]}
-          >
-            <List.Item.Meta
-              avatar={
-                <Avatar src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png" />
-              }
-              title={<a href="https://ant.design/index-cn">{item.name}</a>}
-              description="Progresser XTech"
-            />
-          </List.Item>
-        )}
-      />
+    <>{ usuario &&
+        <a onClick={showDrawer} key={`a-${usuario.nome}`} >
+              <div>
+                  <Avatar style={{ backgroundColor: '#f56a00' }}>{usuario.nome[0]}</Avatar>
+                  <span className='link-bt-perfil espaco-left' href="#">{usuario.nome}</span>
+              </div>
+            </a>
+      }
       <Drawer
-        width={640}
+        width={"auto"}
         placement="right"
         closable={false}
         onClose={onClose}
@@ -90,7 +71,7 @@ export default function PerfilUsuario(props) {
             </Row>
             <Row>
               <Col span={12}>
-                <DescriptionItem title="Data nascimento" content={usuario.dataNascimento} />
+                <DescriptionItem title="Data nascimento" content={new Date(usuario.dataNascimento).toLocaleDateString('pt-BR', {timeZone: 'UTC'})} />
               </Col>
             </Row>
             <Divider />
