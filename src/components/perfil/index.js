@@ -1,4 +1,4 @@
-import { Drawer, List, Avatar, Divider, Col, Row } from 'antd';
+import { Drawer, Button, Avatar, Divider, Col, Row, Form, Input } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import UsuarioApi from '../../models/usuarioApi'; 
@@ -14,14 +14,23 @@ const DescriptionItem = ({ title, content }) => (
 export default function PerfilUsuario(props) {
   const {deslogar} = props;
   const [ visible, setVisible ] = useState(false);
+  const [ childrenDrawer, setChildrenDrawer ] = useState(false);
   const [ usuario, setUsuario ] = useState(false);
 
   const showDrawer = () => {
     setVisible(true);
   };
 
+  const showChildrenDrawer = () => {
+    setChildrenDrawer(true);
+  };
+
   const onClose = () => {
     setVisible(false);
+  };
+
+  const onChildrenDrawerClose = () => {
+    setChildrenDrawer(false);
   };
 
   useEffect(()=>{
@@ -119,11 +128,79 @@ export default function PerfilUsuario(props) {
               </Link>
             </Col>
             <Col span={12}>
-              <a href="http://github.com/ant-design/ant-design/">
+              <Button type="primary" onClick={showChildrenDrawer}>
                 Editar perfil
-              </a>
+              </Button>
             </Col>
           </Row>
+          <Drawer
+            title="Edição dados usuário"
+            width={"auto"}
+            closable={false}
+            onClose={onChildrenDrawerClose}
+            visible={childrenDrawer}
+          >
+            <Form layout="vertical" hideRequiredMark>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item name="name" label="Name"
+                    rules={[{ required: true, message: 'Nome é obrigatório' }]}
+                  >
+                    <Input defaultValue={usuario.nome} placeholder="Insira seu nome" />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item name="email" label="E-mail"
+                    rules={[{ required: true, message: 'E-mail é obrigatório' }]}
+                  >
+                    <Input defaultValue={usuario.email} placeholder="Insira seu email" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item name="cpf" label="Cpf"
+                    rules={[{ required: true, message: 'Cpf é obrigatório' }]}
+                  >
+                    <Input defaultValue={usuario.cpf} placeholder="Insira seu cpf" />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item label='País'>
+                    <Input defaultValue="Brasil 🇧🇷" readOnly />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item name="dataNasc" label="Data nascimento"
+                    rules={[{ required: true, message: 'Cpf é obrigatório' }]}
+                  >
+                    <Input defaultValue={usuario.cpf} placeholder="Insira seu cpf" />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item
+                    name="description"
+                    label="Description"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'please enter url description',
+                      },
+                    ]}
+                  >
+                    <Input.TextArea rows={4} placeholder="please enter url description" />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+          </Drawer>
       </Drawer>
     </>
   );

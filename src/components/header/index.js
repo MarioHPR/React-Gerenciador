@@ -1,54 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Row, Col } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import './header.css';
-import { Lista } from '../';
 import { Button } from 'antd';
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined
-} from '@ant-design/icons'
+import Menu from '../menu';
 import PerfilUsuario from '../perfil';
+import { MenuOutlined } from '@ant-design/icons';
 
-const Header = ({ collapsed, toggleCollapsed, gerarBotao=false, nomeBotao='', linkGerarBotao='', botaoVoltar=false, link='' }) => {
+const Header = () => {
     const history = useHistory();
+    const [ visible, setVisible ] = useState(false);
     const deslogar = ( event ) => {
       event.preventDefault();
       localStorage.clear();
       history.push('/login')
     }
 
-    const linha = ( item, i ) => {
-      return <Link key={`bt${item.nomeBotao}`} className={ item.classe } to={item.rota}>{item.nomeBotao}</Link>;
-    }
-    
+    const showDrawer = () => {
+      setVisible(true);
+    };
+
     return (
       <>
         <header className='site-page-header'>
           <Row className='row-header' >
             <Row className='div-top-header'>
               <Col ms={{span:24}} md={{span:8}}>
-                <Link to='/' className='linkHome'>
-                    Gerenciador   
-                </Link>
-                
+                <div className='linkHome'>
+                  <Button type="primary" onClick={showDrawer}>
+                    <MenuOutlined />
+                  </Button>
+                  <Menu visible={visible} setVisible={setVisible} />   
+                </div>            
               </Col>
               <Col ms={{span:24}} md={{span:16}}>
                 <Link to='/#' className='bt-basico bt-logout'>
                   <PerfilUsuario deslogar={deslogar}/>
                 </Link>
-                
-                <Lista
-                  className="container-inputs"
-                  dados={[
-                    {classe:'bt-basico', rota:'/', nomeBotao: 'Dados do Usuário'},
-                    { classe: 'bt-basico', rota:'/consultas', nomeBotao: 'Consulta'  },
-                    { classe: 'bt-basico', rota:'/tipoExames', nomeBotao: 'Exame'  },
-                    { classe: 'bt-basico', rota:'/', nomeBotao: 'Home'  }
-                  ] }
-                  funcao={ ( item, i ) => linha( item, i ) }
-                />
               </Col>
             </Row>           
           </Row>
