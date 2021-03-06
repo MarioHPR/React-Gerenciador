@@ -35,9 +35,9 @@ const Header = () => {
                 </div>            
               </Col>
               <Col ms={{span:24}} md={{span:16}}>
-                <Link to='/#' className='bt-basico bt-logout'>
+                <div className='bt-basico bt-logout'>
                   <PerfilUsuario deslogar={deslogar}/>
-                </Link>
+                </div>
               </Col>
             </Row>           
           </Row>

@@ -1,7 +1,8 @@
 import { Drawer, Button, Avatar, Divider, Col, Row, Form, Input } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import UsuarioApi from '../../models/usuarioApi'; 
+import UsuarioApi from '../../models/usuarioApi';
+import InputMask from 'react-input-mask';
 import './style.css';
 
 const DescriptionItem = ({ title, content }) => (
@@ -30,8 +31,17 @@ export default function PerfilUsuario(props) {
   };
 
   const onChildrenDrawerClose = () => {
+    console.log(usuario)
     setChildrenDrawer(false);
   };
+
+  const onFinish = () => {
+    console.log("************************")
+    console.log("************************")
+    console.log(usuario)
+    console.log("************************")
+    console.log("************************")
+  }
 
   useEffect(()=>{
     const auth = localStorage.getItem("token-gerenciador-security");
@@ -140,29 +150,40 @@ export default function PerfilUsuario(props) {
             onClose={onChildrenDrawerClose}
             visible={childrenDrawer}
           >
-            <Form layout="vertical" hideRequiredMark>
+            <Form layout="vertical" hideRequiredMark onFinish={onFinish}>
+              <p className="site-description-item-profile-p" style={{ marginBottom: 24 }}>
+                Dados do usuário
+              </p>
               <Row gutter={16}>
                 <Col span={12}>
                   <Form.Item name="name" label="Name"
-                    rules={[{ required: true, message: 'Nome é obrigatório' }]}
+                    rules={ [ { required: usuario.nome.length > 0 ? false : true, message: `Nome é obrigatório!` } ] }
                   >
-                    <Input defaultValue={usuario.nome} placeholder="Insira seu nome" />
+                    <Input onChange={evt => usuario.nome = evt.target.value} defaultValue={usuario.nome} placeholder="Insira seu nome" />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
                   <Form.Item name="email" label="E-mail"
-                    rules={[{ required: true, message: 'E-mail é obrigatório' }]}
+                    rules={ [ { required: usuario.email.length > 0 ? false : true, message: `E-mail é obrigatório!` } ] }
                   >
-                    <Input defaultValue={usuario.email} placeholder="Insira seu email" />
+                    <Input onChange={evt => usuario.email = evt.target.value} defaultValue={usuario.email} placeholder="Insira seu email" />
                   </Form.Item>
                 </Col>
               </Row>
               <Row gutter={16}>
                 <Col span={12}>
                   <Form.Item name="cpf" label="Cpf"
-                    rules={[{ required: true, message: 'Cpf é obrigatório' }]}
+                    rules={ [ { required: usuario.cpf.length > 0 ? false : true, message: `Cpf é obrigatório!` } ] }
                   >
-                    <Input defaultValue={usuario.cpf} placeholder="Insira seu cpf" />
+                    
+                    <InputMask
+                      onChange={evt => usuario.cpf = evt.target.value}
+                      mask="999.999.999-99"
+                      key={ `bt${ usuario.cpf }` }
+                      type='text'
+                      placeholder="Insira seu cpf"
+                      defaultValue={usuario.cpf}
+                    />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -172,30 +193,82 @@ export default function PerfilUsuario(props) {
                 </Col>
               </Row>
               <Row gutter={16}>
-                <Col span={12}>
+                <Col span={24}>
                   <Form.Item name="dataNasc" label="Data nascimento"
-                    rules={[{ required: true, message: 'Cpf é obrigatório' }]}
+                    rules={ [ { required: usuario.dataNascimento.length > 0 ? false : true, message: `Data nascimento é obrigatório!` } ] }
                   >
-                    <Input defaultValue={usuario.cpf} placeholder="Insira seu cpf" />
+                    <Input onChange={evt => usuario.dataNascimento = evt.target.value} type='date' defaultValue={usuario.dataNascimento} />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Divider />
+              <p className="site-description-item-profile-p">Endereço</p>
+              <Row>
+                <Col span={12}>
+                  <Form.Item name="cidade" label="Cidade"
+                    rules={ [ { required: usuario.cidade.length > 0 ? false : true, message: `Cidade é obrigatório!` } ] }
+                  >
+                    <Input onChange={evt => usuario.cidade = evt.target.value} defaultValue={usuario.cidade} placeholder="Insira sua cidade" />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
-                  
+                  <Form.Item name="cep" label="Cep"
+                    rules={ [ { required: usuario.cep.length > 0 ? false : true, message: `Cep é obrigatório!` } ] }
+                  >
+                    <Input onChange={evt => usuario.cep = evt.target.value} defaultValue={usuario.cep} placeholder="Insira seu cep" />
+                  </Form.Item>
                 </Col>
               </Row>
-              <Row gutter={16}>
-                <Col span={24}>
-                  <Form.Item
-                    name="description"
-                    label="Description"
-                    rules={[
-                      {
-                        required: true,
-                        message: 'please enter url description',
-                      },
-                    ]}
+              <Row>
+                <Col span={12}>
+                  <Form.Item name="bairro" label="Bairro"
+                    rules={ [ { required: usuario.bairro.length > 0 ? false : true, message: `Bairro é obrigatório!` } ] }
                   >
-                    <Input.TextArea rows={4} placeholder="please enter url description" />
+                    <Input onChange={evt => usuario.bairro = evt.target.value} defaultValue={usuario.bairro} placeholder="Insira seu bairro" />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item name="rua" label="rua"
+                    rules={ [ { required: usuario.rua.length > 0 ? false : true, message: `Rua é obrigatório!` } ] }
+                  >
+                    <Input onChange={evt => usuario.rua = evt.target.value} defaultValue={usuario.rua} placeholder="Insira sua rua" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={24}>
+                  <Form.Item name="numero" label="Numero"
+                    rules={ [ { required: usuario.numero > 0 ? false : true, message: `Número é obrigatório!` } ] }
+                  >
+                    <Input onChange={evt => usuario.numero = evt.target.value} defaultValue={usuario.numero} placeholder="Insira o número da casa" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Divider />
+              <p className="site-description-item-profile-p">Contatos</p>
+              <Row>
+                <Col span={12}>
+                  <Form.Item name="contatoUm" label="Contato primário"
+                    rules={ [ { required: usuario.contatoUm.length > 0 ? false : true, message: `Contato primário é obrigatório!` } ] }
+                  >
+                    <Input onChange={evt => usuario.contatoUm = evt.target.value} defaultValue={usuario.contatoUm} placeholder="Insira seu contato primário" />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item name="contatoDois" label="Contato secundário"
+                    rules={ [ { required: usuario.contatoDois.length > 0 ? false : true, message: `Contato secundário é obrigatório!` } ] }
+                  >
+                    <Input onChange={evt => usuario.contatoDois = evt.target.value} defaultValue={usuario.contatoDois} placeholder="Insira seu contato secundário" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Divider />
+              <Row>
+                <Col xs={{span:24}} md={{span:12}}>
+                  <Form.Item wrapperCol={{ span: 24 }}>
+                    <Button className="btn-cadastrar tamanho-total" type="primary" htmlType="submit">
+                      <span className='color-white'>Realizar edição</span>
+                    </Button>
                   </Form.Item>
                 </Col>
               </Row>
