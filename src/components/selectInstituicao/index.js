@@ -8,10 +8,6 @@ export default function SelectInstituicao ( props ) {
   const { flg, setFlg, atualizaTela } = props;
   const [ instituicoes, setInstituicoes ] = useState([]);
 
-  const mostrarDados = () => {
-    setFlg(!flg);
-  }
-
   useEffect( () => {
     const instituicaoApi = new InstituicaoApi();
     instituicaoApi.buscarInstituicoes(localStorage.getItem("token-gerenciador-security")).then( resp => setInstituicoes(resp) );

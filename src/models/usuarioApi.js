@@ -14,17 +14,14 @@ export default class UsuarioApi {
 
 
   async criarUsuario( usuario ) {
-  
-    //const response = await Axios.post( `${URI}usuario/salvar`, parametro );
     const response = await Axios.post( `${URI_HEROKU}api/usuario/salvar`, usuario );
     return response;
   }
 
-  async trocarSenha(email, senha) {
-   /* const response = await Axios.put(`${URI}usuario/editar/senha`,
-      { email, senha, headers: { 'Authorization': autenticacao } }
-    );
-    return response[0];*/
+  async editarUsuario( usuario, auth ) {
+    Axios.defaults.headers.Authorization = auth;
+    const response = await Axios.put( `${URI_HEROKU}api/usuario/editar`, usuario );
+    return response;
   }
 
   async realizarLogin(email, senha) {
@@ -35,38 +32,4 @@ export default class UsuarioApi {
     return response;
   }
 
-  // Localidade
-
-  async cadastrarLocalidadeUsuario( localidade ) {
-    const { cidade, cep, bairro, rua, numero, email } = localidade;
-    const parametro = { cidade: cidade, cep: cep, bairro: bairro, rua: rua, numero:numero };
-    const response = await Axios.post( `${URI}endereco/salvar-localidade/${email}`, parametro );
-    return response;
-  }
-
-  async cadastrarLocalidade( auth, localidade ) {
-    const { cidade, cep, bairro, rua, numero } = localidade;
-    const parametro = { cidade: cidade, cep: cep, bairro: bairro, rua: rua, numero:numero };
-    Axios.defaults.headers.Authorization = auth;
-    const response = await Axios.post( `${URI}endereco/salvar`, parametro );
-    return response;
-  }
-
-
-  // Contato
-
-  async cadastrarContatoUsuario( contato ) {
-    const { contatoUm, contatoDois, email } = contato;
-    const parametro = { contatoUm: contatoUm, contatoDois: contatoDois };
-    const response = await Axios.post( `${URI}contato/salvar-contato/${email}`, parametro );
-    return response;
-  }
-  
-  async cadastrarContato( auth, contato ) {
-    const { contatoUm, contatoDois } = contato;
-    const parametro = { contatoUm: contatoUm, contatoDois: contatoDois };
-    Axios.defaults.headers.Authorization = auth;
-    const response = await Axios.post( `${URI}contato/salvar`, parametro );
-    return response;
-  }
 }

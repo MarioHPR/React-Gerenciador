@@ -73,6 +73,9 @@ export default function ModalAddConsulta(props) {
   }
 
   const executaAcao = ( aux ) => {
+    console.log("&&&&&&&&&&&&&&&&")
+    console.log(aux)
+    console.log("&&&&&&&&&&&&&&&&")
     if( parseInt(aux) === 0 ){
       setFlg(!flg);
     } else {
@@ -108,7 +111,7 @@ export default function ModalAddConsulta(props) {
                       </Form.Item>
                     </div>
                   </div>
-                  <select className='select-instituicoes' placeholder="Selecione uma instituição!" disabled={flg} onClick={evt => executaAcao(evt.target.value)}>
+                  <select className='select-instituicoes' placeholder="Selecione uma instituição!" disabled={flg} onChange={evt => executaAcao(evt.target.value)}>
                     <option key={`odefault${1}`} value={0}>+ adicionar nova instituição</option>
                     {
                       instituicoes.map( inst => <option key={`op${inst.id}`} value={inst.id}>{inst.nome}</option>)

@@ -16,11 +16,11 @@ export default function App() {
       <RotaPrivada path="/" exact component={ Home }/>
       <Route path="/login" exact component={ Login } />
       <Route path="/cadastro" exact component={ Cadastro } />
-      <Route path="/cadastroConsulta" exact component={ CadastroConsulta } />
-      <Route path="/consultas" exact component={ Consulta } />
-      <Route path="/tipoExames" exact component={ TipoExame } />
-      <Route path="/Exames/:id" exact component={ Exame } />
-      <Route path="/instituicao" exact component={ CadastroInsituicao } />
+      <RotaPrivada path="/cadastroConsulta" exact component={ CadastroConsulta } />
+      <RotaPrivada path="/consultas" exact component={ Consulta } />
+      <RotaPrivada path="/tipoExames" exact component={ TipoExame } />
+      <RotaPrivada path="/Exames/:id" exact component={ Exame } />
+      <RotaPrivada path="/instituicao" exact component={ CadastroInsituicao } />
     </Router>
   );
 }
