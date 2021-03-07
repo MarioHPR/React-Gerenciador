@@ -6,7 +6,9 @@ import "antd/dist/antd.css";
 
 ReactDOM.render(
   <React.StrictMode>
+    <div className="pagina-padrao">
     <App />
+    </div>
   </React.StrictMode>,
   document.getElementById('root')
 );

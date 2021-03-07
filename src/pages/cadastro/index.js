@@ -37,7 +37,7 @@ export default function Cadastro() {
   }
 
   return (
-    <div className="pagina-padrao tamanho-total-container">
+    <div className="pagina-padrao">
       <StepsTest step={step} setStep={setStep}/>
       <h2 className='titulo-principal'>Cadastro Usuário:</h2>
       <Form useForm={ form } name="validate_other" onFinish={onFinish} initialValues='' >

@@ -14,7 +14,7 @@ export default function Consulta() {
   },[setConsultas, atualizaTela]);
 
   return (
-    <div className="pagina-padrao">
+    <>
       <Header />
       <div className="div-cards" >
         <Row>
@@ -27,6 +27,6 @@ export default function Consulta() {
         </Row>
       </div>
       <Footer />
-    </div>
+    </>
   )
 }

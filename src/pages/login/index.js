@@ -5,14 +5,11 @@ import './login.css';
 import { Row, Col } from 'antd';
 
 export default class Login extends Component {
-  constructor( props ){
-    super(props);
-  }
 
   render(){   
     return (
       <>
-        <div className="pagina-padrao tamanho-total-container">
+        <div className="pagina-padrao">
           <Row>
             <Col xs={ { span: 24 } }>
               <div className="login">

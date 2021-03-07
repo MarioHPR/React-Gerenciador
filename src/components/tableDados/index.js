@@ -4,6 +4,8 @@ import './style.css';
 import ConsultaApi from '../../models/consultaApi';
 import { ModalAddConsulta, ModalVisualizarEditarConsulta } from '../../components';
 
+import { DeleteOutlined, EditOutlined ,EyeOutlined } from '@ant-design/icons';
+
 export default function TableDados( props ) {
   const { consultas, atualizaTela, setAtualizaTela } = props;
   const [ aux, setAux ] = useState([]);
@@ -36,10 +38,10 @@ export default function TableDados( props ) {
         true ? (
           <div className="container-operacoes">
             <Popconfirm title="Tem certeza que deseja deletar?" onConfirm={() => handleDelete(record.key)}>
-              <a href='#/' className="bt-operacao">Delete</a>
+              <a href='#/' className="bt-operacao" title="deletar"><DeleteOutlined /></a>
             </Popconfirm>
-            <a href='#/' onClick={() => {setVisibleEdit(true); setIdConsulta(record.key); setFlgEdit(1);}} className="bt-operacao">editar</a>
-            <a href='#/' onClick={() => {setVisibleEdit(true); setIdConsulta(record.key); setFlgEdit(0);}} className="bt-operacao">Visualizar</a>
+            <a href='#/' title="editar" onClick={() => {setVisibleEdit(true); setIdConsulta(record.key); setFlgEdit(1);}} className="bt-operacao"><EditOutlined /></a>
+            <a href='#/' title="visualizar" onClick={() => {setVisibleEdit(true); setIdConsulta(record.key); setFlgEdit(0);}} className="bt-operacao"><EyeOutlined /></a>
           </div>
         ) : null,
     },
@@ -76,7 +78,7 @@ export default function TableDados( props ) {
         <a  href='#/' onClick={() => {setVisibleAdd(true)}} className='bt-geral bt-cadastro-consulta' >
           Adicionar Consulta
         </a>
-        {aux !== [] && <Table columns={columns} dataSource={aux} pagination={{ pageSize: 10 }}/>}
+        {aux !== [] && <Table columns={columns} dataSource={aux} pagination={{ pageSize: 7 }}/>}
         <ModalAddConsulta atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} visibleAdd={visibleAdd} setVisibleAdd={setVisibleAdd} />
         <ModalVisualizarEditarConsulta atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} idConsulta={idConsulta} visibleEdit={visibleEdit} setVisibleEdit={setVisibleEdit} flgEdit={flgEdit} />
       </div>

@@ -3,6 +3,7 @@ import { Table, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
 import ExameApi from '../../models/exameApi';
 import { ModalAddExame, ModalExame } from '../../components';
+import { DeleteOutlined, EditOutlined ,EyeOutlined } from '@ant-design/icons';
 
 export default function TableTipoExame( props ) {
   const exameApi = new ExameApi();
@@ -37,10 +38,10 @@ export default function TableTipoExame( props ) {
         true ? (
           <div className="container-operacoes">
             <Popconfirm title="Tem certeza que deseja deletar?" onConfirm={() => handleDelete(record.key)}>
-              <a href='#/' className="bt-operacao">Delete</a>
+              <a href='#/' className="bt-operacao" title="deletar"><DeleteOutlined /></a>
             </Popconfirm>
-            <a href='#/' onClick={() => handleEditarVisualizar(record.key, 1)} className="bt-operacao">editar</a>
-            <Link to={`#/`} onClick={() => handleEditarVisualizar(record.key, 0)} className="bt-operacao">Visualizar</Link>
+            <a href='#/' title="editar" onClick={() => handleEditarVisualizar(record.key, 1)} className="bt-operacao"><EditOutlined /></a>
+            <Link to={`#/`} title="visualizar" onClick={() => handleEditarVisualizar(record.key, 0)} className="bt-operacao"><EyeOutlined /></Link>
           </div>
         ) : null,
     },

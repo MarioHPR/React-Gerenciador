@@ -12,7 +12,7 @@ export default function Exame() {
   },[setExames]);
 
   return (
-    <div className="pagina-padrao">
+    <>
       <Header />
       <div className="div-cards" >
         <Row>
@@ -25,6 +25,6 @@ export default function Exame() {
         </Row>
       </div>
       <Footer />
-    </div>
+    </>
   )
 }
