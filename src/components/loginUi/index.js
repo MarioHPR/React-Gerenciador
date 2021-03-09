@@ -18,7 +18,6 @@ function LoginUi( ) {
       setDeveExibirErro(false);
       const usuarioApi = new UsuarioApi();
       usuarioApi.realizarLogin(email, senha).then( resposta => {
-        console.log("aquiii")
         if(resposta.status === 200) {
           localStorage.setItem( "token-gerenciador-security", resposta.headers.authorization );
         }

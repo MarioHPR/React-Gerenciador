@@ -32,7 +32,6 @@ export default function PerfilUsuario(props) {
   };
 
   const onChildrenDrawerClose = () => {
-    console.log(usuario)
     setChildrenDrawer(false);
   };
 

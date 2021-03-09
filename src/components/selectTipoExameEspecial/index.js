@@ -69,7 +69,6 @@ export default function SelectTipoExameEspecial ( props ) {
               }
               return 0;
             });
-            console.log(auxItens)
             setItensDoExame(auxItens || undefined);
             setNomeExame(evt || '');
           }

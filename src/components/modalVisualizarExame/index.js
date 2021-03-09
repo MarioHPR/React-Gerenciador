@@ -67,13 +67,6 @@ export default function ModalExame(props) {
           setDoc(resp.data);
         }
       });
-
-      console.log("*****************************")
-    console.log("*****************************")
-    console.log("*****************************")
-    console.log(numero)
-    console.log("*****************************")
-    console.log("*****************************")
       const request = {
       "dadosInstituicao": {
         "contatoDTO": {

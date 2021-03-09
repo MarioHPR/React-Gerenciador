@@ -30,6 +30,24 @@ export default function ModalAddExame(props) {
     values.tipoExame = nomeExame;
     values.parametros = itensDoExame ? itensDoExame : [];
     const auth = localStorage.getItem("token-gerenciador-security");
+    console.log("&¨&¨&¨¨¨&¨¨&")
+    console.log("&¨&¨&¨¨¨&¨¨&")
+    console.log("&¨&¨&¨¨¨&¨¨&")
+    console.log(values)
+    console.log("&¨&¨&¨¨¨&¨¨&")
+    console.log("&¨&¨&¨¨¨&¨¨&")
+    console.log("&¨&¨&¨¨¨&¨¨&")
+    if(values.numero.match(/_/)){
+      values.numero = values.numero.replaceAll("_", "");
+    }
+
+    console.log("&¨&¨&¨¨¨&¨¨&")
+    console.log("&¨&¨&¨¨¨&¨¨&")
+    console.log("&¨&¨&¨¨¨&¨¨&")
+    console.log(values)
+    console.log("&¨&¨&¨¨¨&¨¨&")
+    console.log("&¨&¨&¨¨¨&¨¨&")
+    console.log("&¨&¨&¨¨¨&¨¨&")
 
     const arquivoApi = new ArquivoApi();
     arquivoApi.uploadArquivo(doc, auth).then( resp =>{
@@ -53,7 +71,7 @@ export default function ModalAddExame(props) {
   
   const adicionar = () => {
     let arrayAux = itensDoExame !== undefined ? itensDoExame : []; 
-    let campoNovo = { id: `campo${atualizaTela}`, campo: '', valor: ''};
+    let campoNovo = { id: 0, campo: '', valor: ''};
     let aux = atualizaTela + 1;
     setAtualizaTela(aux);
     arrayAux.push(campoNovo);
@@ -99,7 +117,7 @@ export default function ModalAddExame(props) {
                         </Tooltip>
                         { exame.id !== 0 ?
                           <input className='input-modal' placeholder="Campo atributo" value={exame.campo} readOnly/> :
-                          <input className='input-modal' placeholder="Campo atributo" onChange={evt => {exame.campo = evt.target.value;removeOuAtualiza(null)}} value={exame.campo} />
+                          <input className='input-modal' placeholder="Campo atributo" onChange={evt => exame.campo = evt.target.value} />
                         }
                       </div>
                     ) )
@@ -113,7 +131,7 @@ export default function ModalAddExame(props) {
                         <Tooltip className='tooltip' title={`Digite o Valor referente ao atributo ${exame.campo}!`}>
                           <InfoCircleOutlined className='icon'/>
                         </Tooltip>
-                        <input className='input-modal' placeholder="Valor atributo" onChange={evt => {exame.valor = evt.target.value;removeOuAtualiza(null)}} value={exame.valor} />
+                        <input className='input-modal' placeholder="Valor atributo" onChange={evt => exame.valor = evt.target.value} />
                         <Tooltip className='tooltip' title={`Remover valor e atributo ${exame.campo}!`}>                               
                           <MinusCircleOutlined  className='icon icon-remover' onClick={()=>removeOuAtualiza(exame.campo)}/>
                         </Tooltip>

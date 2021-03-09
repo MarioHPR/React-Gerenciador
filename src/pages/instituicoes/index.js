@@ -4,13 +4,14 @@ import { Row, Col } from 'antd';
 //import './style.css';
 
 import InstituicaoApi from '../../models/instituicaoApi';
-
+const instituicaoApi = new InstituicaoApi();
+const auth = localStorage.getItem("token-gerenciador-security");
 export default function Instituicoes() {
   const [ instituicoes, setInstituicoes ] = useState([]);
   const [ atualizaTela, setAtualizaTela ] = useState(0);
   const [ message, setMessage ] = useState('');
-  const instituicaoApi = new InstituicaoApi();
-  const auth = localStorage.getItem("token-gerenciador-security");
+  
+
   const [ aux, setAux ] = useState([]);
 
   useEffect(()=>{
@@ -30,7 +31,6 @@ export default function Instituicoes() {
       }
     } );
   };
-console.log(instituicoes)
   return (
     <>
       <Header />

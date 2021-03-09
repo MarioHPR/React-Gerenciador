@@ -25,15 +25,6 @@ export default function ModalAddConsulta(props) {
   const onReset = () => form.resetFields();
 
   const onFinish = values => {
-    console.log("/************/*/**//*//*/*//*//")
-    console.log("/************/*/**//*//*/*//*//")
-    console.log("/************/*/**//*//*/*//*//")
-    console.log("/************/*/**//*//*/*//*//")
-    console.log(values)
-    console.log("/************/*/**//*//*/*//*//")
-    console.log("/************/*/**//*//*/*//*//")
-    console.log("/************/*/**//*//*/*//*//")
-    console.log("/************/*/**//*//*/*//*//")
     const auth = localStorage.getItem("token-gerenciador-security");
     const arquivoApi = new ArquivoApi();
     arquivoApi.uploadArquivo(doc, auth).then( resp =>{
@@ -83,9 +74,6 @@ export default function ModalAddConsulta(props) {
   }
 
   const executaAcao = ( aux ) => {
-    console.log("&&&&&&&&&&&&&&&&")
-    console.log(aux)
-    console.log("&&&&&&&&&&&&&&&&")
     if( parseInt(aux) === 0 ){
       setFlg(!flg);
     } else {

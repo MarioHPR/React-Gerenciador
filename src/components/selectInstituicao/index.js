@@ -11,7 +11,7 @@ export default function SelectInstituicao ( props ) {
   useEffect( () => {
     const instituicaoApi = new InstituicaoApi();
     instituicaoApi.buscarInstituicoes(localStorage.getItem("token-gerenciador-security")).then( resp => setInstituicoes(resp) );
-  },[atualizaTela] );
+  },[atualizaTela, setFlg] );
 
   return (
     <>
