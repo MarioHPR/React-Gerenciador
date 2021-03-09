@@ -20,7 +20,6 @@ function LoginUi( ) {
       usuarioApi.realizarLogin(email, senha).then( resposta => {
         console.log("aquiii")
         if(resposta.status === 200) {
-          console.log("entrouaaaaaaaaaaaaa ui")
           localStorage.setItem( "token-gerenciador-security", resposta.headers.authorization );
         }
         if(localStorage.getItem("token-gerenciador-security")){

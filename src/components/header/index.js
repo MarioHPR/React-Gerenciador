@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Row, Col } from 'antd';
 import { useHistory } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import './header.css';
 import { Button } from 'antd';
 import Menu from '../menu';
@@ -28,7 +27,7 @@ const Header = () => {
             <Row className='div-top-header'>
               <Col ms={{span:24}} md={{span:8}}>
                 <div className='linkHome'>
-                  <Button type="primary" onClick={showDrawer}>
+                  <Button  className='menu' onClick={showDrawer}>
                     <MenuOutlined />
                   </Button>
                   <Menu visible={visible} setVisible={setVisible} />   

@@ -20,11 +20,8 @@ export default function Cadastro() {
     }
   }
   async function handleSubmit(event) {
-    //event.preventDefault();
-    console.log(event);
     const usuarioApi = new UsuarioApi();
-
-    usuarioApi.criarUsuario(event).then( resposta => {// arrumar back-end para receber todos os dados
+    usuarioApi.criarUsuario(event).then( resposta => {
         if( resposta.status === 200 )
           history.push('/login');
       } ); 
@@ -37,7 +34,7 @@ export default function Cadastro() {
   }
 
   return (
-    <div className="pagina-padrao">
+    <>
       <StepsTest step={step} setStep={setStep}/>
       <h2 className='titulo-principal'>Cadastro Usuário:</h2>
       <Form useForm={ form } name="validate_other" onFinish={onFinish} initialValues='' >
@@ -70,6 +67,6 @@ export default function Cadastro() {
           </Col>
         </Row>
       </Form>
-    </div>
+    </>
   )
 }

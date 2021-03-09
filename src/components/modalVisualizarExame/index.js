@@ -67,6 +67,13 @@ export default function ModalExame(props) {
           setDoc(resp.data);
         }
       });
+
+      console.log("*****************************")
+    console.log("*****************************")
+    console.log("*****************************")
+    console.log(numero)
+    console.log("*****************************")
+    console.log("*****************************")
       const request = {
       "dadosInstituicao": {
         "contatoDTO": {
@@ -92,7 +99,7 @@ export default function ModalExame(props) {
       "parametros": parametros,
       "tipoExame": tipoExame || ''
     };
-
+    
     const exameApi = new ExameApi();
     exameApi.editarExame( idExame, request, auth).then( resp => { 
         if(resp.status === 200){

@@ -1,6 +1,6 @@
 .site-page-header {
-    border: 1px solid rgba(75, 76, 77, 0.568);
-    background-color:  rgba(75, 76, 77, 0.568) !important;
+    border: 1px solid rgba(182, 203, 224, 0.568);
+    background-color:  rgba(1, 13, 54, 0.336) !important;
     height: auto;
 }
 
@@ -17,6 +17,14 @@
 
 .espaco-left {
     margin-left: 5px;
+}
+
+.menu {
+    background-color: rgba(65, 99, 192, 0.534)!important;
+    color: white!important;
+    border-radius: 8px!important;
+    width: 60px;
+    height: 40px!important;
 }
 
 .bt-basico {

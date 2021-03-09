@@ -25,7 +25,15 @@ export default function ModalAddConsulta(props) {
   const onReset = () => form.resetFields();
 
   const onFinish = values => {
-
+    console.log("/************/*/**//*//*/*//*//")
+    console.log("/************/*/**//*//*/*//*//")
+    console.log("/************/*/**//*//*/*//*//")
+    console.log("/************/*/**//*//*/*//*//")
+    console.log(values)
+    console.log("/************/*/**//*//*/*//*//")
+    console.log("/************/*/**//*//*/*//*//")
+    console.log("/************/*/**//*//*/*//*//")
+    console.log("/************/*/**//*//*/*//*//")
     const auth = localStorage.getItem("token-gerenciador-security");
     const arquivoApi = new ArquivoApi();
     arquivoApi.uploadArquivo(doc, auth).then( resp =>{
@@ -35,7 +43,9 @@ export default function ModalAddConsulta(props) {
     });
     const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao, numero } = values;
     const { diagnostico, prescricaoMedica, nomeMedico } = values;
-
+    if(numero.match(/_/)){
+      values.numero = numero.replaceAll("_", "");
+    }
     const request = {
       "dadosInstituicao": {
         "contatoDTO": {
@@ -48,7 +58,7 @@ export default function ModalAddConsulta(props) {
           "cep": cep || '',
           "cidade": cidade || '',
           "id": 0,
-          "numero": numero.replaceAll("_", "") || 0,
+          "numero": numero !== undefined ? numero : 0,
           "rua": rua || ''
         },
         "id": (bairro && flg) ? 0 : instituicao.id || 0,

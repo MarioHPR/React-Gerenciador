@@ -27,7 +27,7 @@ export default function Menu(props) {
           <Divider />
           <Link className='' to='/consultas'>Consulta</Link>
           <Divider />
-          <Link className='' to='/'>Instituições</Link>
+          <Link className='' to='/instituicoes'>Instituições</Link>
           <Divider />
           <Link className='' to='/'>Tipo de exames cadastrados</Link>
         </div>

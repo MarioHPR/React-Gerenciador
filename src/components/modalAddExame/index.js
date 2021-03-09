@@ -52,18 +52,16 @@ export default function ModalAddExame(props) {
   }
   
   const adicionar = () => {
-    let arrayAux =  itensDoExame;
-    let campoNovo = { id: 0, campo: '', valor: ''};
+    let arrayAux = itensDoExame !== undefined ? itensDoExame : []; 
+    let campoNovo = { id: `campo${atualizaTela}`, campo: '', valor: ''};
     let aux = atualizaTela + 1;
     setAtualizaTela(aux);
     arrayAux.push(campoNovo);
     setItensDoExame(arrayAux);
-    console.log(itensDoExame)
-    removeOuAtualiza(null);
   };
 
   const removeOuAtualiza = value => {
-    let arrayAux = itensDoExame.filter( item => item.campo !== value);
+    let arrayAux = itensDoExame.filter( item => (item.campo !== value && item.id !== 0) );
     setItensDoExame(arrayAux);
   };
 

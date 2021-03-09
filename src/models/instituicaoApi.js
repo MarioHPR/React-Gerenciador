@@ -28,4 +28,10 @@ export default class InstitucaoApi {
     return response;
   }
 
+  async deletarInstituicao( id, auth ) {
+    Axios.defaults.headers.Authorization = auth;
+    const response = await Axios.delete( `${URI_HEROKU}instituicao/deletar/${id}` );
+    return response;
+  }
+
 }
