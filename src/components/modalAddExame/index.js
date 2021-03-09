@@ -30,24 +30,9 @@ export default function ModalAddExame(props) {
     values.tipoExame = nomeExame;
     values.parametros = itensDoExame ? itensDoExame : [];
     const auth = localStorage.getItem("token-gerenciador-security");
-    console.log("&¨&¨&¨¨¨&¨¨&")
-    console.log("&¨&¨&¨¨¨&¨¨&")
-    console.log("&¨&¨&¨¨¨&¨¨&")
-    console.log(values)
-    console.log("&¨&¨&¨¨¨&¨¨&")
-    console.log("&¨&¨&¨¨¨&¨¨&")
-    console.log("&¨&¨&¨¨¨&¨¨&")
     if(values.numero.match(/_/)){
       values.numero = values.numero.replaceAll("_", "");
     }
-
-    console.log("&¨&¨&¨¨¨&¨¨&")
-    console.log("&¨&¨&¨¨¨&¨¨&")
-    console.log("&¨&¨&¨¨¨&¨¨&")
-    console.log(values)
-    console.log("&¨&¨&¨¨¨&¨¨&")
-    console.log("&¨&¨&¨¨¨&¨¨&")
-    console.log("&¨&¨&¨¨¨&¨¨&")
 
     const arquivoApi = new ArquivoApi();
     arquivoApi.uploadArquivo(doc, auth).then( resp =>{

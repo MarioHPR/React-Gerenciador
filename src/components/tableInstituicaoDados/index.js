@@ -4,6 +4,7 @@ import './style.css';
 import { ModalAddConsulta, ModalVisualizarEditarConsulta } from '..';
 
 import { DeleteOutlined, EditOutlined ,EyeOutlined } from '@ant-design/icons';
+import ModalAddInstituicao from '../modalAddInstituicao';
 
 export default function TableInstituicaoDados( props ) {
   const { instituicoes, atualizaTela, setAtualizaTela, handleDelete, message } = props;
@@ -66,7 +67,7 @@ export default function TableInstituicaoDados( props ) {
         Adicionar instituição
       </a>
       {aux !== [] && <Table columns={columns} dataSource={aux} pagination={{ pageSize: 7 }}/>}
-      <ModalAddConsulta atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} visibleAdd={visibleAdd} setVisibleAdd={setVisibleAdd} />
+      <ModalAddInstituicao atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} visibleAdd={visibleAdd} setVisibleAdd={setVisibleAdd} />
       <ModalVisualizarEditarConsulta atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} idConsulta={idConsulta} visibleEdit={visibleEdit} setVisibleEdit={setVisibleEdit} flgEdit={flgEdit} />
     </div>
   )

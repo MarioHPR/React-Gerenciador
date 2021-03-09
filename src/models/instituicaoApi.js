@@ -1,16 +1,29 @@
 import Axios from 'axios';
 
-const URI = `http://localhost:8080/api/`;
 const URI_HEROKU = 'https://back-geranciador-exames.herokuapp.com/api/';
 
 export default class InstitucaoApi {
 
   async criarInstituicao( instituicao, auth ) {
-    const { nomeInstituicao, idLocalidade, idContato } = instituicao;
-    const parametro = { nome : nomeInstituicao, idLocalidade : idLocalidade, idContato : idContato };
+    const { contatoUm, contatoDois, nome } = instituicao;
+    const { bairro, cep, cidade, numero, rua } = instituicao;
+
+    const dadosInstituicao = {
+      "contatoDTO" : {
+        "contatoDois" : contatoDois || '',
+        "contatoUm" : contatoUm || ''
+      }, "enderecoDTO" : {
+        "bairro": bairro || '',
+        "cep": cep || '',
+        "cidade": cidade || '',
+        "numero": numero || 0,
+        "rua": rua || ''
+      },
+      "nome" : nome
+    }
+
     Axios.defaults.headers.Authorization = auth;
-    //const response = await Axios.post( `${URI}instituicao/salvar/`, parametro );
-    const response = await Axios.post( `${URI_HEROKU}instituicao/salvar/`, parametro );
+    const response = await Axios.post( `${URI_HEROKU}instituicao/salvar/`, dadosInstituicao );
     return response;
   }
 
