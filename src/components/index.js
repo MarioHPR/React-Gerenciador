@@ -16,7 +16,8 @@ import ModalAddConsulta from './modalAddConsulta';
 import ModalVisualizarEditarConsulta from './modalVisualizarEditarConsulta';
 import ModalAddExame from './modalAddExame';
 import ModalExame from './modalVisualizarExame';
-
+import ModalAddInstituicao from './modalAddInstituicao';
+import ModalVisualizarEditarInstituicao from './modalVisualizarEditarInstituicao';
 import InputBasicoModal from './inputBasicoModal';
 import InputFormItem from './inputFormInput';
 import SelectTipoExameEspecial from './selectTipoExameEspecial';
@@ -33,7 +34,7 @@ export {  Footer,
           Lista,
           CampoUpload,
           SelectInstituicao,
-
+          ModalAddInstituicao,
           SelectTipoExameEspecial,
           TableDados,
           TableTipoExame,
@@ -41,7 +42,7 @@ export {  Footer,
           ModalVisualizarEditarConsulta,
           ModalAddExame,
           ModalExame,
-
+          ModalVisualizarEditarInstituicao,
           InputBasicoModal,
           InputFormItem,
           StepsTest

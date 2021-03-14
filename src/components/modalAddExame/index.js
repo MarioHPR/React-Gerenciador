@@ -30,12 +30,12 @@ export default function ModalAddExame(props) {
     values.tipoExame = nomeExame;
     values.parametros = itensDoExame ? itensDoExame : [];
     const auth = localStorage.getItem("token-gerenciador-security");
-    if(values.numero.match(/_/)){
+    if(values.numero && values.numero.includes('_')){
       values.numero = values.numero.replaceAll("_", "");
     }
 
     const arquivoApi = new ArquivoApi();
-    arquivoApi.uploadArquivo(doc, auth).then( resp =>{
+    doc !== 0 && arquivoApi.uploadArquivo(doc, auth).then( resp =>{
       if(resp.status === 200){
         setDoc(resp.data);
       }

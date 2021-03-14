@@ -15,7 +15,7 @@ export default function ModalExame(props) {
   const [ flg, setFlg ] = useState(false);
   const [ exame, setExame ] = useState();
   const [ tipoExame, setTipoExame ] = useState('');
-  const [ dataExame, setDataExame ] = useState('');
+  const [ dataExame, setDataExame ] = useState();
   const [ instituicao, setInstituicao ] = useState();
   const [ parametros, setParametros ] = useState([]);
   const [ instituicoes, setInstituicoes ] = useState([]);
@@ -58,15 +58,20 @@ export default function ModalExame(props) {
   };
 
   const onFinish = values => {
-      const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao, numero } = values;
+      const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao } = values;
       const auth = localStorage.getItem("token-gerenciador-security");
 
       const arquivoApi = new ArquivoApi();
-      arquivoApi.uploadArquivo(doc, auth).then( resp =>{
+      doc && arquivoApi.uploadArquivo(doc, auth).then( resp =>{
         if(resp.status === 200){
           setDoc(resp.data);
         }
       });
+
+      if(values.numero && values.numero.includes('_')){
+        values.numero = values.numero.replaceAll("_", "");
+      }
+
       const request = {
       "dadosInstituicao": {
         "contatoDTO": {
@@ -81,7 +86,7 @@ export default function ModalExame(props) {
           "email": '',
           "emeail": '',
           "id": 0,
-          "numero": numero.replaceAll("_", "") || 0,
+          "numero": values.numero || 0,
           "rua": rua || ''
         },
         "id": (bairro && flg) ? 0 : instituicao.id || 0,
@@ -131,13 +136,13 @@ export default function ModalExame(props) {
                   <div className='div-comum-direita'>
                     <label>Data: </label>
                     {
-                      editarVisualizar === 1 ? <input onClick={evt => executaAcao(evt.target.value)}className='input-modal margin-bottom' type='date' value={dataExame} onChange={ evt => setDataExame(evt.target.value)}/> 
-                      : <input className='input-modal margin-bottom' type='date' value={dataExame} onChange={ evt => setDataExame(evt.target.value)} readOnly/>
+                      editarVisualizar === 1 ? <input className='input-modal margin-bottom' type='date' value={dataExame} onChange={ evt => setDataExame(evt.target.value)}/> 
+                      : <input className='input-modal margin-bottom' type='date' value={dataExame} readOnly/>
                     }
                   </div>
                 </div>
               </div>
-              {
+              { console.log(editarVisualizar),
                 instituicao && editarVisualizar === 1 ?
                   <>
                     <div className="dados-instituicao">

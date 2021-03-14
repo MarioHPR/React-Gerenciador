@@ -47,4 +47,11 @@ export default class InstitucaoApi {
     return response;
   }
 
+  async editarInstiuicao( instituicao, auth ) {
+    Axios.defaults.headers.Authorization = auth;
+    let id = instituicao.id;
+    const response = await Axios.put( `${URI_HEROKU}instituicao/editar/${id}`, instituicao );
+    return response;
+  }
+
 }

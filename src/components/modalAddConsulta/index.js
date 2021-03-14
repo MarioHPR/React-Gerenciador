@@ -32,11 +32,12 @@ export default function ModalAddConsulta(props) {
         setDoc(resp.data);
       }
     });
-    const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao, numero } = values;
+    const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao } = values;
     const { diagnostico, prescricaoMedica, nomeMedico } = values;
-    if(numero.match(/_/)){
-      values.numero = numero.replaceAll("_", "");
+    if(values.numero && values.numero.includes('_')){
+      values.numero = values.numero.replaceAll("_", "");
     }
+    const { numero } = values;
     const request = {
       "dadosInstituicao": {
         "contatoDTO": {
@@ -109,7 +110,8 @@ export default function ModalAddConsulta(props) {
                       </Form.Item>
                     </div>
                   </div>
-                  <select className='select-instituicoes' placeholder="Selecione uma instituição!" disabled={flg} onChange={evt => executaAcao(evt.target.value)}>
+                  <select className='select-instituicoes' disabled={flg} onChange={evt => executaAcao(evt.target.value)}>
+                    <option value=""disabled selected>Selecione uma instituição!</option>
                     <option key={`odefault${1}`} value={0}>+ adicionar nova instituição</option>
                     {
                       instituicoes.map( inst => <option key={`op${inst.id}`} value={inst.id}>{inst.nome}</option>)

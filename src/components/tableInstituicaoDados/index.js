@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Popconfirm } from 'antd';
 import './style.css';
-import { ModalAddConsulta, ModalVisualizarEditarConsulta } from '..';
+import { ModalAddInstituicao, ModalVisualizarEditarInstituicao } from '..';
 
 import { DeleteOutlined, EditOutlined ,EyeOutlined } from '@ant-design/icons';
-import ModalAddInstituicao from '../modalAddInstituicao';
 
 export default function TableInstituicaoDados( props ) {
   const { instituicoes, atualizaTela, setAtualizaTela, handleDelete, message } = props;
@@ -12,7 +11,7 @@ export default function TableInstituicaoDados( props ) {
 
   const [ visibleEdit, setVisibleEdit ] = useState(false);
   const [ visibleAdd, setVisibleAdd ] = useState(false);
-  const [ idConsulta, setIdConsulta ] = useState();
+  const [ idInstituicao, setIdInstituicao ] = useState();
   const [ flgEdit, setFlgEdit ] = useState(0);
 
   const columns = [
@@ -38,8 +37,8 @@ export default function TableInstituicaoDados( props ) {
             <Popconfirm title="Tem certeza que deseja deletar?" onConfirm={() => handleDelete(record.key)}>
               <a href='#/' className="bt-operacao" title="deletar"><DeleteOutlined /></a>
             </Popconfirm>
-            <a href='#/' title="editar" onClick={() => {setVisibleEdit(true); setIdConsulta(record.key); setFlgEdit(1);}} className="bt-operacao"><EditOutlined /></a>
-            <a href='#/' title="visualizar" onClick={() => {setVisibleEdit(true); setIdConsulta(record.key); setFlgEdit(0);}} className="bt-operacao"><EyeOutlined /></a>
+            <a href='#/' title="editar" onClick={() => {setVisibleEdit(true); setIdInstituicao(record.key); setFlgEdit(1);}} className="bt-operacao"><EditOutlined /></a>
+            <a href='#/' title="visualizar" onClick={() => {setVisibleEdit(true); setIdInstituicao(record.key); setFlgEdit(0);}} className="bt-operacao"><EyeOutlined /></a>
           </div>
         ) : null,
     },
@@ -68,7 +67,7 @@ export default function TableInstituicaoDados( props ) {
       </a>
       {aux !== [] && <Table columns={columns} dataSource={aux} pagination={{ pageSize: 7 }}/>}
       <ModalAddInstituicao atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} visibleAdd={visibleAdd} setVisibleAdd={setVisibleAdd} />
-      <ModalVisualizarEditarConsulta atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} idConsulta={idConsulta} visibleEdit={visibleEdit} setVisibleEdit={setVisibleEdit} flgEdit={flgEdit} />
+      <ModalVisualizarEditarInstituicao atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} idInstituicao={idInstituicao} visibleEdit={visibleEdit} setVisibleEdit={setVisibleEdit} flgEdit={flgEdit} />
     </div>
   )
 }

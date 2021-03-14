@@ -50,7 +50,7 @@ export default function ModalVisualizarEditarConsulta(props) {
   }
 
   const onFinish = values => {
-    const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao, numero } = values;
+    const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao } = values;
     const { diagnostico, prescricao, nomeMedico, dataConsulta } = consulta;
     const idinstituicao = instituicao.id;
     const auth = localStorage.getItem("token-gerenciador-security");
@@ -60,6 +60,10 @@ export default function ModalVisualizarEditarConsulta(props) {
         setDoc(resp.data);
       }
     });
+    if(values.numero && values.numero.includes('_')){
+      values.numero = numero.replaceAll("_", "");
+    }
+    const { numero } = values;
     const request = {
       "dadosInstituicao": {
         "contatoDTO": {
@@ -84,7 +88,9 @@ export default function ModalVisualizarEditarConsulta(props) {
       "prescricao": prescricao || '',
       "nomeMedico": nomeMedico || ''
     };
-  
+  console.log("//////////////")
+  console.log(request)
+  console.log("//////////////")
   const consultaApi = new ConsultaApi();
   consultaApi.editarConsulta( idConsulta, request, auth ).then( resp => { 
       if(resp.status === 200){
