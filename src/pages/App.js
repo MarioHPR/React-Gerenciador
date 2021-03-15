@@ -6,6 +6,7 @@ import Consulta from './Consulta';
 import TipoExame from './TipoExame';
 import Home from './home';
 import Instituicoes from './instituicoes';
+import ListaTipoExames from './listaTipoExames';
 import { RotaPrivada } from '../components/rotaPrivada';
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
       <RotaPrivada path="/consultas" exact component={ Consulta } />
       <RotaPrivada path="/tipoExames" exact component={ TipoExame } />
       <RotaPrivada path="/instituicoes" exact component={ Instituicoes } />
+      <RotaPrivada path="/listaTipoExames" exact component={ ListaTipoExames } />
     </Router>
   );
 }

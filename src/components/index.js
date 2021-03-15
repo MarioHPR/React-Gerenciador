@@ -22,6 +22,7 @@ import InputBasicoModal from './inputBasicoModal';
 import InputFormItem from './inputFormInput';
 import SelectTipoExameEspecial from './selectTipoExameEspecial';
 import StepsTest from './steps';
+import TableListaTipoExame from './tableListaTipoExame';
 
 export {  Footer,
           FormularioUi,
@@ -45,5 +46,6 @@ export {  Footer,
           ModalVisualizarEditarInstituicao,
           InputBasicoModal,
           InputFormItem,
-          StepsTest
+          StepsTest,
+          TableListaTipoExame
         }; 
