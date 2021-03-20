@@ -142,7 +142,7 @@ export default function ModalExame(props) {
                   </div>
                 </div>
               </div>
-              { console.log(editarVisualizar),
+              {
                 instituicao && editarVisualizar === 1 ?
                   <>
                     <div className="dados-instituicao">

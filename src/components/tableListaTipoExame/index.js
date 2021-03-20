@@ -1,9 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Input, InputNumber, Popconfirm, Form, Typography } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import TipoExameApi from '../../models/tipoExameApi';
+
+const tipoExameApi = new TipoExameApi();
+const auth = localStorage.getItem("token-gerenciador-security");
+
 export default function TableListaTipoExame( props ) {
 
+  const [ tipoExames, setTipoExames ] = useState();
+  const [ aux, setAux ] = useState();
   const originData = [];
+
+  useEffect(()=>{
+
+
+    let a = [];
+    tipoExameApi.buscarTodosTipoExames(auth)
+      .then( resp => {
+        setTipoExames(resp);
+        let a = [];
+        tipoExames && tipoExames.map( tipoExame => {
+          a.push({
+            "key": tipoExame.id,
+            "id" : tipoExame.id,
+            "nome": `${tipoExame.nomeExame}`,
+            "quantidade": `${tipoExame.quantidade}`
+          })
+        } );
+        setAux(a);
+        console.log(resp)
+    } );
+  },[]);
+
+
 
   const [form] = Form.useForm();
     const [data, setData] = useState(originData);
@@ -42,7 +72,7 @@ export default function TableListaTipoExame( props ) {
           setEditingKey('');
         }
       } catch (errInfo) {
-        console.log('Validate Failed:', errInfo);
+        
       }
     };
   
@@ -50,20 +80,20 @@ export default function TableListaTipoExame( props ) {
       {
         title: 'ID',
         dataIndex: 'id',
-        width: '25%',
-        editable: true,
+        width: '10%',
+        editable: false,
       },
       {
         title: 'Nome Exame',
         dataIndex: 'nome',
-        width: '15%',
+        width: '50%',
         editable: true,
       },
       {
         title: 'Quantidade',
         dataIndex: 'quantidade',
-        width: '40%',
-        editable: true,
+        width: '10%',
+        editable: false,
       },
       {
         title: 'Operações',
@@ -115,15 +145,6 @@ export default function TableListaTipoExame( props ) {
       };
     });
   
-  for (let i = 0; i < 5; i++) {
-    originData.push({
-      key: i.toString(),
-      id: `id ${i}`,
-      quantidade: 32,
-      nome: `London Park no. ${i}`,
-    });
-  }
-  
   const EditableCell = ({
     editing,
     dataIndex,
@@ -160,21 +181,26 @@ export default function TableListaTipoExame( props ) {
   };
 
   return (
-    <Form form={form} component={false}>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        dataSource={data}
-        columns={mergedColumns}
-        rowClassName="editable-row"
-        pagination={{
-          onChange: cancel,
-        }}
-      />
-    </Form>
+    <div className='container-lista-consulta'>
+      {
+        aux &&
+        <Form form={form} component={false}>
+          <Table
+            components={{
+              body: {
+                cell: EditableCell,
+              },
+            }}
+            bordered
+            dataSource={aux}
+            columns={mergedColumns}
+            rowClassName="editable-row"
+            pagination={{
+              onChange: cancel,
+            }}
+          />
+        </Form>
+      }
+    </div>
   );
 }

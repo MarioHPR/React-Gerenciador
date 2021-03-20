@@ -14,24 +14,34 @@ export default function ModalVisualizarEditarInstituicao(props) {
   const [ flg, setFlg ] = useState(false);
   const [ instituicao, setInstituicao ] = useState();
   const [ atualizaInterna, setAtualizaInterna ] = useState(0);
-  const [ doc, setDoc ] = useState(0);
 
   useEffect(()=>{
     
-    instituicaoApi.buscarInstituicaoPorId(idInstituicao, auth).then( resp => setInstituicao(resp.data) );
-// eslint-disable-next-line react-hooks/exhaustive-deps
-  },[atualizaTela, idInstituicao] );
+    instituicaoApi.buscarInstituicaoPorId(idInstituicao, auth).then( resp => {
+      setInstituicao(resp.data);
+    } );
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[idInstituicao] );
 
   const onReset = () => {
     form.resetFields();
+    setInstituicao(null);
   };
 
   const onFinish = () => {
-    instituicaoApi.editarInstiuicao(instituicao, auth).then(resp => console.log(resp));
+    instituicaoApi.editarInstiuicao(instituicao, auth).then(resp => {
+      let aux = atualizaTela + 1;
+      setAtualizaTela(aux);
+      setVisibleEdit(false);
+      setAtualizaInterna(atualizaInterna + 1);
+      flg && setFlg(!flg);
+      onReset();
+    } );
   };
   
   return (
-    <> 
+    <> { instituicao &&
       <Modal title={flgEdit === 1 ? "Dados atuais para edição da instituição" : "Visualização dos dados atuais da instituição"} visible={visibleEdit} onOk={() => {setVisibleEdit(false); onReset(); flg && setFlg(!flg)}}
         onCancel={() => {setVisibleEdit(false);onReset(); flg && setFlg(!flg)}} className='container-modal-editar' okButtonProps={{ hidden: true }}
           cancelButtonProps={{ hidden: flgEdit === 1 ? true : false }} >
@@ -140,7 +150,7 @@ export default function ModalVisualizarEditarInstituicao(props) {
             </div>
           </Form>
           }</>
-      </Modal>
+      </Modal>}
     </>
   );
 };

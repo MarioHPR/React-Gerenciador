@@ -88,9 +88,7 @@ export default function ModalVisualizarEditarConsulta(props) {
       "prescricao": prescricao || '',
       "nomeMedico": nomeMedico || ''
     };
-  console.log("//////////////")
-  console.log(request)
-  console.log("//////////////")
+    
   const consultaApi = new ConsultaApi();
   consultaApi.editarConsulta( idConsulta, request, auth ).then( resp => { 
       if(resp.status === 200){

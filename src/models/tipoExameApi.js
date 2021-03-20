@@ -51,6 +51,13 @@ export default class TipoExameApi {
     return response;
   }
 
+  async buscarTodosTipoExames( auth ) {
+    Axios.defaults.headers.Authorization = auth;
+    //const response = await Axios.get( `${URI}tipoExame/buscar/` );
+    const response = await Axios.get( `${URI_HEROKU}tipoExame/buscar/todos` );
+    return response.data;
+  }
+
   async buscarTipoExame( auth ) {
     Axios.defaults.headers.Authorization = auth;
     //const response = await Axios.get( `${URI}tipoExame/buscar/` );
