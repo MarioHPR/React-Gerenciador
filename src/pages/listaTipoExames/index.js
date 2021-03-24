@@ -3,12 +3,12 @@ import { Header, Footer, TableListaTipoExame } from '../../components';
 import { Row, Col } from 'antd';
 //import './style.css';
 
-import InstituicaoApi from '../../models/instituicaoApi';
-const instituicaoApi = new InstituicaoApi();
+import TipoExameApi from '../../models/tipoExameApi';
+const tipoExameApi = new TipoExameApi();
 const auth = localStorage.getItem("token-gerenciador-security");
 
 export default function ListaTipoExames() {
-  const [ instituicoes, setInstituicoes ] = useState([]);
+  const [ tipoExames, setTipoExames ] = useState([]);
   const [ atualizaTela, setAtualizaTela ] = useState(0);
   const [ message, setMessage ] = useState('');
   
@@ -16,21 +16,24 @@ export default function ListaTipoExames() {
   const [ aux, setAux ] = useState([]);
 
   useEffect(()=>{
-    instituicaoApi.buscarInstituicoes(auth)
-      .then( resp => setInstituicoes(resp) );
-  },[setInstituicoes, atualizaTela]);
+    tipoExameApi.buscarTodosTipoExames(auth)
+      .then( resp => {
+        console.log(resp)
+        setTipoExames(resp)
+      } );
+  },[atualizaTela]);
 
 
   const handleDelete = evt => {
-    instituicaoApi.deletarInstituicao(evt, auth).then( resp => {
-      if( resp.status === 200 ){
-        setMessage(resp.data);
-        setAux(aux.filter( (item) => item.key !== evt ) );
-        setTimeout(() => {
-          setMessage('');
-        }, 2 * 1000 );
-      }
-    } );
+    // tipoExameApi.deletarInstituicao(evt, auth).then( resp => {
+    //   if( resp.status === 200 ){
+    //     setMessage(resp.data);
+    //     setAux(aux.filter( (item) => item.key !== evt ) );
+    //     setTimeout(() => {
+    //       setMessage('');
+    //     }, 2 * 1000 );
+    //   }
+    // } );
   };
   return (
     <>
@@ -41,7 +44,7 @@ export default function ListaTipoExames() {
             <h2 className='titulo-consulta'>Listagem tipo exames:</h2>
           </Col>
           <Col xs={{span:24}}>
-              {instituicoes !== [] && <TableListaTipoExame aux={aux} setAux={setAux} message={message} handleDelete={handleDelete}  atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} instituicoes={instituicoes}/>}
+              {tipoExames !== [] && <TableListaTipoExame aux={aux} setAux={setAux} message={message} handleDelete={handleDelete}  atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} tipoExames={tipoExames}/>}
           </Col>
         </Row>
       </div>

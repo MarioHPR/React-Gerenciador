@@ -7,143 +7,137 @@ const tipoExameApi = new TipoExameApi();
 const auth = localStorage.getItem("token-gerenciador-security");
 
 export default function TableListaTipoExame( props ) {
-
-  const [ tipoExames, setTipoExames ] = useState();
+  const { atualizaTela, setAtualizaTela, tipoExames } = props;
   const [ aux, setAux ] = useState();
   const originData = [];
 
   useEffect(()=>{
-
-
     let a = [];
-    tipoExameApi.buscarTodosTipoExames(auth)
-      .then( resp => {
-        setTipoExames(resp);
-        let a = [];
-        tipoExames && tipoExames.map( tipoExame => {
-          a.push({
-            "key": tipoExame.id,
-            "id" : tipoExame.id,
-            "nome": `${tipoExame.nomeExame}`,
-            "quantidade": `${tipoExame.quantidade}`
-          })
-        } );
-        setAux(a);
-        console.log(resp)
+    tipoExames !== [] && tipoExames.map( tipoExame => {
+      return a.push({
+        "key": tipoExame.id,
+        "nome": `${tipoExame.nomeExame}`,
+        "quantidade": `${tipoExame.quantidade}`
+      })
     } );
-  },[]);
-
-
+    setAux(a);
+  },[tipoExames]);
 
   const [form] = Form.useForm();
-    const [data, setData] = useState(originData);
-    const [editingKey, setEditingKey] = useState('');
-  
-    const isEditing = (record) => record.key === editingKey;
-  
-    const edit = (record) => {
-      form.setFieldsValue({
-        name: '',
-        age: '',
-        address: '',
-        ...record,
-      });
-      setEditingKey(record.key);
-    };
-  
-    const cancel = () => {
-      setEditingKey('');
-    };
-  
-    const save = async (key) => {
-      try {
-        const row = await form.validateFields();
-        const newData = [...data];
-        const index = newData.findIndex((item) => key === item.key);
-  
-        if (index > -1) {
-          const item = newData[index];
-          newData.splice(index, 1, { ...item, ...row });
-          setData(newData);
-          setEditingKey('');
-        } else {
-          newData.push(row);
-          setData(newData);
-          setEditingKey('');
-        }
-      } catch (errInfo) {
-        
-      }
-    };
-  
-    const columns = [
-      {
-        title: 'ID',
-        dataIndex: 'id',
-        width: '10%',
-        editable: false,
-      },
-      {
-        title: 'Nome Exame',
-        dataIndex: 'nome',
-        width: '50%',
-        editable: true,
-      },
-      {
-        title: 'Quantidade',
-        dataIndex: 'quantidade',
-        width: '10%',
-        editable: false,
-      },
-      {
-        title: 'Operações',
-        dataIndex: 'operation',
-        render: (_, record) => {
-          const editable = isEditing(record);
-          return editable ? (
-            <span>
-              <a
-                href='/'
-                onClick={() => save(record.key)}
-                style={{
-                  marginRight: 8,
-                }}
-              >
-                Save
-              </a>
-              <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                <a href='/'>Cancel</a>
-              </Popconfirm>
-            </span>
-          ) : (
-            <>
-              <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-                <EditOutlined />
-              </Typography.Link>
-              <Typography.Link title="Tem certeza que deseja deletar?" onClick={() => edit(record)}>
-                <DeleteOutlined />
-              </Typography.Link>
-            </>
-          );
-        },
-      },
-    ];
-    const mergedColumns = columns.map((col) => {
-      if (!col.editable) {
-        return col;
-      }
-  
-      return {
-        ...col,
-        onCell: (record) => ({
-          record,
-          inputType: col.dataIndex === 'id' ? 'number' : 'text',
-          dataIndex: col.dataIndex,
-          title: col.title,
-          editing: isEditing(record),
-        }),
-      };
+  const [data, setData] = useState(originData);
+  const [editingKey, setEditingKey] = useState('');
+
+  const isEditing = (record) => record.key === editingKey;
+
+  const edit = (record) => {
+    form.setFieldsValue({
+      nome: '',
+      age: '',
+      address: '',
+      ...record,
     });
+    setEditingKey(record.key);
+  };
+
+  const cancel = () => {
+    setEditingKey('');
+  };
+
+  const save = async (key) => {
+
+    
+    try {
+      const row = await form.validateFields();
+      const newData = [...data];
+      const index = newData.findIndex((item) => key === item.key);
+
+      if (index > -1) {
+        const item = newData[index];
+        newData.splice(index, 1, { ...item, ...row });
+        setData(newData);
+        setEditingKey('');
+      } else {
+        setData(newData);
+        setEditingKey('');
+      }
+      tipoExameApi.editarTipoExame(key.key, row.nome, auth).then( resp => {
+        if(resp.status === 200) {
+          setAtualizaTela(atualizaTela + 1);
+        }
+      });
+    } catch (errInfo) {
+      
+    }
+  };
+
+  const columns = [
+    {
+      title: 'ID',
+      dataIndex: 'key',
+      width: '10%',
+      editable: false,
+    },
+    {
+      title: 'Nome Exame',
+      dataIndex: 'nome',
+      width: '50%',
+      editable: true,
+    },
+    {
+      title: 'Quantidade',
+      dataIndex: 'quantidade',
+      width: '10%',
+      editable: false,
+    },
+    {
+      title: 'Operações',
+      dataIndex: 'operation',
+      render: (_, record) => {
+        const editable = isEditing(record);
+        return editable ? (
+          <span>
+            <a
+              href='#/'
+              onClick={() => save(record)}
+              style={{
+                marginRight: 8,
+              }}
+            >
+              Save
+            </a>
+            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+              <a href='/'>Cancel</a>
+            </Popconfirm>
+          </span>
+        ) : (
+          <>
+            <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
+              <EditOutlined />
+            </Typography.Link>
+            <Typography.Link title="Tem certeza que deseja deletar?" onClick={() => edit(record)}>
+              <DeleteOutlined />
+            </Typography.Link>
+          </>
+        );
+      },
+    },
+  ];
+  const mergedColumns = columns.map((col) => {
+    if (!col.editable) {
+      return col;
+    }
+
+    return {
+      ...col,
+      onCell: (record) => ({
+        record,
+        inputType: col.dataIndex === 'id' ? 'number' : 'text',
+        dataIndex: col.dataIndex,
+        title: col.title,
+        editing: isEditing(record),
+      }),
+    };
+  });
   
   const EditableCell = ({
     editing,
@@ -167,7 +161,7 @@ export default function TableListaTipoExame( props ) {
             rules={[
               {
                 required: true,
-                message: `Please Input ${title}!`,
+                message: `Campo ${title} é obrigatorio!`,
               },
             ]}
           >

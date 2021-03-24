@@ -73,8 +73,8 @@ export default class TipoExameApi {
   }
 
   async editarTipoExame( id, tipoExame, auth ) {
-    const { nomeExame } = tipoExame;
-    const parametro = { nomeExame : nomeExame };
+  
+    const parametro = { nomeExame : tipoExame };
     Axios.defaults.headers.Authorization = auth;
     //const response = await Axios.put(`${URI}tipoExame/editar/${id}`,parametro);
     const response = await Axios.put(`${URI_HEROKU}tipoExame/editar/${id}`,parametro);
