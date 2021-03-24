@@ -18,22 +18,17 @@ export default function ListaTipoExames() {
   useEffect(()=>{
     tipoExameApi.buscarTodosTipoExames(auth)
       .then( resp => {
-        console.log(resp)
         setTipoExames(resp)
       } );
-  },[atualizaTela]);
+  },[atualizaTela, setAtualizaTela]);
 
 
   const handleDelete = evt => {
-    // tipoExameApi.deletarInstituicao(evt, auth).then( resp => {
-    //   if( resp.status === 200 ){
-    //     setMessage(resp.data);
-    //     setAux(aux.filter( (item) => item.key !== evt ) );
-    //     setTimeout(() => {
-    //       setMessage('');
-    //     }, 2 * 1000 );
-    //   }
-    // } );
+    tipoExameApi.removerTipoExame(evt.key, auth)
+      .then( resp => {
+        if(resp.status === 200)
+          setAtualizaTela(atualizaTela + 1);
+    } );
   };
   return (
     <>

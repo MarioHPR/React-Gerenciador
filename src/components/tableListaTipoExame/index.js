@@ -7,7 +7,7 @@ const tipoExameApi = new TipoExameApi();
 const auth = localStorage.getItem("token-gerenciador-security");
 
 export default function TableListaTipoExame( props ) {
-  const { atualizaTela, setAtualizaTela, tipoExames } = props;
+  const { atualizaTela, setAtualizaTela, tipoExames, handleDelete } = props;
   const [ aux, setAux ] = useState();
   const originData = [];
 
@@ -114,9 +114,11 @@ export default function TableListaTipoExame( props ) {
             <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
               <EditOutlined />
             </Typography.Link>
-            <Typography.Link title="Tem certeza que deseja deletar?" onClick={() => edit(record)}>
+            <Popconfirm title="Deseja realmente excluir?" onConfirm={() => handleDelete(record)}>
+            <Typography.Link title="Tem certeza que deseja deletar?">
               <DeleteOutlined />
             </Typography.Link>
+            </Popconfirm>
           </>
         );
       },
