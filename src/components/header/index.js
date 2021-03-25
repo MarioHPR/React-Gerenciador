@@ -26,12 +26,12 @@ const Header = () => {
           <Row className='row-header' >
             <Row className='div-top-header'>
               <Col ms={{span:24}} md={{span:8}}>
-                <div className='linkHome'>
+                {/* <div className='linkHome'>
                   <Button  className='menu' onClick={showDrawer}>
                     <MenuOutlined />
                   </Button>
                   <Menu visible={visible} setVisible={setVisible} />   
-                </div>            
+                </div>             */}
               </Col>
               <Col ms={{span:24}} md={{span:16}}>
                 <div className='bt-basico bt-logout'>

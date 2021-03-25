@@ -1,19 +1,25 @@
+import { Layout} from 'antd';
 import React, { useState } from 'react';
-import { Header, Footer } from '../../components';
+import { Header } from '../../components';
+import MenuAtual from '../../components/menu';
+
+const { Content, Footer } = Layout;
 
 export default function Home() {
-
-  const [ collapsed, setCollapsed ] = useState(true);
-
+  const [ collapsed2, setCollapsed2 ] = useState(true);
   const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
+    setCollapsed2(!collapsed2);
   };
-
   return (
-    <>
-        <Header collapsed={ collapsed } toggleCollapsed={ toggleCollapsed } />
-        <h1>Home</h1>
-        <Footer />
-    </>
-  )
+    <Layout style={{ minHeight: '100vh' }}>
+      <MenuAtual />
+      <Layout className="site-layout">
+        <Header className="site-layout-background" collapsed={ collapsed2 } toggleCollapsed={ toggleCollapsed } />
+        <Content className="pagina-padrao" style={{ margin: '0 1px' }}>
+          <h1>Home</h1>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>GERENCIADOR DE EXAMES© CRIADO POR MARIO HENRIQUE PEREIRA DA ROSA</Footer>
+      </Layout>
+    </Layout>
+  );
 }

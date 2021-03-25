@@ -1,37 +1,44 @@
-import { Drawer, Divider } from 'antd';
+import { Layout, Menu, Divider} from 'antd';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './style.css';
+import {
+  PieChartOutlined,
+  FileOutlined
+} from '@ant-design/icons';
 
-export default function Menu(props) {
-
-  const { visible, setVisible } = props;
-  const onClose = () => {
-    setVisible(false);
+export default function MenuAtual() {
+  const { Sider } = Layout;
+  const [ collapsed, setCollapsed ] = useState();
+  const onCollapse = collapsed => {
+    setCollapsed( collapsed );
   };
 
   return (
     <>
-      <Drawer
-        title="Gerenciador"
-        placement='left'
-        closable={false}
-        onClose={onClose}
-        visible={visible}
-        key='left'
-      >
-        <div class="vertical-menu">
-          <Link className='' to='/'>Home</Link>
+      <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+        <div className="logo" />
+        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+          <Menu.Item key="1" icon={<PieChartOutlined />}>
+            Gerenciador
+          </Menu.Item>
           <Divider />
-          <Link className='' to='/tipoExames'>Exame</Link>
-          <Divider />
-          <Link className='' to='/consultas'>Consulta</Link>
-          <Divider />
-          <Link className='' to='/instituicoes'>Instituições</Link>
-          <Divider />
-          <Link className='' to='/listaTipoExames'>Tipo de exames cadastrados</Link>
-        </div>
-      </Drawer>
+          <Menu.Item key="9" icon={<FileOutlined />}>
+              <Link className='' to='/'>Home</Link>
+          </Menu.Item>
+          <Menu.Item key="9" icon={<FileOutlined />}>
+              <Link className='' to='/tipoExames'>Exame</Link>
+          </Menu.Item>
+          <Menu.Item key="9" icon={<FileOutlined />}>
+              <Link className='' to='/consultas'>Consulta</Link>
+          </Menu.Item>
+          <Menu.Item key="9" icon={<FileOutlined />}>
+              <Link className='' to='/instituicoes'>Instituições</Link>
+          </Menu.Item>      
+          <Menu.Item key="9" icon={<FileOutlined />}>
+              <Link className='' to='/listaTipoExames'>Tipo de exames</Link>
+          </Menu.Item>
+        </Menu>
+      </Sider>
     </>
   );
 }

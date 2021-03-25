@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Header, Footer, TableInstituicaoDados } from '../../components';
-import { Row, Col } from 'antd';
-//import './style.css';
-
+import { Header, TableInstituicaoDados } from '../../components';
+import { Col, Layout } from 'antd';
+import MenuAtual from '../../components/menu';
 import InstituicaoApi from '../../models/instituicaoApi';
 const instituicaoApi = new InstituicaoApi();
 const auth = localStorage.getItem("token-gerenciador-security");
+
+const { Content, Footer } = Layout;
+
 export default function Instituicoes() {
   const [ instituicoes, setInstituicoes ] = useState([]);
   const [ atualizaTela, setAtualizaTela ] = useState(0);
@@ -31,20 +33,29 @@ export default function Instituicoes() {
       }
     } );
   };
+
+  const [ collapsed2, setCollapsed2 ] = useState(true);
+  const toggleCollapsed = () => {
+    setCollapsed2(!collapsed2);
+  };
+
   return (
     <>
-      <Header />
-      <div className="div-cards" >
-        <Row>
-          <Col xs={{span:24}}>
-            <h2 className='titulo-consulta'>Instituições:</h2>
-          </Col>
-          <Col xs={{span:24}}>
-              {instituicoes !== [] && <TableInstituicaoDados aux={aux} setAux={setAux} message={message} handleDelete={handleDelete}  atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} instituicoes={instituicoes}/>}
-          </Col>
-        </Row>
-      </div>
-      <Footer />
+      <Layout style={{ minHeight: '100vh' }}>
+        <MenuAtual />
+        <Layout className="site-layout">
+          <Header className="site-layout-background" collapsed={ collapsed2 } toggleCollapsed={ toggleCollapsed } />
+          <Content className="pagina-padrao" style={{ margin: '0 1px' }}>
+            <Col xs={{span:24}}>
+              <h2 className='titulo-consulta'>Instituições:</h2>
+            </Col>
+            <Col xs={{span:24}}>
+                {instituicoes !== [] && <TableInstituicaoDados aux={aux} setAux={setAux} message={message} handleDelete={handleDelete}  atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} instituicoes={instituicoes}/>}
+            </Col>
+          </Content>
+          <Footer style={{ textAlign: 'center',height: '10px!important' }}>GERENCIADOR DE EXAMES© CRIADO POR MARIO HENRIQUE PEREIRA DA ROSA</Footer>
+        </Layout>
+      </Layout>
     </>
   )
 }

@@ -15,16 +15,12 @@ input {
   outline: none;
 }
 
-
+.ant-layout-footer {
+  padding: 10px 50px!important;
+}
 
 .pagina-padrao {
-
   background: -moz-linear-gradient(-45deg,  #cfe7fa 10%, #6393c1 100%);
   background: -webkit-linear-gradient(-45deg,  #cfe7fa 10%,#6393c1 100%);
   background: linear-gradient(135deg,  #cfe7fa 10%,#6393c1 100%);
-  width: 100%;
-  min-width: 100vh;
-  max-height: 100%;
-  min-height: 100vh;
-  display: block;
 }
