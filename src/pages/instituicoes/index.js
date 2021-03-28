@@ -53,7 +53,7 @@ export default function Instituicoes() {
                 {instituicoes !== [] && <TableInstituicaoDados aux={aux} setAux={setAux} message={message} handleDelete={handleDelete}  atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} instituicoes={instituicoes}/>}
             </Col>
           </Content>
-          <Footer style={{ textAlign: 'center',height: '10px!important' }}>GERENCIADOR DE EXAMES© CRIADO POR MARIO HENRIQUE PEREIRA DA ROSA</Footer>
+          <Footer style={{ textAlign: 'center' }}>GERENCIADOR DE EXAMES© CRIADO POR MARIO HENRIQUE PEREIRA DA ROSA</Footer>
         </Layout>
       </Layout>
     </>

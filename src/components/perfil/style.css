@@ -49,6 +49,7 @@
 
 .link-bt-perfil {
   display: inline-block;
+  text-align: right;
   padding-right: 10px!important;
   color: white!important;
 }

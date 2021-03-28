@@ -1,5 +1,6 @@
 .layout-login {
-  margin-top: 6.5vh;
+  margin-top: 1vh;
+  width: 100%;
 }
 
 .AppLogin {
@@ -12,8 +13,8 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 60px;
-  width: 40vw;
-  padding: 2vh 2vw 5vw 2vw;
+  width: 100%;
+  padding: 2vw;
   background-color: rgba(0, 0, 0, 0.3);
   border-radius: 5PX;
   box-shadow: 10px 10px 8px 10px rgba(0, 0, 0, 0.1);
@@ -33,10 +34,9 @@
 
 .login h2 {
   color: lightgray;
-  font-size: 30px;
+  font-size: 20px;
   text-align: center;
   font-weight: bold;
-  margin: 50px;
 }
 
 .login .btn-login {
@@ -46,7 +46,6 @@
 }
 
 .login .input-login {
-
   border: 1px solid cornflowerblue;
   padding: 0 15px;
   font-size: 16px;
