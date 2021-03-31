@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Header, TableListaTipoExame } from '../../components';
+import { Header, TableListaTipoExame, Footer } from '../../components';
 import { Col, Layout } from 'antd';
 import MenuAtual from '../../components/menu';
 import TipoExameApi from '../../models/tipoExameApi';
 const tipoExameApi = new TipoExameApi();
 const auth = localStorage.getItem("token-gerenciador-security");
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 
 export default function ListaTipoExames() {
   const [ tipoExames, setTipoExames ] = useState([]);

@@ -72,6 +72,12 @@
   margin-bottom: 2vh;
 }
 
+.container-botoes-navegacao {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .botao-proxima-etapa,
 .botao-etapa-anterior {
   display: inline-block;
@@ -79,7 +85,6 @@
   background: #0081ff!important;
   color: white!important;
   border-radius: 8px!important;
-  float: right;
   margin-top: 10px;
   padding: 5px 10px;
   cursor: pointer;

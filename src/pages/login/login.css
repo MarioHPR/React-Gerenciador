@@ -1,12 +1,10 @@
 .layout-login {
-  margin-top: 1vh;
   width: 100%;
 }
 
 .AppLogin {
   height: 100vh;
   border: 1px solid red;
-  
 }
 
 .container-form {
@@ -14,9 +12,9 @@
   margin-right: auto;
   margin-bottom: 60px;
   width: 100%;
-  padding: 2vw;
-  background-color: rgba(0, 0, 0, 0.3);
-  border-radius: 5PX;
+  padding: 1vw;
+  background-color: #002140;
+  border-radius: 0 0 5px 5px;
   box-shadow: 10px 10px 8px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -149,4 +147,44 @@
   font-weight: bold;
   background: rgba(216, 216, 216, 0.514);
   margin-bottom: 1vh;
+}
+
+.container-texto-apresentacao {
+  width: 95%;
+  margin-top: 30px;
+  margin-left: 25px;
+  margin-right: 25px;
+  padding-right: 40px;
+  border-radius: 8px;
+  background: #29292941;
+}
+
+.container-texto-apresentacao > h3 {
+  padding-top: 30px;
+  padding-left: 40px;
+  padding-bottom: 30px;
+  font-size: 25px;
+}
+
+.container-texto-apresentacao > p {
+  padding-left: 30px;
+  font-weight: lighter;
+  color: aliceblue;
+  text-align: justify;
+  color: white;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  text-shadow: black 0.1em 0.1em 0.2em;
+  letter-spacing: .1rem;
+}
+
+.espaco-botton {
+  padding-bottom: 30px;
+}
+
+.logo-gerenciador {
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px!important;
+  width: 350px!important;
 }

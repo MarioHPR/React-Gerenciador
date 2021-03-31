@@ -1,9 +1,9 @@
 import { Layout} from 'antd';
 import React, { useState } from 'react';
-import { Header } from '../../components';
+import { Header, Footer } from '../../components';
 import MenuAtual from '../../components/menu';
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 
 export default function Home() {
   const [ collapsed2, setCollapsed2 ] = useState(true);

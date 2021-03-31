@@ -1,25 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Row, Col } from 'antd';
 import { useHistory } from 'react-router-dom';
 import './header.css';
-import { Button } from 'antd';
-import Menu from '../menu';
 import PerfilUsuario from '../perfil';
-import { MenuOutlined } from '@ant-design/icons';
+import { LoginOutlined } from '@ant-design/icons';
 
 export default function Header (props) {
     const { mostrarLogin, btMostrarLogin } = props;
     const history = useHistory();
-    const [ visible, setVisible ] = useState(false);
     const deslogar = ( event ) => {
       event.preventDefault();
       localStorage.clear();
       history.push('/login')
     }
-
-    const showDrawer = () => {
-      setVisible(true);
-    };
 
     return (
       <>
@@ -32,7 +25,7 @@ export default function Header (props) {
                 <div className='bt-basico bt-logout'>
                 {
                   btMostrarLogin ?
-                    <p onClick={mostrarLogin}>Entrar no sistema</p> :
+                    <p onClick={mostrarLogin} className='bt-login-abrir-caixa'>Entrar no sistema <LoginOutlined /></p> :
                     <PerfilUsuario deslogar={deslogar}/>
                 }
                </div>    

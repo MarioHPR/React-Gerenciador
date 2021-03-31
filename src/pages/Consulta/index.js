@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Header, TableDados } from '../../components';
+import { Header, Footer, TableDados } from '../../components';
 import { Col, Layout } from 'antd';
 import './style.css';
 import MenuAtual from '../../components/menu';
 import ConsultaApi from '../../models/consultaApi';
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 
 export default function Consulta() {
   const [ consultas, setConsultas ] = useState([]);

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Header, TableTipoExame } from '../../components';
+import { Header, TableTipoExame, Footer } from '../../components';
 import { Col, Layout } from 'antd';
 import MenuAtual from '../../components/menu';
 import ExameApi from '../../models/exameApi';
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 export default function TipoExame() {
   const [ exames, setExames ] = useState([]);
   const [ atualizaTela, setAtualizaTela ] = useState(0);

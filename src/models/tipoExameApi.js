@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-const URI = `http://localhost:8080/api/`;
+//const URI = `http://localhost:8080/api/`;
 const URI_HEROKU = 'https://back-geranciador-exames.herokuapp.com/api/';
 
 export default class TipoExameApi {

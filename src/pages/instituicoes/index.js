@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Header, TableInstituicaoDados } from '../../components';
+import { Header, TableInstituicaoDados, Footer } from '../../components';
 import { Col, Layout } from 'antd';
 import MenuAtual from '../../components/menu';
 import InstituicaoApi from '../../models/instituicaoApi';
 const instituicaoApi = new InstituicaoApi();
 const auth = localStorage.getItem("token-gerenciador-security");
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 
 export default function Instituicoes() {
   const [ instituicoes, setInstituicoes ] = useState([]);

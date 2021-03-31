@@ -40,8 +40,10 @@ export default function FormularioLocalidadeContato( props ) {
             ] }
             funcao={ ( item, i ) => linha( item, i ) }
           />
-          <Button type="primary" htmlType="submit" className="botao-proxima-etapa">próxima etapa</Button>
-          <Button onClick={etapaAnterior} className="botao-etapa-anterior">etapa anterior</Button>
+          <div className='container-botoes-navegacao'>
+            <Button onClick={etapaAnterior} className="botao-etapa-anterior">etapa anterior</Button>
+            <Button type="primary" htmlType="submit" className="botao-proxima-etapa">próxima etapa</Button>
+          </div>
     </React.Fragment>
   )
 }

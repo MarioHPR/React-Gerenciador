@@ -48,8 +48,9 @@ export default function FormularioUi() {
           iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
         />
       </Form.Item>
-      
-      <Button type="primary" htmlType="submit" className="botao-proxima-etapa">próxima etapa</Button>
+      <div className='container-botoes-navegacao'>
+        <Button type="primary" htmlType="submit" className="botao-proxima-etapa">próxima etapa</Button>
+      </div>
     </div>
   )
 }
