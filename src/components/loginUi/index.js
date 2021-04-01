@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button,Input } from 'antd';
+import { Button, Input, notification } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 
 import { Link, useHistory } from 'react-router-dom';
@@ -9,13 +9,19 @@ function LoginUi( ) {
   const history = useHistory();
   const [ email, setEmail ] = useState('');
   const [ senha, setSenha ] = useState('');
-  const [ deveExibirErro, setDeveExibirErro ] = useState(false);
+
+  const openNotificationWithIcon = (type, msg, descricao) => {
+    notification[type]({
+      message: [msg],
+      description:[descricao],
+      placement:'bottomRight'
+    });
+  };
 
   async function handleSubmit(event) { 
     event.preventDefault();
 
     if( email !== '' && senha !== '' ) {
-      setDeveExibirErro(false);
       const usuarioApi = new UsuarioApi();
       usuarioApi.realizarLogin(email, senha).then( resposta => {
         if(resposta.status === 200) {
@@ -24,10 +30,11 @@ function LoginUi( ) {
         if(localStorage.getItem("token-gerenciador-security")){
           history.push('/')
         }
-      });
+      },(error) => { openNotificationWithIcon('error', 'Dados errados', 'Email ou Senha pode estar incorreto'); });
     } else {
-      setDeveExibirErro(true);
+      openNotificationWithIcon('warning', 'Atenção', 'Email e Senha são obrigatórios');
     }
+    
   }
 
   return (
@@ -44,7 +51,6 @@ function LoginUi( ) {
             onBlur={ evt => setSenha( evt.target.value )}
             iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
           />
-          { deveExibirErro && <span className="mensagem-erro" >EMAIL E SENHA OBRIGATORIO</span> }
           <Button className="btn-cadastrar fundo-azul" onClick={ handleSubmit } >Entrar</Button>
         </div>
         <Link to='/cadastro' className="btn-cadastrar-usuario">
