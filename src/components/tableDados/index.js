@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Popconfirm } from 'antd';
+import { Table, Popconfirm, notification } from 'antd';
 import './style.css';
 import ConsultaApi from '../../models/consultaApi';
 import { ModalAddConsulta, ModalVisualizarEditarConsulta } from '../../components';
@@ -9,7 +9,6 @@ import { DeleteOutlined, EditOutlined ,EyeOutlined } from '@ant-design/icons';
 export default function TableDados( props ) {
   const { consultas, atualizaTela, setAtualizaTela } = props;
   const [ aux, setAux ] = useState([]);
-  const [ message, setMessage ] = useState('');
   const consultaApi = new ConsultaApi();
   const [ visibleEdit, setVisibleEdit ] = useState(false);
   const [ visibleAdd, setVisibleAdd ] = useState(false);
@@ -47,14 +46,19 @@ export default function TableDados( props ) {
     },
   ];
 
+  const openNotificationWithIcon = (type, msg, descricao) => {
+    notification[type]({
+      message: [msg],
+      description:[descricao],
+      placement:'bottomRight'
+    });
+  };
+
   const handleDelete = evt => {
     consultaApi.removerConsulta(evt, auth).then( resp => {
       if( resp.status === 200 ){
-        setMessage(resp.data);
         setAux(aux.filter( (item) => item.key !== evt ) );
-        setTimeout(() => {
-          setMessage('');
-        }, 2 * 1000 );
+        openNotificationWithIcon("success", 'Exclusão', 'Consulta excluída com sucesso!');
       }
     } );
   };
@@ -74,7 +78,6 @@ export default function TableDados( props ) {
   
   return (
       <div className='container-lista-consulta'>
-        <span className='message'>{message}</span>
         <a  href='#/' onClick={() => {setVisibleAdd(true)}} className='bt-geral bt-cadastro-consulta' >
           Adicionar Consulta
         </a>

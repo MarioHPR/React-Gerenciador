@@ -10,7 +10,7 @@ export default function FormularioContato() {
       <>
         <label className="cor-branco">Contato {i+1}:<span className="cor-vermelho">*</span></label>
         <Form.Item className="" name={ item.name } label={ "" }
-          rules={ [ { required: true, message: `Senha é Obrigatório!` } ] }
+          rules={ [ { required: true, message: `Contato é Obrigatório!` } ] }
         >
           <InputMask mask="(99) 9 9999-9999" key={ i } className={ item.classe } type={ item.tipo } placeholder="Insira seu email ou telefone" />
         </Form.Item>

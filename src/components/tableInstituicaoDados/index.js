@@ -37,8 +37,8 @@ export default function TableInstituicaoDados( props ) {
             <Popconfirm title="Tem certeza que deseja deletar?" onConfirm={() => handleDelete(record.key)}>
               <a href='#/' className="bt-operacao" title="deletar"><DeleteOutlined /></a>
             </Popconfirm>
-            <a href='#/' title="editar" onClick={() => {setVisibleEdit(true); setIdInstituicao(record.key); setFlgEdit(1);}} className="bt-operacao"><EditOutlined /></a>
-            <a href='#/' title="visualizar" onClick={() => {setVisibleEdit(true); setIdInstituicao(record.key); setFlgEdit(0);}} className="bt-operacao"><EyeOutlined /></a>
+            <a href='#/' key={`edit${record.key}`} title="editar" onClick={() => {setVisibleEdit(true); setIdInstituicao(record.key); setFlgEdit(1);}} className="bt-operacao"><EditOutlined /></a>
+            <a href='#/' key={`visu${record.key}`} title="visualizar" onClick={() => {setVisibleEdit(true); setIdInstituicao(record.key); setFlgEdit(0);}} className="bt-operacao"><EyeOutlined /></a>
           </div>
         ) : null,
     },
@@ -50,19 +50,20 @@ export default function TableInstituicaoDados( props ) {
     let a = [];
     instituicoes.map( instituicoes => 
       a.push({
-        "key": instituicoes.id,
+        "key": `${instituicoes.id}`,
         "nome": `${instituicoes.nome}`,
         "cidade": `${instituicoes.enderecoDTO.cidade}`,
         "contato": `${instituicoes.contatoDTO.contatoUm}`
       })
     );
     setAux(a);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[instituicoes, atualizaTela]);
   
   return (
     <div className='container-lista-consulta'>
       <span className='message'>{message}</span>
-      <a  href='#/' onClick={() => {setVisibleAdd(true)}} className='bt-geral bt-cadastro-consulta' >
+      <a key='add' href='#/' onClick={() => {setVisibleAdd(true)}} className='bt-geral bt-cadastro-consulta' >
         Adicionar instituição
       </a>
       {aux !== [] && <Table columns={columns} dataSource={aux} pagination={{ pageSize: 7 }}/>}

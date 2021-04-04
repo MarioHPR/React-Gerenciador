@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Divider, Col, Row, Form, Input } from 'antd';
+import { Modal, Button, Divider, Col, Row, Form, Input, notification } from 'antd';
 import InstituicaoApi from '../../models/instituicaoApi';
 import InputMask from 'react-input-mask';
 
@@ -29,6 +29,14 @@ export default function ModalVisualizarEditarInstituicao(props) {
     setInstituicao(null);
   };
 
+  const openNotificationWithIcon = (type, msg, descricao) => {
+    notification[type]({
+      message: [msg],
+      description:[descricao],
+      placement:'bottomRight'
+    });
+  };
+
   const onFinish = () => {
     instituicaoApi.editarInstiuicao(instituicao, auth).then(resp => {
       let aux = atualizaTela + 1;
@@ -37,6 +45,7 @@ export default function ModalVisualizarEditarInstituicao(props) {
       setAtualizaInterna(atualizaInterna + 1);
       flg && setFlg(!flg);
       onReset();
+      openNotificationWithIcon("success", 'Edição', 'Instituição editada com sucesso!');
     } );
   };
   

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Row, Form, Button, Col } from 'antd';
+import { Modal, Row, Form, Button, Col, notification } from 'antd';
 import FormularioDadosBasicos from '../formDadosBasicos';
 import ConsultaApi from '../../models/consultaApi';
 import ArquivoApi from '../../models/arquivoApi';
@@ -16,6 +16,7 @@ export default function ModalVisualizarEditarConsulta(props) {
   const [ instituicoes, setInstituicoes ] = useState([]);
   const [ atualizaInterna, setAtualizaInterna ] = useState(0);
   const [ doc, setDoc ] = useState(0);
+  
   const [ urlDoc, setUrlDoc ] = useState();
 
   useEffect(()=>{
@@ -38,6 +39,14 @@ export default function ModalVisualizarEditarConsulta(props) {
 
   const onReset = () => {
     form.resetFields();
+  };
+
+  const openNotificationWithIcon = (type, msg, descricao) => {
+    notification[type]({
+      message: [msg],
+      description:[descricao],
+      placement:'bottomRight'
+    });
   };
 
   const downloadArquivo = () => {
@@ -98,6 +107,7 @@ export default function ModalVisualizarEditarConsulta(props) {
         setAtualizaInterna(atualizaInterna + 1);
         flg && setFlg(!flg);
         onReset();
+        openNotificationWithIcon("success", 'Edição', 'Consulta editada com sucesso!');
       } } );
   }
 

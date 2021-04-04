@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Row, Form, Button, Col } from 'antd';
+import { Modal, Row, Form, Button, Col, notification } from 'antd';
 import { InputBasicoModal, SelectInstituicao, SelectTipoExameEspecial } from '../';
 import TipoExameApi from '../../models/tipoExameApi';
 import ArquivoApi from '../../models/arquivoApi';
@@ -26,6 +26,14 @@ export default function ModalAddExame(props) {
     form.resetFields();
   };
 
+  const openNotificationWithIcon = (type, msg, descricao) => {
+    notification[type]({
+      message: [msg],
+      description:[descricao],
+      placement:'bottomRight'
+    });
+  };
+
   const onFinish = values => {
     values.tipoExame = nomeExame;
     values.parametros = itensDoExame ? itensDoExame : [];
@@ -49,6 +57,7 @@ export default function ModalAddExame(props) {
           setVisibleAdd(false);
           flg && setFlg(!flg);
           onReset();
+          openNotificationWithIcon('success', 'Salvo!', 'Exame salvo com sucesso!');
         } } )
     itensDoExame.map( i => i.valor = '');
     removeOuAtualiza(null);

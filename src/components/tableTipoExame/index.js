@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Popconfirm } from 'antd';
+import { Table, Popconfirm, notification } from 'antd';
 import { Link } from 'react-router-dom';
 import ExameApi from '../../models/exameApi';
 import { ModalAddExame, ModalExame } from '../../components';
@@ -9,7 +9,6 @@ export default function TableTipoExame( props ) {
   const exameApi = new ExameApi();
   const { exames, setAtualizaTela, atualizaTela } = props;
   const [ aux, setAux ] = useState([]);
-  const [ message, setMessage ] = useState('');
   const [ idExame, setIdExame ] = useState();
   const [ visible, setVisible ] = useState(false);
   const [ visibleModalGeral, setVisibleModalGeral ] = useState(false);
@@ -47,14 +46,19 @@ export default function TableTipoExame( props ) {
     },
   ];
 
+  const openNotificationWithIcon = (type, msg, descricao) => {
+    notification[type]({
+      message: [msg],
+      description:[descricao],
+      placement:'bottomRight'
+    });
+  };
+
   const handleDelete = evt => {
     exameApi.removerExame(evt, auth).then( resp => {
       if( resp.status === 200 ){
-        setMessage(resp.data);
         setAux(aux.filter( (item) => item.key !== evt ) );
-        setTimeout(() => {
-          setMessage('');
-        }, 2 * 1000 );
+        openNotificationWithIcon("success", 'Exclusão', 'Exame excluído com sucesso!');
       }
     } );
   };
@@ -88,7 +92,6 @@ export default function TableTipoExame( props ) {
   
   return (
       <div className='container-lista-consulta'>
-        <span className='message'>{message}</span>
         <a href='#/' onClick={() => {setVisible(true)}} className='bt-geral bt-cadastro-consulta' >
           Adicionar novo exame
         </a>

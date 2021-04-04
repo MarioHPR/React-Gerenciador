@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Header, TableListaTipoExame, Footer } from '../../components';
-import { Col, Layout } from 'antd';
+import { Col, Layout, notification } from 'antd';
 import MenuAtual from '../../components/menu';
 import TipoExameApi from '../../models/tipoExameApi';
 const tipoExameApi = new TipoExameApi();
@@ -22,12 +22,20 @@ export default function ListaTipoExames() {
       } );
   },[atualizaTela, setAtualizaTela]);
 
+  const openNotificationWithIcon = (type, msg, descricao) => {
+    notification[type]({
+      message: [msg],
+      description:[descricao],
+      placement:'bottomRight'
+    });
+  };
 
   const handleDelete = evt => {
     tipoExameApi.removerTipoExame(evt.key, auth)
       .then( resp => {
         if(resp.status === 200)
           setAtualizaTela(atualizaTela + 1);
+          openNotificationWithIcon("success", 'Exclusão', 'Todos os exames do Tipo exame selecionado, foram excluídos com sucesso!');
     } );
   };
 

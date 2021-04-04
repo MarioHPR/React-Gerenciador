@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Row, Form, Button, Col } from 'antd';
+import { Modal, Row, Form, Button, Col, notification } from 'antd';
 import FormularioDadosBasicos from '../formDadosBasicos';
 import ConsultaApi from '../../models/consultaApi';
 import InstituicaoApi from '../../models/instituicaoApi';
@@ -23,6 +23,14 @@ export default function ModalAddConsulta(props) {
   },[atualizaTela] );
 
   const onReset = () => form.resetFields();
+
+  const openNotificationWithIcon = (type, msg, descricao) => {
+    notification[type]({
+      message: [msg],
+      description:[descricao],
+      placement:'bottomRight'
+    });
+  };
 
   const onFinish = values => {
     const auth = localStorage.getItem("token-gerenciador-security");
@@ -71,6 +79,7 @@ export default function ModalAddConsulta(props) {
         setVisibleAdd(false)
         flg && setFlg(!flg);
         onReset();
+        openNotificationWithIcon("success", 'Adicionado!', 'Consulta adicionada com sucesso!');
     } } );
   }
 

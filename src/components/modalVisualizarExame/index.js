@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Row, Form, Button, Col } from 'antd';
+import { Modal, Row, Form, Button, Col, notification } from 'antd';
 import FormularioDadosBasicos from '../formDadosBasicos';
 import ExameApi from '../../models/exameApi';
 import InstituicaoApi from '../../models/instituicaoApi';
@@ -57,6 +57,14 @@ export default function ModalExame(props) {
     setParametros(arrayAux)
   };
 
+  const openNotificationWithIcon = (type, msg, descricao) => {
+    notification[type]({
+      message: [msg],
+      description:[descricao],
+      placement:'bottomRight'
+    });
+  };
+
   const onFinish = values => {
       const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao } = values;
       const auth = localStorage.getItem("token-gerenciador-security");
@@ -106,6 +114,7 @@ export default function ModalExame(props) {
           setVisibleModal(false)
           flg && setFlg(!flg);
           onReset();
+          openNotificationWithIcon("success", 'Edição', 'Exame editado com sucesso!');
         } } );
   }
 

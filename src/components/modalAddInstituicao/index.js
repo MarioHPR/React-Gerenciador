@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button, Divider, Col, Row, Form, Input } from 'antd';
+import { Modal, Button, Divider, Col, Row, Form, Input, notification } from 'antd';
 import InstitucaoApi from '../../models/instituicaoApi';
 import InputMask from 'react-input-mask';
 
@@ -15,6 +15,14 @@ export default function ModalAddInstituicao(props) {
     form.resetFields();
   };
 
+  const openNotificationWithIcon = (type, msg, descricao) => {
+    notification[type]({
+      message: [msg],
+      description:[descricao],
+      placement:'bottomRight'
+    });
+  };
+
   const onFinish = values => {
     
     if(values.numero.match(/_/)){
@@ -26,6 +34,7 @@ export default function ModalAddInstituicao(props) {
         let aux = atualizaTela + 1;
         setAtualizaTela(aux);
         setVisibleAdd(false);
+        openNotificationWithIcon("success", 'Adicionado', 'Instituição adicionada com sucesso!');
       }
     } );
   }

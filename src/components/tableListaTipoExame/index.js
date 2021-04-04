@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Typography } from 'antd';
+import { Table, Input, InputNumber, Popconfirm, Form, Typography, notification } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import TipoExameApi from '../../models/tipoExameApi';
 
@@ -28,6 +28,14 @@ export default function TableListaTipoExame( props ) {
   const [editingKey, setEditingKey] = useState('');
 
   const isEditing = (record) => record.key === editingKey;
+
+  const openNotificationWithIcon = (type, msg, descricao) => {
+    notification[type]({
+      message: [msg],
+      description:[descricao],
+      placement:'bottomRight'
+    });
+  };
 
   const edit = (record) => {
     form.setFieldsValue({
@@ -63,6 +71,7 @@ export default function TableListaTipoExame( props ) {
       tipoExameApi.editarTipoExame(key.key, row.nome, auth).then( resp => {
         if(resp.status === 200) {
           setAtualizaTela(atualizaTela + 1);
+          openNotificationWithIcon("success", 'Editado', 'Tipo exame editado com sucesso!');
         }
       });
     } catch (errInfo) {

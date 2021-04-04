@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Header, TableInstituicaoDados, Footer } from '../../components';
-import { Col, Layout } from 'antd';
+import { Col, Layout, notification } from 'antd';
 import MenuAtual from '../../components/menu';
 import InstituicaoApi from '../../models/instituicaoApi';
 const instituicaoApi = new InstituicaoApi();
@@ -21,15 +21,19 @@ export default function Instituicoes() {
       .then( resp => setInstituicoes(resp) );
   },[setInstituicoes, atualizaTela]);
 
+  const openNotificationWithIcon = (type, msg, descricao) => {
+    notification[type]({
+      message: [msg],
+      description:[descricao],
+      placement:'bottomRight'
+    });
+  };
 
   const handleDelete = evt => {
     instituicaoApi.deletarInstituicao(evt, auth).then( resp => {
       if( resp.status === 200 ){
-        setMessage(resp.data);
         setAux(aux.filter( (item) => item.key !== evt ) );
-        setTimeout(() => {
-          setMessage('');
-        }, 2 * 1000 );
+        openNotificationWithIcon("success", 'Exclusão', 'Instituição excluída com sucesso!');
       }
     } );
   };

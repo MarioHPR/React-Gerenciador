@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout} from 'antd';
+import { Layout, notification} from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { FormularioUi, FormularioLocalidadeContato, StepsTest, FormularioContato } from '../../components';
 import { Row, Col, Form, Button } from 'antd';
@@ -19,8 +19,27 @@ export default function Cadastro() {
     setCollapsed2(!collapsed2);
   };
 
+  const openNotificationWithIcon = (type, msg, descricao) => {
+    notification[type]({
+      message: [msg],
+      description:[descricao],
+      placement:'bottomRight'
+    });
+  };
+
   const onFinish = values => {
-    if(step < 2) {
+    let proximaEtapa = true;
+    if(values.email.indexOf('@gmail.com') === -1){
+      openNotificationWithIcon("error", 'Dados errados', 'Email teve conter sufixo "@gmail.com"!');
+      proximaEtapa = false;
+    }
+    if(values.senha.length < 6){
+      openNotificationWithIcon("error", 'Dados errados', 'Senha deve conter no minimo 6 caracteres!');
+      proximaEtapa = false;
+    }
+    
+    if(step < 2 && proximaEtapa) {
+      proximaEtapa = false;
       setStep(step + 1);
     }
     if(step === 2){
@@ -32,7 +51,7 @@ export default function Cadastro() {
     usuarioApi.criarUsuario(event).then( resposta => {
         if( resposta.status === 200 )
           history.push('/login');
-      } ); 
+      })
   }
 
   const etapaAnterior = () => {
