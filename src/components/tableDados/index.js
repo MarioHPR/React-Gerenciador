@@ -60,7 +60,7 @@ export default function TableDados( props ) {
         setAux(aux.filter( (item) => item.key !== evt ) );
         openNotificationWithIcon("success", 'Exclusão', 'Consulta excluída com sucesso!');
       }
-    } );
+    },(error) => { openNotificationWithIcon('error', 'Não foi possivel', 'Não foi possivel realizar a exclusão!'); });
   };
 
   useEffect(() => {

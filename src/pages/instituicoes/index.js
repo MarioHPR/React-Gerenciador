@@ -35,7 +35,7 @@ export default function Instituicoes() {
         setAux(aux.filter( (item) => item.key !== evt ) );
         openNotificationWithIcon("success", 'Exclusão', 'Instituição excluída com sucesso!');
       }
-    } );
+    },(error) => { openNotificationWithIcon('error', 'Não foi possivel', 'Não foi possivel realizar a exclusão!'); });
   };
 
   const [ collapsed2, setCollapsed2 ] = useState(true);

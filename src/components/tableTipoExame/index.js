@@ -60,7 +60,7 @@ export default function TableTipoExame( props ) {
         setAux(aux.filter( (item) => item.key !== evt ) );
         openNotificationWithIcon("success", 'Exclusão', 'Exame excluído com sucesso!');
       }
-    } );
+    },(error) => { openNotificationWithIcon('error', 'Não foi possivel', 'Não foi possivel realizar a exclusão!'); });
   };
 
   const handleEditarVisualizar = (evt, flg) => {

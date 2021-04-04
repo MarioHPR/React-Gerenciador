@@ -36,7 +36,7 @@ export default function ListaTipoExames() {
         if(resp.status === 200)
           setAtualizaTela(atualizaTela + 1);
           openNotificationWithIcon("success", 'Exclusão', 'Todos os exames do Tipo exame selecionado, foram excluídos com sucesso!');
-    } );
+    },(error) => { openNotificationWithIcon('error', 'Não foi possivel', 'Não foi possivel realizar a exclusão!'); });
   };
 
   const [ collapsed2, setCollapsed2 ] = useState(true);
