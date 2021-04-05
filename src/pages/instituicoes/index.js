@@ -11,7 +11,6 @@ const { Content } = Layout;
 export default function Instituicoes() {
   const [ instituicoes, setInstituicoes ] = useState([]);
   const [ atualizaTela, setAtualizaTela ] = useState(0);
-  const [ message, setMessage ] = useState('');
   
 
   const [ aux, setAux ] = useState([]);
@@ -54,7 +53,7 @@ export default function Instituicoes() {
               <h2 className='titulo-consulta'>Instituições:</h2>
             </Col>
             <Col xs={{span:24}}>
-                {instituicoes !== [] && <TableInstituicaoDados aux={aux} setAux={setAux} message={message} handleDelete={handleDelete}  atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} instituicoes={instituicoes}/>}
+                {instituicoes !== [] && <TableInstituicaoDados aux={aux} setAux={setAux} handleDelete={handleDelete}  atualizaTela={atualizaTela} setAtualizaTela={setAtualizaTela} instituicoes={instituicoes}/>}
             </Col>
           </Content>
           <Footer style={{ textAlign: 'center' }}>GERENCIADOR DE EXAMES© CRIADO POR MARIO HENRIQUE PEREIRA DA ROSA</Footer>

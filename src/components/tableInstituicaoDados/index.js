@@ -6,7 +6,7 @@ import { ModalAddInstituicao, ModalVisualizarEditarInstituicao } from '..';
 import { DeleteOutlined, EditOutlined ,EyeOutlined } from '@ant-design/icons';
 
 export default function TableInstituicaoDados( props ) {
-  const { instituicoes, atualizaTela, setAtualizaTela, handleDelete, message } = props;
+  const { instituicoes, atualizaTela, setAtualizaTela, handleDelete } = props;
   const { aux, setAux } = props;
 
   const [ visibleEdit, setVisibleEdit ] = useState(false);
@@ -67,7 +67,6 @@ export default function TableInstituicaoDados( props ) {
   
   return (
     <div className='container-lista-consulta'>
-      <span className='message'>{message}</span>
       <a key='add' href='#/' onClick={() => {setVisibleAdd(true)}} className='bt-geral bt-cadastro-consulta' >
         Adicionar instituição
       </a>
