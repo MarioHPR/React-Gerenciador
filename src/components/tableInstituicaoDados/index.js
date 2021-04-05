@@ -37,13 +37,18 @@ export default function TableInstituicaoDados( props ) {
             <Popconfirm title="Tem certeza que deseja deletar?" onConfirm={() => handleDelete(record.key)}>
               <a href='#/' className="bt-operacao" title="deletar"><DeleteOutlined /></a>
             </Popconfirm>
-            <a href='#/' key={`edit${record.key}`} title="editar" onClick={() => {setVisibleEdit(true); setIdInstituicao(record.key); setFlgEdit(1);}} className="bt-operacao"><EditOutlined /></a>
-            <a href='#/' key={`visu${record.key}`} title="visualizar" onClick={() => {setVisibleEdit(true); setIdInstituicao(record.key); setFlgEdit(0);}} className="bt-operacao"><EyeOutlined /></a>
+            <a href='#/' key={`edit${record.key}`} title="editar" onClick={() => handleEditarVisualizar(record.key,1)} className="bt-operacao"><EditOutlined /></a>
+            <a href='#/' key={`visu${record.key}`} title="visualizar" onClick={() => handleEditarVisualizar(record.key,0)} className="bt-operacao"><EyeOutlined /></a>
           </div>
         ) : null,
     },
   ];
 
+  const handleEditarVisualizar = (evt, flg) => {
+    setVisibleEdit(true);
+    setIdInstituicao(evt);
+    setFlgEdit(flg);  
+  };
   
 
   useEffect(() => {

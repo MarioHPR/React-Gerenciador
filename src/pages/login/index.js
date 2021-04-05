@@ -14,7 +14,6 @@ export default function Login() {
   };
 
   const mostrarLogin = () => {
-    console.log("entroudadasda")
     let aux = !flg;
     setFlg(aux);
   }
@@ -38,7 +37,7 @@ export default function Login() {
               <div className="login">
                 {
                   flg ?
-                    <img src={logo} className='logo-gerenciador'/> :
+                    <img src={logo} alt='Logo gerenciador de exames' className='logo-gerenciador'/> :
                     <div className="layout-login">
                       <LoginUi />
                     </div>

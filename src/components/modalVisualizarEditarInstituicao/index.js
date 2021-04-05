@@ -22,7 +22,7 @@ export default function ModalVisualizarEditarInstituicao(props) {
     } );
     
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[idInstituicao] );
+  },[idInstituicao, flgEdit] );
 
   const onReset = () => {
     form.resetFields();
