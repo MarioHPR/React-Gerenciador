@@ -32,14 +32,23 @@ export default function ModalAddConsulta(props) {
     });
   };
 
+  const cadastrarConsulta = (valores, auth) => {
+    const consultaApi = new ConsultaApi();
+    consultaApi.criarConsulta( valores, auth ).then( resp => { 
+      if(resp.status === 200){
+        let aux = atualizaTela + 1;
+        setAtualizaTela(aux);
+        setVisibleAdd(false)
+        flg && setFlg(!flg);
+        onReset();
+        openNotificationWithIcon("success", 'Adicionado!', 'Consulta adicionada com sucesso!');
+    } } );
+  }
+
   const onFinish = values => {
     const auth = localStorage.getItem("token-gerenciador-security");
-    const arquivoApi = new ArquivoApi();
-    arquivoApi.uploadArquivo(doc, auth).then( resp =>{
-      if(resp.status === 200){
-        setDoc(resp.data);
-      }
-    });
+    console.log(values)
+    
     const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao } = values;
     const { diagnostico, prescricaoMedica, nomeMedico } = values;
     if(values.numero && values.numero.includes('_')){
@@ -68,19 +77,20 @@ export default function ModalAddConsulta(props) {
       "diagnostico": diagnostico || '',
       "prescricao": prescricaoMedica || '',
       "nomeMedico": nomeMedico || '',
-      "idArquivo": doc || 0
+      "idArquivo": doc ? doc : 0
     };
+
+    const arquivoApi = new ArquivoApi();
+
+    doc ?   
+      arquivoApi.uploadArquivo(doc, auth).then( resp =>{
+        if(resp.status === 200 && resp.data > 0){
+          setDoc(resp.data);
+          request.idArquivo = resp.data;
+          cadastrarConsulta(request, auth)
+        }
+      }) : cadastrarConsulta(request, auth);
     
-    const consultaApi = new ConsultaApi();
-    consultaApi.criarConsulta( request, auth ).then( resp => { 
-      if(resp.status === 200){
-        let aux = atualizaTela + 1;
-        setAtualizaTela(aux);
-        setVisibleAdd(false)
-        flg && setFlg(!flg);
-        onReset();
-        openNotificationWithIcon("success", 'Adicionado!', 'Consulta adicionada com sucesso!');
-    } } );
   }
 
   const executaAcao = ( aux ) => {
