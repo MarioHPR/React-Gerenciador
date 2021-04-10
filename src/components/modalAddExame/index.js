@@ -34,6 +34,19 @@ export default function ModalAddExame(props) {
     });
   };
 
+  const cadastrarExame = (valores, auth) => {
+    const tipoExameApi = new TipoExameApi();
+    tipoExameApi.criarTipoExame( valores, auth).then( resp => { 
+      if(resp.status === 200){
+        let aux = atualizaTela + 1;
+        setAtualizaTela(aux);
+        setVisibleAdd(false);
+        flg && setFlg(!flg);
+        onReset();
+        openNotificationWithIcon('success', 'Salvo!', 'Exame salvo com sucesso!');
+      } } )
+  }
+
   const onFinish = values => {
     values.tipoExame = nomeExame;
     values.parametros = itensDoExame ? itensDoExame : [];
@@ -41,24 +54,15 @@ export default function ModalAddExame(props) {
     if(values.numero && values.numero.includes('_')){
       values.numero = values.numero.replaceAll("_", "");
     }
-
     const arquivoApi = new ArquivoApi();
-    doc !== 0 && arquivoApi.uploadArquivo(doc, auth).then( resp =>{
+    doc ? arquivoApi.uploadArquivo(doc, auth).then( resp =>{
       if(resp.status === 200){
         setDoc(resp.data);
+        values.idArquivo = resp.data;
+        cadastrarExame(values, auth);
       }
-    });
-    const tipoExameApi = new TipoExameApi();
-    values.idArquivo = doc || 0;
-    tipoExameApi.criarTipoExame( values, auth).then( resp => { 
-        if(resp.status === 200){
-          let aux = atualizaTela + 1;
-          setAtualizaTela(aux);
-          setVisibleAdd(false);
-          flg && setFlg(!flg);
-          onReset();
-          openNotificationWithIcon('success', 'Salvo!', 'Exame salvo com sucesso!');
-        } } )
+    }) : cadastrarExame(values, auth);
+    
     itensDoExame.map( i => i.valor = '');
     removeOuAtualiza(null);
   }
