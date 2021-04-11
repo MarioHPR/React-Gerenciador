@@ -52,6 +52,12 @@ export default function ModalExame(props) {
     removeOuAtualiza(null);
   };
 
+  const downloadArquivo = idArquivo => {
+    const auth = localStorage.getItem("token-gerenciador-security");
+    const arquivoApi = new ArquivoApi();
+    return arquivoApi.downloadArquivo(idArquivo, auth);
+  }
+
   const removeOuAtualiza = value => {
     let arrayAux = parametros.filter( exame => exame.campo !== value);
     setParametros(arrayAux)
@@ -268,6 +274,7 @@ export default function ModalExame(props) {
                       </Row>
                       : <span><WarningOutlined />Não há dados registrados neste exame!</span>
                     }
+                    {exame.idArquivo !== 0 && <a href='#/' onClick={()=>downloadArquivo(exame.idArquivo)} >Download do arquivo</a>}
                   </div>
               }
             </Form>

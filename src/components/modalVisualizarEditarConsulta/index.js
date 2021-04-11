@@ -16,8 +16,6 @@ export default function ModalVisualizarEditarConsulta(props) {
   const [ instituicoes, setInstituicoes ] = useState([]);
   const [ atualizaInterna, setAtualizaInterna ] = useState(0);
   const [ doc, setDoc ] = useState(0);
-  
-  const [ urlDoc, setUrlDoc ] = useState();
 
   useEffect(()=>{
     const auth = localStorage.getItem("token-gerenciador-security");
@@ -49,23 +47,6 @@ export default function ModalVisualizarEditarConsulta(props) {
     });
   };
 
-  const createAndDownloadBlobFile = (buffer) => { 
-    const dataConsulta = new Date(consulta.dataConsulta).toLocaleDateString('pt-BR', {timeZone: 'UTC'}) || '--';
-    const blob = new Blob([buffer], {type: `${dataConsulta}.pdf`, });
-
-    var reader = new FileReader();
-    reader.readAsDataURL(blob);
-    reader.onloadend = function () {
-      const href = window.URL.createObjectURL(blob);
-      const trigger = document.createElement('a');
-      trigger.setAttribute('download', blob.type);
-      trigger.setAttribute('href', href);
-      trigger.click();
-    } 
-  }
-
-
-
   const downloadArquivo = idArquivo => {
     const auth = localStorage.getItem("token-gerenciador-security");
     const arquivoApi = new ArquivoApi();
@@ -84,7 +65,7 @@ export default function ModalVisualizarEditarConsulta(props) {
       }
     });
     if(values.numero && values.numero.includes('_')){
-      values.numero = numero.replaceAll("_", "");
+      values.numero = values.numero.replaceAll("_", "");
     }
     const { numero } = values;
     const request = {
@@ -201,7 +182,7 @@ export default function ModalVisualizarEditarConsulta(props) {
                   </Form.Item>
 
                   <input type='file' onChange={evt => setDoc(evt.target.files[0])} />
-                  {consulta.idArquivo !== 0 && <a onClick={()=>downloadArquivo(consulta.idArquivo)} download='teste' >Download do arquivo</a>}
+                  {consulta.idArquivo !== 0 && <a href='#/' onClick={()=>downloadArquivo(consulta.idArquivo)} >Download do arquivo</a>}
                   <>{ flgEdit === 1 &&
                     <Row>
                       <Col xs={{span:24}} md={{span:12}}>
