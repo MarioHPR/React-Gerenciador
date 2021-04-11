@@ -16,7 +16,22 @@ export default class ArquivoApi {
   async downloadArquivo( id, auth ) {
     Axios.defaults.headers.Authorization = auth;
     //const response = await Axios.get( `${URI}consulta/buscar/consultas` );
-    const response = await Axios.get( `${URI_HEROKU}arquivo/${id}` );
+    const response = await Axios.get( `${URI_HEROKU}arquivo/${id}`, {responseType: 'blob'} ).then(
+      function (response) {
+        let fileName = "arquivo.pdf";
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) { // IE variant
+            window.navigator.msSaveOrOpenBlob(new Blob([response.data], {type: 'application/octet-stream'}),
+                fileName);
+        } else {
+            const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/octet-stream'}));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+        }
+      }
+    );
     return response;
   }
 }

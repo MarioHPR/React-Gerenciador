@@ -49,13 +49,27 @@ export default function ModalVisualizarEditarConsulta(props) {
     });
   };
 
-  const downloadArquivo = () => {
+  const createAndDownloadBlobFile = (buffer) => { 
+    const dataConsulta = new Date(consulta.dataConsulta).toLocaleDateString('pt-BR', {timeZone: 'UTC'}) || '--';
+    const blob = new Blob([buffer], {type: `${dataConsulta}.pdf`, });
+
+    var reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = function () {
+      const href = window.URL.createObjectURL(blob);
+      const trigger = document.createElement('a');
+      trigger.setAttribute('download', blob.type);
+      trigger.setAttribute('href', href);
+      trigger.click();
+    } 
+  }
+
+
+
+  const downloadArquivo = idArquivo => {
     const auth = localStorage.getItem("token-gerenciador-security");
     const arquivoApi = new ArquivoApi();
-    return arquivoApi.downloadArquivo(consulta.id, auth).then( resposta => {
-      setDoc(resposta.data)
-      setUrlDoc(resposta.config.url)
-    })
+    return arquivoApi.downloadArquivo(idArquivo, auth);
   }
 
   const onFinish = values => {
@@ -187,13 +201,13 @@ export default function ModalVisualizarEditarConsulta(props) {
                   </Form.Item>
 
                   <input type='file' onChange={evt => setDoc(evt.target.files[0])} />
-                  <a onClick={()=>downloadArquivo} download={()=>downloadArquivo} >Download do arquivo</a>
+                  {consulta.idArquivo !== 0 && <a onClick={()=>downloadArquivo(consulta.idArquivo)} download='teste' >Download do arquivo</a>}
                   <>{ flgEdit === 1 &&
                     <Row>
                       <Col xs={{span:24}} md={{span:12}}>
                         <Form.Item>
                           <Button className="btn-cadastrar tamanho-total" type="primary" htmlType="submit">
-                            <span className='color-white'>Adicionar Consulta</span>
+                            <span className='color-white'>Editar Consulta</span>
                           </Button>
                         </Form.Item>
                       </Col>
