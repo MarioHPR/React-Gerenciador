@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Typography, notification } from 'antd';
+import { Table, Button, Input, InputNumber, Popconfirm, Form, Typography, notification } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import TipoExameApi from '../../models/tipoExameApi';
+import AlergiaOuRestricoesApi from '../../models/alergiaOuRestricoesApi';
 
-const tipoExameApi = new TipoExameApi();
+const restricoesApi = new AlergiaOuRestricoesApi();
 const auth = localStorage.getItem("token-gerenciador-security");
 
-export default function TableListaTipoExame( props ) {
-  const { atualizaTela, setAtualizaTela, tipoExames, handleDelete } = props;
+export default function TableListaRestricoes( props ) {
+  const { atualizaTela, setAtualizaTela, restricoes, setRestricoes, handleDelete } = props;
   const [ aux, setAux ] = useState();
   const originData = [];
 
   useEffect(()=>{
     let a = [];
-    tipoExames !== [] && tipoExames.map( tipoExame => {
+    restricoes !== [] && restricoes.map( restricao => {
       return a.push({
-        "key": tipoExame.id,
-        "nome": `${tipoExame.nomeExame}`,
-        "quantidade": `${tipoExame.quantidade}`
+        "key": restricao.id,
+        "tipo": `${restricao.tipo}`,
+        "descricao": `${restricao.descricao}`
       })
     } );
     setAux(a);
-  },[tipoExames]);
+    console.log(restricoes)
+  },[restricoes]);
 
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
@@ -35,6 +36,22 @@ export default function TableListaTipoExame( props ) {
       description:[descricao],
       placement:'bottomRight'
     });
+  };
+
+  const handleAdd = () => {
+    let newCampo = { "id" : '-', "tipo": " ", "descricao" : " " };
+    let arrayAux = [ ...restricoes, newCampo ];
+    setRestricoes(arrayAux);
+    newRow('-')
+  };
+
+  const newRow = (record) => {
+    form.setFieldsValue({
+      tipo: '',
+      descricao: '',
+      ...record,
+    });
+    setEditingKey(record);
   };
 
   const edit = (record) => {
@@ -52,28 +69,34 @@ export default function TableListaTipoExame( props ) {
   };
 
   const save = async (key) => {
-
-    
+    console.log(key)
     try {
       const row = await form.validateFields();
-      const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
-
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, { ...item, ...row });
-        setData(newData);
-        setEditingKey('');
-      } else {
-        setData(newData);
-        setEditingKey('');
+      if(key.key === '-') {
+        restricoesApi.criarAlergiaOuRestricoes( row, auth ).then( resp => {
+          if(resp.status === 200) {
+            setAtualizaTela(atualizaTela + 1);
+            openNotificationWithIcon("success", 'Inserção', 'Restrição inserida com sucesso!');
+            setEditingKey('');
+          }
+        });
       }
-      tipoExameApi.editarTipoExame(key.key, row.nome, auth).then( resp => {
-        if(resp.status === 200) {
-          setAtualizaTela(atualizaTela + 1);
-          openNotificationWithIcon("success", 'Editado', 'Tipo exame editado com sucesso!');
+      else {
+        const newData = [...data];
+        const index = newData.findIndex((item) => key === item.key);
+        if (index > -1) {
+          const item = newData[index];
+          newData.splice(index, 1, { ...item, ...row });
         }
-      });
+        setData(newData);
+        setEditingKey('');
+        restricoesApi.editarAlergiaOuRestricoes(key.key, row, auth).then( resp => {
+          if(resp.status === 200) {
+            setAtualizaTela(atualizaTela + 1);
+            openNotificationWithIcon("success", 'Editado', 'Restrição editado com sucesso!');
+          }
+        });
+      }
     } catch (errInfo) {
       
     }
@@ -87,16 +110,14 @@ export default function TableListaTipoExame( props ) {
       editable: false,
     },
     {
-      title: 'Nome Exame',
-      dataIndex: 'nome',
-      width: '50%',
+      title: 'Tipo restrição',
+      dataIndex: 'tipo',
       editable: true,
     },
     {
-      title: 'Quantidade',
-      dataIndex: 'quantidade',
-      width: '10%',
-      editable: false,
+      title: 'Descrição',
+      dataIndex: 'descricao',
+      editable: true,
     },
     {
       title: 'Operações',
@@ -114,15 +135,15 @@ export default function TableListaTipoExame( props ) {
             >
               Save
             </a>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a href='/'>Cancel</a>
+            <Popconfirm title="Deseja cancelar?" onConfirm={cancel}>
+              <a href='/'>Cancelar</a>
             </Popconfirm>
           </span>
         ) : (
           <>
             <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-              <EditOutlined className="bt-operacao"/>
-            </Typography.Link >
+              <EditOutlined  className="bt-operacao"/>
+            </Typography.Link>
             <Popconfirm title="Deseja realmente excluir?" onConfirm={() => handleDelete(record)}>
             <Typography.Link title="Tem certeza que deseja deletar?">
               <DeleteOutlined />
@@ -187,6 +208,9 @@ export default function TableListaTipoExame( props ) {
 
   return (
     <div className='container-lista-consulta'>
+      <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
+        Adicionar nova anotação
+      </Button>
       {
         aux &&
         <Form form={form} component={false}>
