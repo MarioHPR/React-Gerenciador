@@ -35,10 +35,13 @@ export default function Home() {
   };
 
   const handleDelete = evt => {
-    restricoesApi.removerConsulta(evt, auth).then( resp => {
+    console.log(evt)
+    restricoesApi.removerConsulta(evt.key, auth).then( resp => {
       if( resp.status === 200 ){
         setAux(aux.filter( (item) => item.key !== evt ) );
         openNotificationWithIcon("success", 'Exclusão', 'Restrição excluída com sucesso!');
+        let auxAtualiza = atualizaTela + 1;
+        setAtualizaTela(auxAtualiza);
       }
     },(error) => { openNotificationWithIcon('error', 'Não foi possivel', 'Não foi possivel realizar a exclusão!'); });
   };
