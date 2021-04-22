@@ -4,8 +4,7 @@ const URI = `http://localhost:8080/api/`;
 const URI_HEROKU = 'https://back-geranciador-exames.herokuapp.com/api/';
 
 export default class ArquivoApi {
-  uploadArquivo( file, auth ) {
-    Axios.defaults.headers.Authorization = auth;
+  uploadArquivo( file) {
     const data = new FormData();
     data.append('upload', file);
    //const response = await Axios.post( `${URI}consulta/salvar/`, consulta );
@@ -13,8 +12,7 @@ export default class ArquivoApi {
     return response;
   }
 
-  async downloadArquivo( id, auth ) {
-    Axios.defaults.headers.Authorization = auth;
+  async downloadArquivo( id) {
     //const response = await Axios.get( `${URI}consulta/buscar/consultas` );
     const response = await Axios.get( `${URI_HEROKU}arquivo/${id}`, {responseType: 'blob'} ).then(
       function (response) {

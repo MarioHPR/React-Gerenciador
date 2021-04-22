@@ -4,7 +4,6 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import AlergiaOuRestricoesApi from '../../models/alergiaOuRestricoesApi';
 
 const restricoesApi = new AlergiaOuRestricoesApi();
-const auth = localStorage.getItem("token-gerenciador-security");
 
 export default function TableListaRestricoes( props ) {
   const { atualizaTela, setAtualizaTela, restricoes, setRestricoes, handleDelete } = props;
@@ -73,7 +72,7 @@ export default function TableListaRestricoes( props ) {
     try {
       const row = await form.validateFields();
       if(key.key === '-') {
-        restricoesApi.criarAlergiaOuRestricoes( row, auth ).then( resp => {
+        restricoesApi.criarAlergiaOuRestricoes( row).then( resp => {
           if(resp.status === 200) {
             setAtualizaTela(atualizaTela + 1);
             openNotificationWithIcon("success", 'Inserção', 'Restrição inserida com sucesso!');
@@ -90,7 +89,7 @@ export default function TableListaRestricoes( props ) {
         }
         setData(newData);
         setEditingKey('');
-        restricoesApi.editarAlergiaOuRestricoes(key.key, row, auth).then( resp => {
+        restricoesApi.editarAlergiaOuRestricoes(key.key, row).then( resp => {
           if(resp.status === 200) {
             setAtualizaTela(atualizaTela + 1);
             openNotificationWithIcon("success", 'Editado', 'Restrição editado com sucesso!');

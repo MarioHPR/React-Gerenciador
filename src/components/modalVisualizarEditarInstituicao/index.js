@@ -6,7 +6,6 @@ import InputMask from 'react-input-mask';
 import './style.css';
 
 const instituicaoApi = new InstituicaoApi();
-const auth = localStorage.getItem("token-gerenciador-security");
 
 export default function ModalVisualizarEditarInstituicao(props) {
   const [form] = Form.useForm();
@@ -17,7 +16,7 @@ export default function ModalVisualizarEditarInstituicao(props) {
 
   useEffect(()=>{
     
-    instituicaoApi.buscarInstituicaoPorId(idInstituicao, auth).then( resp => {
+    instituicaoApi.buscarInstituicaoPorId(idInstituicao).then( resp => {
       setInstituicao(resp.data);
     } );
     
@@ -38,7 +37,7 @@ export default function ModalVisualizarEditarInstituicao(props) {
   };
 
   const onFinish = () => {
-    instituicaoApi.editarInstiuicao(instituicao, auth).then(resp => {
+    instituicaoApi.editarInstiuicao(instituicao).then(resp => {
       let aux = atualizaTela + 1;
       setAtualizaTela(aux);
       setVisibleEdit(false);

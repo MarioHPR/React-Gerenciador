@@ -4,7 +4,6 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import TipoExameApi from '../../models/tipoExameApi';
 
 const tipoExameApi = new TipoExameApi();
-const auth = localStorage.getItem("token-gerenciador-security");
 
 export default function TableListaTipoExame( props ) {
   const { atualizaTela, setAtualizaTela, tipoExames, handleDelete } = props;
@@ -68,7 +67,7 @@ export default function TableListaTipoExame( props ) {
         setData(newData);
         setEditingKey('');
       }
-      tipoExameApi.editarTipoExame(key.key, row.nome, auth).then( resp => {
+      tipoExameApi.editarTipoExame(key.key, row.nome).then( resp => {
         if(resp.status === 200) {
           setAtualizaTela(atualizaTela + 1);
           openNotificationWithIcon("success", 'Editado', 'Tipo exame editado com sucesso!');

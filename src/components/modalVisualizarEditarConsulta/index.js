@@ -18,16 +18,14 @@ export default function ModalVisualizarEditarConsulta(props) {
   const [ doc, setDoc ] = useState(0);
 
   useEffect(()=>{
-    const auth = localStorage.getItem("token-gerenciador-security");
     const instituicaoApi = new InstituicaoApi();
-    instituicaoApi.buscarInstituicoes(auth).then( resp => setInstituicoes(resp) );
+    instituicaoApi.buscarInstituicoes().then( resp => setInstituicoes(resp) );
 // eslint-disable-next-line react-hooks/exhaustive-deps
   },[atualizaTela, idConsulta] );
 
   useEffect(()=>{
-    const auth = localStorage.getItem("token-gerenciador-security");
     const consultaApi = new ConsultaApi();
-    consultaApi.buscarConsultaPorId( idConsulta, auth).then( resp => {
+    consultaApi.buscarConsultaPorId( idConsulta).then( resp => {
       setConsulta(resp.data);
       setInstituicao(resp.data.dadosInstituicao);
       onReset();
@@ -47,19 +45,17 @@ export default function ModalVisualizarEditarConsulta(props) {
     });
   };
 
-  const downloadArquivo = idArquivo => {
-    const auth = localStorage.getItem("token-gerenciador-security");
+  const downloadArquivo = idArquivo => {    
     const arquivoApi = new ArquivoApi();
-    return arquivoApi.downloadArquivo(idArquivo, auth);
+    return arquivoApi.downloadArquivo(idArquivo);
   }
 
   const onFinish = values => {
     const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao } = values;
     const { diagnostico, prescricao, nomeMedico, dataConsulta } = consulta;
-    const idinstituicao = instituicao.id;
-    const auth = localStorage.getItem("token-gerenciador-security");
+    const idinstituicao = instituicao.id;    
     const arquivoApi = new ArquivoApi();
-    arquivoApi.uploadArquivo(doc, auth).then( resp =>{
+    arquivoApi.uploadArquivo(doc).then( resp =>{
       if(resp.status === 200){
         setDoc(resp.data);
       }
@@ -94,7 +90,7 @@ export default function ModalVisualizarEditarConsulta(props) {
     };
     
   const consultaApi = new ConsultaApi();
-  consultaApi.editarConsulta( idConsulta, request, auth ).then( resp => { 
+  consultaApi.editarConsulta( idConsulta, request).then( resp => { 
       if(resp.status === 200){
         let aux = atualizaTela + 1;
         setAtualizaTela(aux);

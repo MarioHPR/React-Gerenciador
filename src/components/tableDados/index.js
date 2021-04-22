@@ -13,8 +13,7 @@ export default function TableDados( props ) {
   const [ visibleEdit, setVisibleEdit ] = useState(false);
   const [ visibleAdd, setVisibleAdd ] = useState(false);
   const [ idConsulta, setIdConsulta ] = useState();
-  const [ flgEdit, setFlgEdit ] = useState(0);
-  const auth = localStorage.getItem("token-gerenciador-security");
+  const [ flgEdit, setFlgEdit ] = useState(0);  
 
   const columns = [
     { title: "Id", dataIndex: "key" }, 
@@ -55,7 +54,7 @@ export default function TableDados( props ) {
   };
 
   const handleDelete = evt => {
-    consultaApi.removerConsulta(evt, auth).then( resp => {
+    consultaApi.removerConsulta(evt).then( resp => {
       if( resp.status === 200 ){
         setAux(aux.filter( (item) => item.key !== evt ) );
         openNotificationWithIcon("success", 'Exclusão', 'Consulta excluída com sucesso!');

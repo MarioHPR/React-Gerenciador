@@ -6,7 +6,6 @@ import TableListaRestricoes from '../../components/tableListaRestricoes';
 import AlergiaOuRestricoesApi from '../../models/alergiaOuRestricoesApi';
 
 const restricoesApi = new AlergiaOuRestricoesApi();
-const auth = localStorage.getItem("token-gerenciador-security");
 
 const { Content } = Layout;
 
@@ -21,7 +20,7 @@ export default function Home() {
   const [ aux, setAux ] = useState([]);
 
   useEffect(()=>{
-    restricoesApi.buscarAlergiaOuRestricoes(auth)
+    restricoesApi.buscarAlergiaOuRestricoes()
       .then( resp => {
         setRestricoes(resp.data)} );
   },[setRestricoes, atualizaTela]);
@@ -36,7 +35,7 @@ export default function Home() {
 
   const handleDelete = evt => {
     console.log(evt)
-    restricoesApi.removerConsulta(evt.key, auth).then( resp => {
+    restricoesApi.removerConsulta(evt.key).then( resp => {
       if( resp.status === 200 ){
         setAux(aux.filter( (item) => item.key !== evt ) );
         openNotificationWithIcon("success", 'Exclusão', 'Restrição excluída com sucesso!');

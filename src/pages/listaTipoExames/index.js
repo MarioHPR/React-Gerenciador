@@ -4,7 +4,6 @@ import { Col, Layout, notification } from 'antd';
 import MenuAtual from '../../components/menu';
 import TipoExameApi from '../../models/tipoExameApi';
 const tipoExameApi = new TipoExameApi();
-const auth = localStorage.getItem("token-gerenciador-security");
 const { Content } = Layout;
 
 export default function ListaTipoExames() {
@@ -16,7 +15,7 @@ export default function ListaTipoExames() {
   const [ aux, setAux ] = useState([]);
 
   useEffect(()=>{
-    tipoExameApi.buscarTodosTipoExames(auth)
+    tipoExameApi.buscarTodosTipoExames()
       .then( resp => {
         setTipoExames(resp)
       } );
@@ -31,7 +30,7 @@ export default function ListaTipoExames() {
   };
 
   const handleDelete = evt => {
-    tipoExameApi.removerTipoExame(evt.key, auth)
+    tipoExameApi.removerTipoExame(evt.key)
       .then( resp => {
         if(resp.status === 200)
           setAtualizaTela(atualizaTela + 1);

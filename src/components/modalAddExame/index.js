@@ -34,9 +34,9 @@ export default function ModalAddExame(props) {
     });
   };
 
-  const cadastrarExame = (valores, auth) => {
+  const cadastrarExame = (valores) => {
     const tipoExameApi = new TipoExameApi();
-    tipoExameApi.criarTipoExame( valores, auth).then( resp => { 
+    tipoExameApi.criarTipoExame( valores).then( resp => { 
       if(resp.status === 200){
         let aux = atualizaTela + 1;
         setAtualizaTela(aux);
@@ -49,19 +49,18 @@ export default function ModalAddExame(props) {
 
   const onFinish = values => {
     values.tipoExame = nomeExame;
-    values.parametros = itensDoExame ? itensDoExame : [];
-    const auth = localStorage.getItem("token-gerenciador-security");
+    values.parametros = itensDoExame ? itensDoExame : [];    
     if(values.numero && values.numero.includes('_')){
       values.numero = values.numero.replaceAll("_", "");
     }
     const arquivoApi = new ArquivoApi();
-    doc ? arquivoApi.uploadArquivo(doc, auth).then( resp =>{
+    doc ? arquivoApi.uploadArquivo(doc).then( resp =>{
       if(resp.status === 200){
         setDoc(resp.data);
         values.idArquivo = resp.data;
-        cadastrarExame(values, auth);
+        cadastrarExame(values);
       }
-    }) : cadastrarExame(values, auth);
+    }) : cadastrarExame(values);
     
     itensDoExame.map( i => i.valor = '');
     removeOuAtualiza(null);

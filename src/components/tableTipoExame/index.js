@@ -14,8 +14,6 @@ export default function TableTipoExame( props ) {
   const [ visibleModalGeral, setVisibleModalGeral ] = useState(false);
   const [flgEditarVisualizar, setFlgEditarVisualizar ] = useState(0);
 
-  const auth = localStorage.getItem("token-gerenciador-security");
-
   const columns = [
     { title: "Id", dataIndex: "key" }, 
     {
@@ -55,7 +53,7 @@ export default function TableTipoExame( props ) {
   };
 
   const handleDelete = evt => {
-    exameApi.removerExame(evt, auth).then( resp => {
+    exameApi.removerExame(evt).then( resp => {
       if( resp.status === 200 ){
         setAux(aux.filter( (item) => item.key !== evt ) );
         openNotificationWithIcon("success", 'Exclusão', 'Exame excluído com sucesso!');
@@ -66,7 +64,7 @@ export default function TableTipoExame( props ) {
   const handleEditarVisualizar = (evt, flg) => {
     //setIdExame(evt);
     const exameApi = new ExameApi();
-    exameApi.buscarExamePorId( evt, auth).then( resp => {
+    exameApi.buscarExamePorId( evt).then( resp => {
       if(resp.status === 200){
         if(resp.data !== idExame)
           setIdExame(resp.data.id);

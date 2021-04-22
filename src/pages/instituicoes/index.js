@@ -4,7 +4,6 @@ import { Col, Layout, notification } from 'antd';
 import MenuAtual from '../../components/menu';
 import InstituicaoApi from '../../models/instituicaoApi';
 const instituicaoApi = new InstituicaoApi();
-const auth = localStorage.getItem("token-gerenciador-security");
 
 const { Content } = Layout;
 
@@ -16,7 +15,7 @@ export default function Instituicoes() {
   const [ aux, setAux ] = useState([]);
 
   useEffect(()=>{
-    instituicaoApi.buscarInstituicoes(auth)
+    instituicaoApi.buscarInstituicoes()
       .then( resp => setInstituicoes(resp) );
   },[setInstituicoes, atualizaTela]);
 
@@ -29,7 +28,7 @@ export default function Instituicoes() {
   };
 
   const handleDelete = evt => {
-    instituicaoApi.deletarInstituicao(evt, auth).then( resp => {
+    instituicaoApi.deletarInstituicao(evt).then( resp => {
       if( resp.status === 200 ){
         setAux(aux.filter( (item) => item.key !== evt ) );
         openNotificationWithIcon("success", 'Exclusão', 'Instituição excluída com sucesso!');

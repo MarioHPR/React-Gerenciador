@@ -4,7 +4,6 @@ import InstitucaoApi from '../../models/instituicaoApi';
 import InputMask from 'react-input-mask';
 
 const instituicaoApi = new InstitucaoApi();
-const auth = localStorage.getItem("token-gerenciador-security");
 
 export default function ModalAddInstituicao(props) {
   const [form] = Form.useForm();
@@ -28,7 +27,7 @@ export default function ModalAddInstituicao(props) {
     if(values.numero.match(/_/)){
       values.numero = values.numero.replaceAll("_", "");
     }
-    instituicaoApi.criarInstituicao( values, auth).then( resp => {
+    instituicaoApi.criarInstituicao( values).then( resp => {
       if(resp.status === 200){
         onReset();
         let aux = atualizaTela + 1;

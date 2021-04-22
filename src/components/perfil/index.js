@@ -36,16 +36,14 @@ export default function PerfilUsuario(props) {
   };
 
   const onFinish = () => {
-    const auth = localStorage.getItem("token-gerenciador-security");
     const usuarioApi = new UsuarioApi();
-    usuarioApi.editarUsuario(usuario, auth).then( resp => console.log(resp));
+    usuarioApi.editarUsuario(usuario).then( resp => console.log(resp));
     onChildrenDrawerClose();
   }
 
   useEffect(()=>{
-    const auth = localStorage.getItem("token-gerenciador-security");
     const usuarioApi = new UsuarioApi();
-    usuarioApi.buscarDadosDoUsuario(auth).then( resp => setUsuario(resp.data) );
+    usuarioApi.buscarDadosDoUsuario().then( resp => setUsuario(resp.data) );
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
     

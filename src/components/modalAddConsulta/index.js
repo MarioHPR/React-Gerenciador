@@ -16,9 +16,8 @@ export default function ModalAddConsulta(props) {
   const [ instituicoes, setInstituicoes ] = useState([]);
   const [ doc, setDoc ] = useState(0);
   useEffect(()=>{
-    const auth = localStorage.getItem("token-gerenciador-security");
     const instituicaoApi = new InstituicaoApi();
-    instituicaoApi.buscarInstituicoes(auth).then( resp => setInstituicoes(resp) );
+    instituicaoApi.buscarInstituicoes().then( resp => setInstituicoes(resp) );
 // eslint-disable-next-line react-hooks/exhaustive-deps
   },[atualizaTela] );
 
@@ -32,9 +31,9 @@ export default function ModalAddConsulta(props) {
     });
   };
 
-  const cadastrarConsulta = (valores, auth) => {
+  const cadastrarConsulta = (valores) => {
     const consultaApi = new ConsultaApi();
-    consultaApi.criarConsulta( valores, auth ).then( resp => { 
+    consultaApi.criarConsulta( valores).then( resp => { 
       if(resp.status === 200){
         let aux = atualizaTela + 1;
         setAtualizaTela(aux);
@@ -46,7 +45,6 @@ export default function ModalAddConsulta(props) {
   }
 
   const onFinish = values => {
-    const auth = localStorage.getItem("token-gerenciador-security");
     console.log(values)
     
     const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao } = values;
@@ -83,13 +81,13 @@ export default function ModalAddConsulta(props) {
     const arquivoApi = new ArquivoApi();
 
     doc ?   
-      arquivoApi.uploadArquivo(doc, auth).then( resp =>{
+      arquivoApi.uploadArquivo(doc).then( resp =>{
         if(resp.status === 200 && resp.data > 0){
           setDoc(resp.data);
           request.idArquivo = resp.data;
-          cadastrarConsulta(request, auth)
+          cadastrarConsulta(request)
         }
-      }) : cadastrarConsulta(request, auth);
+      }) : cadastrarConsulta(request);
     
   }
 

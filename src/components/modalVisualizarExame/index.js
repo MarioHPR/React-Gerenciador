@@ -22,12 +22,11 @@ export default function ModalExame(props) {
   const [ interacao, setInteracao ] = useState(0);
   const [ doc, setDoc ] = useState(0);
 
-  useEffect(()=>{
-    const auth = localStorage.getItem("token-gerenciador-security");
+  useEffect(()=>{    
     const exameApi = new ExameApi();
     const instituicaoApi = new InstituicaoApi();
     instituicaoApi.buscarInstituicoes(localStorage.getItem("token-gerenciador-security")).then( resp => setInstituicoes(resp) );
-    exameApi.buscarExamePorId( idExame, auth).then( resp => {
+    exameApi.buscarExamePorId( idExame).then( resp => {
       if(resp.status === 200){
         setExame(resp.data);
         setTipoExame(resp.data.nomeExame);
@@ -53,9 +52,8 @@ export default function ModalExame(props) {
   };
 
   const downloadArquivo = idArquivo => {
-    const auth = localStorage.getItem("token-gerenciador-security");
     const arquivoApi = new ArquivoApi();
-    return arquivoApi.downloadArquivo(idArquivo, auth);
+    return arquivoApi.downloadArquivo(idArquivo);
   }
 
   const removeOuAtualiza = value => {
@@ -73,10 +71,8 @@ export default function ModalExame(props) {
 
   const onFinish = values => {
       const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao } = values;
-      const auth = localStorage.getItem("token-gerenciador-security");
-
       const arquivoApi = new ArquivoApi();
-      doc && arquivoApi.uploadArquivo(doc, auth).then( resp =>{
+      doc && arquivoApi.uploadArquivo(doc).then( resp =>{
         if(resp.status === 200){
           setDoc(resp.data);
         }
@@ -113,7 +109,7 @@ export default function ModalExame(props) {
     };
     
     const exameApi = new ExameApi();
-    exameApi.editarExame( idExame, request, auth).then( resp => { 
+    exameApi.editarExame( idExame, request).then( resp => { 
         if(resp.status === 200){
           let aux = atualizaTela + 1;
           setAtualizaTela(aux);
