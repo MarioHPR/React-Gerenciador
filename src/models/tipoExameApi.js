@@ -1,8 +1,5 @@
 import Axios from 'axios';
 
-//const URI = `http://localhost:8080/api/`;
-const URI_HEROKU = 'https://back-geranciador-exames.herokuapp.com/api/';
-
 export default class TipoExameApi {
 
   async criarTipoExame( dadosParametro) {
@@ -44,41 +41,35 @@ export default class TipoExameApi {
                         "idArquivo": idArquivo || 0,
                         "campo": campo,
                         "valor": valor
-                      }    
-    //const response = await Axios.post( `${URI}tipoExame/salvar-resumo/`, parametro );
-    const response = await Axios.post( `${URI_HEROKU}tipoExame/salvar-resumo/`, parametro );
+                      }        
+    const response = await Axios.post( 'tipoExame/salvar-resumo/', parametro );
     return response;
   }
 
-  async buscarTodosTipoExames() {    
-    //const response = await Axios.get( `${URI}tipoExame/buscar/` );
-    const response = await Axios.get( `${URI_HEROKU}tipoExame/buscar/todos` );
+  async buscarTodosTipoExames() {        
+    const response = await Axios.get( 'tipoExame/buscar/todos' );
     return response.data;
   }
 
-  async buscarTipoExame() {    
-    //const response = await Axios.get( `${URI}tipoExame/buscar/` );
-    const response = await Axios.get( `${URI_HEROKU}tipoExame/buscar/` );
+  async buscarTipoExame() {        
+    const response = await Axios.get( 'tipoExame/buscar/' );
     return response.data;
   }
 
-  async buscarTipoExamePorId( id) {
-    //const response = await Axios.get( `${URI}tipoExame/buscar/${id}` );
-    const response = await Axios.get( `${URI_HEROKU}tipoExame/buscar/${id}` );
+  async buscarTipoExamePorId( id) {    
+    const response = await Axios.get( `tipoExame/buscar/${id}` );
     return response;
   }
 
   async editarTipoExame( id, tipoExame) {  
-    const parametro = { nomeExame : tipoExame };    
-    //const response = await Axios.put(`${URI}tipoExame/editar/${id}`,parametro);
-    const response = await Axios.put(`${URI_HEROKU}tipoExame/editar/${id}`,parametro);
+    const parametro = { nomeExame : tipoExame };        
+    const response = await Axios.put(`tipoExame/editar/${id}`,parametro);
     
     return response;
   }
 
-  async removerTipoExame( id) {    
-    //const response = await Axios.delete(`${URI}tipoExame/deletar/${id}`);
-    const response = await Axios.delete(`${URI_HEROKU}tipoExame/deletar/${id}`);
+  async removerTipoExame( id) {        
+    const response = await Axios.delete(`tipoExame/deletar/${id}`);
     return response;
   }
 }

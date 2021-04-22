@@ -6,7 +6,7 @@ import "antd/dist/antd.css";
 import Axios from 'axios';
 
 Axios.defaults.headers.common['Authorization'] = localStorage.getItem("token-gerenciador-security");
-// Axios.defaults.baseURL = 'https://back-gerenciador-exames.herokuapp.com/api';
+Axios.defaults.baseURL = 'https://back-geranciador-exames.herokuapp.com';
 
 ReactDOM.render(
   <React.StrictMode>

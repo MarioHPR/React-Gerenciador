@@ -1,7 +1,5 @@
 import Axios from 'axios';
 
-const URI_HEROKU = 'https://back-geranciador-exames.herokuapp.com/api/';
-
 export default class InstitucaoApi {
 
   async criarInstituicao( instituicao) {
@@ -22,31 +20,29 @@ export default class InstitucaoApi {
       "nome" : nome
     }
 
-    const response = await Axios.post( `${URI_HEROKU}instituicao/salvar/`, dadosInstituicao );
+    const response = await Axios.post( 'instituicao/salvar/', dadosInstituicao );
     return response;
   }
 
-  async buscarInstituicoes() {    
-    //const response = await Axios.get( `${URI}instituicao/buscar/instituicoes` );
-    const response = await Axios.get( `${URI_HEROKU}instituicao/buscar/instituicoes` );
+  async buscarInstituicoes() {        
+    const response = await Axios.get( 'instituicao/buscar/instituicoes');
     return response.data;
   }
 
-  async buscarInstituicaoPorId( id ){    
-    //const response = await Axios.get( `${URI}instituicao/buscar/${id}` );
-    const response = await Axios.get( `${URI_HEROKU}instituicao/buscar/${id}` );
+  async buscarInstituicaoPorId( id ){        
+    const response = await Axios.get( `instituicao/buscar/${id}` );
     return response;
   }
 
   async deletarInstituicao( id) {
 
-    const response = await Axios.delete( `${URI_HEROKU}instituicao/deletar/${id}` );
+    const response = await Axios.delete( `instituicao/deletar/${id}` );
     return response;
   }
 
   async editarInstiuicao( instituicao) {
     let id = instituicao.id;
-    const response = await Axios.put( `${URI_HEROKU}instituicao/editar/${id}`, instituicao );
+    const response = await Axios.put( `instituicao/editar/${id}`, instituicao );
     return response;
   }
 
