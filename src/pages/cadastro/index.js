@@ -46,9 +46,8 @@ export default function Cadastro() {
       handleSubmit(values)
     }
   }
-  async function handleSubmit(event) {
-    const usuarioApi = new UsuarioApi();
-    usuarioApi.criarUsuario(event).then( resposta => {
+  async function handleSubmit(event) {    
+    UsuarioApi.criar(event).then( resposta => {
         if( resposta.status === 200 )
           history.push('/login');
       })

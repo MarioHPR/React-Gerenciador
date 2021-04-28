@@ -24,7 +24,7 @@ export default class InstitucaoApi {
     return response;
   }
 
-  async buscarInstituicoes() {        
+  static async buscar() {
     const response = await Axios.get( 'instituicao/buscar/instituicoes');
     return response.data;
   }

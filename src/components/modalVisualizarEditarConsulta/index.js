@@ -23,9 +23,8 @@ export default function ModalVisualizarEditarConsulta(props) {
 // eslint-disable-next-line react-hooks/exhaustive-deps
   },[atualizaTela, idConsulta] );
 
-  useEffect(()=>{
-    const consultaApi = new ConsultaApi();
-    consultaApi.buscarConsultaPorId( idConsulta).then( resp => {
+  useEffect(()=>{    
+    ConsultaApi.buscar(idConsulta).then( resp => {
       setConsulta(resp.data);
       setInstituicao(resp.data.dadosInstituicao);
       onReset();
@@ -47,7 +46,7 @@ export default function ModalVisualizarEditarConsulta(props) {
 
   const downloadArquivo = idArquivo => {    
     const arquivoApi = new ArquivoApi();
-    return arquivoApi.downloadArquivo(idArquivo);
+    return arquivoApi.download(idArquivo);
   }
 
   const onFinish = values => {
@@ -55,7 +54,7 @@ export default function ModalVisualizarEditarConsulta(props) {
     const { diagnostico, prescricao, nomeMedico, dataConsulta } = consulta;
     const idinstituicao = instituicao.id;    
     const arquivoApi = new ArquivoApi();
-    arquivoApi.uploadArquivo(doc).then( resp =>{
+    arquivoApi.upload(doc).then( resp =>{
       if(resp.status === 200){
         setDoc(resp.data);
       }
@@ -89,8 +88,8 @@ export default function ModalVisualizarEditarConsulta(props) {
       "nomeMedico": nomeMedico || ''
     };
     
-  const consultaApi = new ConsultaApi();
-  consultaApi.editarConsulta( idConsulta, request).then( resp => { 
+  // TODO verifica se a consulta está sendo atualizada corretamente
+  ConsultaApi.editar( idConsulta, request).then( resp => { 
       if(resp.status === 200){
         let aux = atualizaTela + 1;
         setAtualizaTela(aux);

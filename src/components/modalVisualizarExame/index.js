@@ -23,9 +23,8 @@ export default function ModalExame(props) {
   const [ doc, setDoc ] = useState(0);
 
   useEffect(()=>{    
-    const exameApi = new ExameApi();
-    const instituicaoApi = new InstituicaoApi();
-    instituicaoApi.buscarInstituicoes(localStorage.getItem("token-gerenciador-security")).then( resp => setInstituicoes(resp) );
+    const exameApi = new ExameApi();    
+    InstituicaoApi.buscar().then( resp => setInstituicoes(resp) );
     exameApi.buscarExamePorId( idExame).then( resp => {
       if(resp.status === 200){
         setExame(resp.data);
@@ -53,7 +52,7 @@ export default function ModalExame(props) {
 
   const downloadArquivo = idArquivo => {
     const arquivoApi = new ArquivoApi();
-    return arquivoApi.downloadArquivo(idArquivo);
+    return arquivoApi.download(idArquivo);
   }
 
   const removeOuAtualiza = value => {
@@ -72,7 +71,7 @@ export default function ModalExame(props) {
   const onFinish = values => {
       const { bairro, cep, cidade, rua, contatoDois, contatoUm, nomeinstituicao } = values;
       const arquivoApi = new ArquivoApi();
-      doc && arquivoApi.uploadArquivo(doc).then( resp =>{
+      doc && arquivoApi.upload(doc).then( resp =>{
         if(resp.status === 200){
           setDoc(resp.data);
         }

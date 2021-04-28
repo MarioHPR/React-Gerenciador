@@ -8,8 +8,7 @@ export default class UsuarioApi {
     return response;
   }
 
-
-  async criarUsuario( usuario ) {    
+  static async criar( usuario ) {    
     const response = await Axios.post( 'api/usuario/salvar', usuario );
     return response;
   }
@@ -19,7 +18,7 @@ export default class UsuarioApi {
     return response;
   }
 
-  async realizarLogin(email, senha) {
+  static async login(email, senha) {
     const response = await Axios.post('login',
       { email: email, senha: senha }
     );

@@ -1,25 +1,26 @@
 import Axios from 'axios';
 
+
+// TODO padronizar o uso de caminho com ou se /api/ ?
 export default class AlergiaOuRestricoesApi {
 
   // ###### AlergiaOuRestricoes #####
-  async buscarAlergiaOuRestricoes() {    
+  async buscar() {    
     const response = await Axios.get( 'api/restricoes/' );
     return response;
   }
-
-
-  async criarAlergiaOuRestricoes( AlergiaOuRestricoes) {
+  
+  async criar( AlergiaOuRestricoes) {
     const response = await Axios.post( 'api/restricoes/salvar', AlergiaOuRestricoes );
     return response;
   }
 
-  async editarAlergiaOuRestricoes( id, AlergiaOuRestricoes) {
+  async editar( id, AlergiaOuRestricoes) {
     const response = await Axios.put( `api/restricoes/editar/${id}`, AlergiaOuRestricoes );
     return response;
   }
-
-  async removerConsulta( id) {    
+  
+  async remover( id) {    
     const response = await Axios.delete(`api/restricoes/deletar/${id}`);
     return response;
   }

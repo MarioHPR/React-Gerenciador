@@ -16,9 +16,8 @@ export default function Consulta() {
     setCollapsed2(!collapsed2);
   };
 
-  useEffect(()=>{
-    const consultaApi = new ConsultaApi();
-    consultaApi.buscarConsultas(localStorage.getItem("token-gerenciador-security")).then( resp => setConsultas(resp) );
+  useEffect(()=>{    
+    ConsultaApi.buscar().then( resp => setConsultas(resp) );
   },[setConsultas, atualizaTela]);
 
   return (

@@ -54,7 +54,7 @@ export default function ModalAddExame(props) {
       values.numero = values.numero.replaceAll("_", "");
     }
     const arquivoApi = new ArquivoApi();
-    doc ? arquivoApi.uploadArquivo(doc).then( resp =>{
+    doc ? arquivoApi.upload(doc).then( resp =>{
       if(resp.status === 200){
         setDoc(resp.data);
         values.idArquivo = resp.data;

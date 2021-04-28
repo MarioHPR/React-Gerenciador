@@ -21,9 +21,8 @@ function LoginUi( ) {
   async function handleSubmit(event) { 
     event.preventDefault();
 
-    if( email !== '' && senha !== '' ) {
-      const usuarioApi = new UsuarioApi();
-      usuarioApi.realizarLogin(email, senha).then( resposta => {
+    if(email && senha) {      
+      UsuarioApi.login(email, senha).then( resposta => {
         if(resposta.status === 200) {
           localStorage.setItem( "token-gerenciador-security", resposta.headers.authorization );
         }

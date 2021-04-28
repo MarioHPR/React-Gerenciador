@@ -72,7 +72,7 @@ export default function TableListaRestricoes( props ) {
     try {
       const row = await form.validateFields();
       if(key.key === '-') {
-        restricoesApi.criarAlergiaOuRestricoes( row).then( resp => {
+        restricoesApi.criar( row).then( resp => {
           if(resp.status === 200) {
             setAtualizaTela(atualizaTela + 1);
             openNotificationWithIcon("success", 'Inserção', 'Restrição inserida com sucesso!');
@@ -89,7 +89,7 @@ export default function TableListaRestricoes( props ) {
         }
         setData(newData);
         setEditingKey('');
-        restricoesApi.editarAlergiaOuRestricoes(key.key, row).then( resp => {
+        restricoesApi.editar(key.key, row).then( resp => {
           if(resp.status === 200) {
             setAtualizaTela(atualizaTela + 1);
             openNotificationWithIcon("success", 'Editado', 'Restrição editado com sucesso!');

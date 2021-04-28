@@ -20,7 +20,7 @@ export default function Home() {
   const [ aux, setAux ] = useState([]);
 
   useEffect(()=>{
-    restricoesApi.buscarAlergiaOuRestricoes()
+    restricoesApi.buscar()
       .then( resp => {
         setRestricoes(resp.data)} );
   },[setRestricoes, atualizaTela]);
@@ -35,7 +35,7 @@ export default function Home() {
 
   const handleDelete = evt => {
     console.log(evt)
-    restricoesApi.removerConsulta(evt.key).then( resp => {
+    restricoesApi.remover(evt.key).then( resp => {
       if( resp.status === 200 ){
         setAux(aux.filter( (item) => item.key !== evt ) );
         openNotificationWithIcon("success", 'Exclusão', 'Restrição excluída com sucesso!');

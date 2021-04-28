@@ -31,9 +31,8 @@ export default function ModalAddConsulta(props) {
     });
   };
 
-  const cadastrarConsulta = (valores) => {
-    const consultaApi = new ConsultaApi();
-    consultaApi.criarConsulta( valores).then( resp => { 
+  const cadastrarConsulta = (valores) => {    
+    ConsultaApi.criar( valores).then( resp => { 
       if(resp.status === 200){
         let aux = atualizaTela + 1;
         setAtualizaTela(aux);
@@ -81,7 +80,7 @@ export default function ModalAddConsulta(props) {
     const arquivoApi = new ArquivoApi();
 
     doc ?   
-      arquivoApi.uploadArquivo(doc).then( resp =>{
+      arquivoApi.upload(doc).then( resp =>{
         if(resp.status === 200 && resp.data > 0){
           setDoc(resp.data);
           request.idArquivo = resp.data;
